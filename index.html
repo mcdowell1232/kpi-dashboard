@@ -1136,6 +1136,315 @@
 }
 
 
+/* ══════════════════════════════════════════════
+   S10 vs S9 출시 주차 비교 차트
+══════════════════════════════════════════════ */
+.cmp-section {
+    margin-bottom: 28px;
+}
+.cmp-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    padding: 22px 20px 18px;
+}
+.cmp-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #0ea5e9;
+}
+.cmp-title {
+    font-size: 1.18em;
+    font-weight: 700;
+    color: #1e293b;
+}
+.cmp-badge-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.cmp-badge {
+    font-size: 0.72em;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+.cmp-badge-s10 {
+    background: #dbeafe;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+}
+.cmp-badge-s9 {
+    background: #dcfce7;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+}
+/* 공유 범례 */
+.cmp-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin-bottom: 14px;
+    padding: 8px 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+.cmp-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.75em;
+    color: #475569;
+    font-weight: 500;
+    white-space: nowrap;
+}
+.cmp-legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+/* 차트 2분할 */
+.cmp-charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+.cmp-chart-panel {
+    position: relative;
+}
+.cmp-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+.cmp-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9em;
+    font-weight: 700;
+    color: #1e293b;
+}
+.cmp-series-badge {
+    font-size: 0.72em;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.04em;
+}
+.cmp-s10-badge { background: #dbeafe; color: #1d4ed8; }
+.cmp-s9-badge  { background: #dcfce7; color: #15803d; }
+
+.cmp-peak-badge {
+    font-size: 0.7em;
+    font-weight: 700;
+    color: #7c3aed;
+    background: #ede9fe;
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+}
+.cmp-chart-wrap {
+    position: relative;
+    height: 380px;
+}
+/* 세로 구분선 */
+.cmp-divider {
+    width: 1px;
+    background: #e2e8f0;
+    align-self: stretch;
+    display: none; /* grid로 대체 */
+}
+/* ── 누적 배너 ── */
+.cmp-accum-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #f0f9ff 0%, #f0fdf4 100%);
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.cmp-accum-stats {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.cmp-accum-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 130px;
+}
+.cmp-accum-label {
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+}
+.cmp-accum-val {
+    font-size: 1.9em;
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+.cmp-accum-sub {
+    font-size: 0.68em;
+    color: #64748b;
+    margin-top: 3px;
+    font-weight: 500;
+}
+.cmp-accum-s10 .cmp-accum-label { color: #1d4ed8; }
+.cmp-accum-s10 .cmp-accum-val   { color: #1d4ed8; }
+.cmp-accum-s9  .cmp-accum-label { color: #15803d; }
+.cmp-accum-s9  .cmp-accum-val   { color: #15803d; }
+.cmp-accum-vs {
+    font-size: 1.1em;
+    font-weight: 900;
+    color: #94a3b8;
+}
+.cmp-accum-note {
+    font-size: 0.7em;
+    color: #94a3b8;
+    font-style: italic;
+    align-self: flex-end;
+    text-align: right;
+    line-height: 1.5;
+}
+/* ── 단일 그룹 바 차트 영역 ── */
+.cmp-single-chart-wrap {
+    position: relative;
+    height: 460px;   /* S10/S9 서브라벨 공간 확보 */
+    margin-bottom: 4px;
+}
+/* ── 채널 범례 ── */
+.cmp-ch-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin: 8px 0 18px;
+    padding: 8px 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+.cmp-ch-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.73em;
+    color: #475569;
+    font-weight: 500;
+    white-space: nowrap;
+}
+.cmp-ch-legend-dot {
+    width: 13px;
+    height: 13px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+/* ── 하단 테이블 ── */
+.cmp-tables-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 8px;
+}
+.cmp-table-block {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.cmp-table-title {
+    font-size: 0.8em;
+    font-weight: 700;
+    margin-bottom: 6px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    display: inline-block;
+}
+.cmp-table-title-s10 { background: #dbeafe; color: #1d4ed8; }
+.cmp-table-title-s9  { background: #dcfce7; color: #15803d; }
+.cmp-tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75em;
+    min-width: 320px;
+}
+.cmp-tbl th {
+    background: #f1f5f9;
+    padding: 5px 6px;
+    font-weight: 700;
+    text-align: center;
+    border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
+    font-size: 0.9em;
+    color: #334155;
+}
+.cmp-tbl th.label-col { text-align: left; }
+.cmp-tbl td {
+    padding: 4px 5px;
+    text-align: center;
+    border-bottom: 1px solid #f0f4f8;
+    white-space: nowrap;
+    color: #374151;
+}
+.cmp-tbl td.label-col {
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.88em;
+    color: #475569;
+}
+.cmp-tbl tr.total-row td {
+    font-weight: 800;
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-top: 2px solid #bfdbfe;
+}
+.cmp-tbl tr.total-row-s9 td {
+    background: #f0fdf4;
+    color: #15803d;
+    border-top: 2px solid #bbf7d0;
+}
+.cmp-tbl .wk-now td {
+    background: #fefce8;
+    color: #92400e;
+    font-style: italic;
+    font-weight: 600;
+}
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .cmp-charts-row { grid-template-columns: 1fr; gap: 20px; }
+    .cmp-chart-wrap  { height: 300px; }
+    .cmp-title { font-size: 0.95em; }
+    .cmp-single-chart-wrap { height: 340px; }
+    .cmp-tables-wrap { grid-template-columns: 1fr; gap: 14px; }
+    .cmp-accum-card { min-width: 100px; }
+    .cmp-accum-val  { font-size: 1.45em; }
+}
+@media (max-width: 480px) {
+    .cmp-card { padding: 14px 10px 12px; }
+    .cmp-chart-wrap { height: 260px; }
+    .cmp-single-chart-wrap { height: 280px; }
+    .cmp-accum-banner { padding: 10px 12px; }
+}
+
 </style>
 </head>
 <body>
@@ -1143,23 +1452,43 @@
 <div id="updatePopupOverlay" style="display:none;">
   <div id="updatePopupBox">
     <div id="updatePopupHeader">
-      <h3>🚀 2026년 3월 5일 업데이트 내용</h3>
+      <h3>🚀 2026년 3월 19일 업데이트 내용</h3>
       <button onclick="POPUP.close()" style="background:none;border:none;font-size:1.3em;cursor:pointer;color:#94a3b8;line-height:1;">×</button>
     </div>
     <div id="updatePopupBody">
-      <h4>1. 🛒 Sell OUT 기능 추가 <span class="new-badge">NEW</span></h4>
+
+      <!-- ── 3월 19일 신규 업데이트 ── -->
+      <h4>1. 📊 S10 vs S9 출시 주차 비교 차트 추가 <span class="new-badge">NEW</span></h4>
+      <ul>
+        <li>Sales 탭 최상단에 신규 차트 추가 — S10(WK61~) · S9(WK08~) 출시 주차를 W1 기준으로 정렬해 나란히 비교</li>
+        <li>8개 판매 채널별 스택 막대그래프로 구성, 막대 위에 주차 합계 판매량 자동 표시</li>
+        <li>상단 누적 배너: 현재 기준 직전 완료 주까지의 S10 · S9 누적 판매량 실시간 표시</li>
+        <li>채널 범례 클릭 시 해당 채널 막대 1.3배 확대 강조, 나머지 채널 자동 축소</li>
+      </ul>
+      <h4>2. 📋 S10 · S9 주차별 판매 요약표 추가 <span class="new-badge">NEW</span></h4>
+      <ul>
+        <li>채널별 주차 판매량 + W1~현재 완료 주 기준 소계 열 자동 생성</li>
+        <li>소계 열 % 기준: 해당 시리즈 소계 합계(S10 기준 21,374대 등)를 100%로 채널 비중 표시</li>
+        <li>주차 진행에 따라 소계 열 위치 자동 이동 (W3→W4→W5... 동적 업데이트)</li>
+        <li>S9는 과거 완료 데이터로 "진행중" 표시 없이 전체 주차 표기</li>
+      </ul>
+
+      <div style="border-top:1px solid #e2e8f0;margin:10px 0 8px;"></div>
+      <p style="font-size:0.75em;color:#94a3b8;margin:0 0 6px;">— 이전 업데이트 (2026.03.05) —</p>
+
+      <h4>3. 🛒 Sell OUT 기능 추가</h4>
       <ul>
         <li>일 단위로 업데이트되는 실제 주문 수 기반 판매량 데이터 시각화</li>
-        <li>SKU별 · 채널별 조합으로 판매량 추이 분석 가능</li>
+        <li>SKU별 · 채널별 · 조합 분석 모드로 판매량 추이 분석 가능</li>
         <li>그룹 선택(S8/S9/S10/Saros 시리즈)으로 묶음 분석 지원</li>
         <li>기간 선택(최대 15주) 및 로보락 검색량 연동 비율 표 제공</li>
       </ul>
-      <h4>2. 🗂 Marketing · Sales 탭 분리</h4>
+      <h4>4. 🗂 Marketing · Sales 탭 분리</h4>
       <ul>
         <li>Marketing 탭: 검색량 비교, 경쟁사 분석, 채널 성과 차트</li>
         <li>Sales 탭: Sell Out 차트 + 26년 주간 판매량 &amp; 검색량 차트</li>
       </ul>
-      <h4>3. 🔧 버그 수정</h4>
+      <h4>5. 🔧 버그 수정</h4>
       <ul>
         <li>새로고침 시 로그아웃되던 문제 수정 → 접속 상태 유지</li>
       </ul>
@@ -1440,6 +1769,64 @@
 
         <!-- ══════ SALES TAB ══════ -->
         <div class="main-tab-panel" id="tabSales">
+
+          <!-- ★★★ S10 vs S9 출시 주차 비교 차트 (최상단) ★★★ -->
+          <div class="cmp-section">
+            <div class="cmp-card">
+
+              <!-- 카드 타이틀 -->
+              <div class="cmp-title-row">
+                <span class="cmp-title">📊 주차별 판매량 비교_S10 vs S9 <span style="font-size:0.72em;font-weight:500;color:#94a3b8;">(Sell Out 기준)</span></span>
+                <div class="cmp-badge-row">
+                  <span class="cmp-badge cmp-badge-s10">🔵 S10: WK61~WK68</span>
+                  <span class="cmp-badge cmp-badge-s9">🟢 S9: WK08~WK15</span>
+                </div>
+              </div>
+
+              <!-- 누적 판매 배너 -->
+              <div class="cmp-accum-banner" id="cmpAccumBanner">
+                <div class="cmp-accum-stats">
+                  <div class="cmp-accum-card cmp-accum-s10">
+                    <span class="cmp-accum-label">🔵 S10 시리즈</span>
+                    <span class="cmp-accum-val" id="cmpS10Total">—</span>
+                    <span class="cmp-accum-sub" id="cmpS10Sub">데이터 로딩 중...</span>
+                  </div>
+                  <span class="cmp-accum-vs">vs</span>
+                  <div class="cmp-accum-card cmp-accum-s9">
+                    <span class="cmp-accum-label">🟢 S9 시리즈</span>
+                    <span class="cmp-accum-val" id="cmpS9Total">—</span>
+                    <span class="cmp-accum-sub" id="cmpS9Sub">데이터 로딩 중...</span>
+                  </div>
+                </div>
+                <div class="cmp-accum-note" id="cmpAccumNote">집계 기준 계산 중...</div>
+              </div>
+
+              <!-- 채널 범례 -->
+              <div class="cmp-ch-legend" id="cmpChLegend">
+                <!-- JS로 동적 생성 -->
+              </div>
+
+              <!-- 그룹 바 차트 (채널 stacked + S10/S9 나란히) -->
+              <div class="cmp-single-chart-wrap">
+                <canvas id="cmpChart"></canvas>
+              </div>
+              <div style="font-size:0.7em;color:#94a3b8;text-align:center;margin-bottom:16px;">
+                💡 범례 클릭으로 채널 필터 · 툴팁으로 채널별 상세 확인
+              </div>
+
+              <!-- 하단 표 2개 나란히 -->
+              <div class="cmp-tables-wrap" id="cmpTablesWrap">
+                <!-- JS로 동적 생성 -->
+              </div>
+
+              <!-- 로딩/에러 -->
+              <div id="cmpLoading" style="text-align:center;padding:60px 20px;color:#94a3b8;display:none;">
+                <div style="font-size:1.5em;margin-bottom:8px;">⏳</div>Sell Out 데이터 로딩 후 자동 표시됩니다...
+              </div>
+              <div id="cmpError" style="text-align:center;padding:24px;color:#e53e3e;font-weight:600;display:none;"></div>
+
+            </div><!-- /cmp-card -->
+          </div><!-- /cmp-section -->
           <!-- Sell Out 차트 (상단) -->
           <!-- ══════════════════════ -->
 <!-- ══════════════════════ Sell Out Section ══════════════════════ -->
@@ -2187,6 +2574,599 @@ window.setSoView=function(v){
   renderSo(wm);
 };
 
+
+/* ══════════════════════════════════════════════
+   S10 vs S9 출시 주차 비교 차트
+   - S10 기준 주차: WK61(W0) ~ WK68(W7)
+   - S9  기준 주차: WK08(W0) ~ WK15(W7)
+   - 각 주차 위치에 S10 bar / S9 bar 나란히 배치
+   - 각 bar는 채널별 stacked
+══════════════════════════════════════════════ */
+
+/* 비교 차트 인스턴스 */
+let cmpChartInst = null;
+
+/* WK 번호 → soData.wkMeta 인덱스 */
+function cmpWkIdx(wkNum) {
+  if (!soData) return -1;
+  // WK 번호는 두자리 패딩일 수 있음 (WK08) 또는 세자리 (WK61)
+  const wkStr = wkNum < 10 ? 'WK0' + wkNum : 'WK' + wkNum;
+  const idx = soData.wkMeta.findIndex(m => m.wk === wkStr);
+  // 패딩 없는 형식도 시도
+  if (idx < 0) return soData.wkMeta.findIndex(m => m.wk === 'WK' + wkNum);
+  return idx;
+}
+
+/* 특정 WK·시리즈의 채널별 판매량 배열 반환 */
+function cmpGetChVals(wkNum, seriesSkuFn) {
+  if (!soData) return SO_CHANNELS.map(() => 0);
+  const gi = cmpWkIdx(wkNum);
+  if (gi < 0) return SO_CHANNELS.map(() => 0);
+  const skus = soData.skuNames.filter(seriesSkuFn);
+  return SO_CHANNELS.map(ch =>
+    skus.reduce((s, sku) =>
+      s + (soData.skuMap[sku] && soData.skuMap[sku][ch]
+        ? (soData.skuMap[sku][ch][gi] || 0) : 0), 0)
+  );
+}
+
+/* 현재 출시 기준 W-위치 계산
+   - S10 출시: WK61, S9 출시: WK08
+   - 오늘 날짜 기준으로 soData.wkMeta 내 최신 완료 WK를 찾아
+     S10 기준 W-위치(0=출시전)를 반환
+   - S10 출시: WK61, S9 출시: WK08
+   - 두 시리즈는 동일한 W-위치를 공유 (같은 출시 후 경과 주차) */
+function cmpGetCurrentWPos() {
+  if (!soData || !soData.wkMeta.length) return { currentW: 0, lastWkNum: 61, lastMeta: null };
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // soData에서 오늘 이전 날짜의 가장 최신 WK 탐색
+  // wkMeta.dt = 해당 주의 시작일(월요일)
+  // 현재 주는 "진행중"이므로 그 전 주를 "완료"로 간주
+  let lastMeta = null;
+  for (let i = soData.wkMeta.length - 1; i >= 0; i--) {
+    const dt = new Date(soData.wkMeta[i].dt + 'T00:00:00');
+    // 해당 주의 마지막 날(일요일) = dt + 6일
+    const weekEnd = new Date(dt);
+    weekEnd.setDate(dt.getDate() + 6);
+    weekEnd.setHours(23, 59, 59, 0);
+    if (weekEnd < today) { lastMeta = soData.wkMeta[i]; break; }
+  }
+  if (!lastMeta) lastMeta = soData.wkMeta[0];
+
+  const lastWkNum = parseInt(lastMeta.wk.replace(/^WK0?/, ''));
+  // S10 기준 W-위치: WK61=W0, WK62=W1, WK63=W2 ...
+  // (두 시리즈 동일 W-위치 공유)
+  const currentW = Math.max(0, Math.min(7, lastWkNum - 61));
+  return { currentW, lastWkNum, lastMeta };
+}
+
+/* 누적 집계: W1 ~ 현재 완료 위치까지 합산 (W0 출시전 제외) */
+function cmpAccumSales(wkStart, wkEnd, seriesSkuFn) {
+  if (!soData) return 0;
+  let total = 0;
+  for (let wkNum = wkStart; wkNum <= wkEnd; wkNum++) {
+    const gi = cmpWkIdx(wkNum);
+    if (gi < 0) continue;
+    const skus = soData.skuNames.filter(seriesSkuFn);
+    skus.forEach(sku => {
+      SO_CHANNELS.forEach(ch => {
+        total += (soData.skuMap[sku] && soData.skuMap[sku][ch])
+          ? (soData.skuMap[sku][ch][gi] || 0) : 0;
+      });
+    });
+  }
+  return total;
+}
+
+/* 메인 렌더 함수 */
+function renderCmpChart() {
+  if (!soData) return;
+
+  const S10_SKU = s => SO_SKU_GROUPS['S10'](s);
+  const S9_SKU  = s => SO_SKU_GROUPS['S9'](s);
+
+  // W1(출시)~W8 : 라벨은 W1~W8, 실제 데이터는 WK61~WK68 / WK08~WK15 그대로
+  const S10_WKS = [61,62,63,64,65,66,67,68];
+  const S9_WKS  = [8, 9,10,11,12,13,14,15];
+  // W1=출시, W2, W3 ... W8
+  const W_LABELS = ['W1\n(출시)','W2','W3','W4','W5','W6','W7','W8'];
+
+  /* ── 현재 주차 위치 계산 ── */
+  const { currentW, lastWkNum, lastMeta } = cmpGetCurrentWPos();
+  // currentW: 0=W1 완료, 1=W2 완료 ... (0-based index)
+  // W_LABELS 기준: index 0 = W1(출시)
+  const currentW_s10 = currentW;
+
+  /* ── 주차별 합계 사전 계산 (합계 숫자 라벨용) ── */
+  const s10Totals = S10_WKS.map(wkNum => {
+    const gi = cmpWkIdx(wkNum);
+    if (gi < 0) return 0;
+    return soData.skuNames.filter(S10_SKU).reduce((s, sku) =>
+      s + SO_CHANNELS.reduce((cs, ch) =>
+        cs + (soData.skuMap[sku]?.[ch]?.[gi] || 0), 0), 0);
+  });
+  const s9Totals = S9_WKS.map(wkNum => {
+    const gi = cmpWkIdx(wkNum);
+    if (gi < 0) return 0;
+    return soData.skuNames.filter(S9_SKU).reduce((s, sku) =>
+      s + SO_CHANNELS.reduce((cs, ch) =>
+        cs + (soData.skuMap[sku]?.[ch]?.[gi] || 0), 0), 0);
+  });
+
+  /* ── 누적 배너 계산 ── */
+  // W1~완료 주차까지 합산 (currentW_s10 = 마지막 완료 index, 0-based)
+  const s10AccumEnd = 61 + currentW_s10;
+  const s9AccumEnd  = 8  + currentW_s10;
+  const s10Accum = cmpAccumSales(61, s10AccumEnd, S10_SKU);
+  const s9Accum  = cmpAccumSales(8,  s9AccumEnd,  S9_SKU);
+
+  const wNumLabel = w => 'W' + (w + 1); // 0-based → W1, W2 ...
+  const subLabel = currentW_s10 >= 0
+    ? `W1~${wNumLabel(currentW_s10)} 누적 (${currentW_s10 + 1}주)`
+    : '데이터 없음';
+
+  const s10TotEl = document.getElementById('cmpS10Total');
+  const s9TotEl  = document.getElementById('cmpS9Total');
+  const s10SubEl = document.getElementById('cmpS10Sub');
+  const s9SubEl  = document.getElementById('cmpS9Sub');
+  const noteEl   = document.getElementById('cmpAccumNote');
+
+  if (s10TotEl) s10TotEl.textContent = s10Accum.toLocaleString() + '대';
+  if (s9TotEl)  s9TotEl.textContent  = s9Accum.toLocaleString()  + '대';
+  if (s10SubEl) s10SubEl.textContent = subLabel;
+  if (s9SubEl)  s9SubEl.textContent  = subLabel;
+  if (noteEl)   noteEl.innerHTML =
+    `현재 <strong>WK${lastWkNum + 1}</strong> 진행 중<br>WK${lastWkNum}(${wNumLabel(currentW_s10)})까지 집계`;
+
+  /* ── 채널 강조 상태 (클릭 토글용) ── */
+  if (typeof window._cmpFocusCh === 'undefined') window._cmpFocusCh = null;
+
+  /* ── 채널 범례 렌더 (클릭 강조 기능 포함) ── */
+  const legendEl = document.getElementById('cmpChLegend');
+  function buildLegend() {
+    if (!legendEl) return;
+    legendEl.innerHTML =
+      `<div class="cmp-ch-legend-item">
+         <span style="display:inline-flex;align-items:center;gap:3px;">
+           <span style="display:inline-block;width:13px;height:13px;background:#1d4ed8;border-radius:3px;"></span>
+           <span style="font-weight:800;color:#1d4ed8;">S10</span>
+         </span>
+       </div>` +
+      `<div class="cmp-ch-legend-item">
+         <span style="display:inline-flex;align-items:center;gap:3px;">
+           <span style="display:inline-block;width:13px;height:13px;background:#15803d;border-radius:3px;opacity:0.55;"></span>
+           <span style="font-weight:800;color:#15803d;">S9</span>
+         </span>
+       </div>` +
+      `<div style="width:1px;height:14px;background:#e2e8f0;margin:0 6px;flex-shrink:0;"></div>` +
+      SO_CHANNELS.map((ch, i) => {
+        const col = SO_CH_COLORS[i % SO_CH_COLORS.length].replace('0.85','1');
+        const isActive = window._cmpFocusCh === null || window._cmpFocusCh === ch;
+        const isFocused = window._cmpFocusCh === ch;
+        return `<div class="cmp-ch-legend-item" onclick="cmpToggleCh('${ch.replace(/'/g,"\\'")}')"
+          style="cursor:pointer;padding:2px 7px;border-radius:12px;transition:all 0.15s;
+          ${isFocused ? `background:${col};color:#fff;font-weight:700;` : isActive ? '' : 'opacity:0.35;'}
+          border:1.5px solid ${isFocused ? col : '#e2e8f0'};">
+          <span class="cmp-ch-legend-dot" style="background:${col};opacity:${isActive?1:0.3};"></span>${ch}
+        </div>`;
+      }).join('');
+  }
+  buildLegend();
+
+  /* ── 채널 토글 함수 (전역 등록) ── */
+  window.cmpToggleCh = function(ch) {
+    window._cmpFocusCh = (window._cmpFocusCh === ch) ? null : ch;
+    buildLegend();
+    updateCmpChartColors();
+  };
+
+  /* ── datasets 생성 ── */
+  const datasets = [];
+
+  SO_CHANNELS.forEach((ch, ci) => {
+    const baseCol = SO_CH_COLORS[ci % SO_CH_COLORS.length];
+    // S10/S9 모두 동일한 opacity 사용
+    const solidCol  = baseCol.replace('0.85','0.90');
+    const fadedCol  = baseCol.replace('0.85','0.90');  // S9도 S10과 동일하게
+    const focusCol  = baseCol.replace('0.85','1');
+    const dimCol    = baseCol.replace('0.85','0.18');
+
+    const isFocused = window._cmpFocusCh === null || window._cmpFocusCh === ch;
+
+    // S10 bar
+    const s10Data = S10_WKS.map(wkNum => {
+      const gi = cmpWkIdx(wkNum);
+      if (gi < 0) return 0;
+      return soData.skuNames.filter(S10_SKU).reduce((s, sku) =>
+        s + (soData.skuMap[sku]?.[ch]?.[gi] || 0), 0);
+    });
+
+    // S9 bar
+    const s9Data = S9_WKS.map(wkNum => {
+      const gi = cmpWkIdx(wkNum);
+      if (gi < 0) return 0;
+      return soData.skuNames.filter(S9_SKU).reduce((s, sku) =>
+        s + (soData.skuMap[sku]?.[ch]?.[gi] || 0), 0);
+    });
+
+    const bgS10 = isFocused ? (window._cmpFocusCh === ch ? focusCol : solidCol) : dimCol;
+    const bgS9  = isFocused ? (window._cmpFocusCh === ch ? focusCol : fadedCol) : dimCol;
+
+    datasets.push({
+      label: ch + ' (S10)',
+      data: s10Data,
+      backgroundColor: bgS10,
+      borderColor: bgS10,
+      borderWidth: 0.5,
+      stack: 's10',
+      categoryPercentage: 0.72,
+      barPercentage: 0.88,
+      datalabels: {
+        display: ctx => isFocused && ctx.dataset.data[ctx.dataIndex] >= 100,
+        color: '#fff',
+        anchor: 'center', align: 'center',
+        font: { size: 8, weight: '700' },
+        formatter: v => v >= 1000 ? (Math.round(v/100)/10)+'k' : v
+      }
+    });
+
+    datasets.push({
+      label: ch + ' (S9)',
+      data: s9Data,
+      backgroundColor: bgS9,
+      borderColor: bgS9,
+      borderWidth: 0.5,
+      stack: 's9',
+      categoryPercentage: 0.72,
+      barPercentage: 0.88,
+      datalabels: {
+        display: ctx => isFocused && ctx.dataset.data[ctx.dataIndex] >= 100,
+        color: '#fff',
+        anchor: 'center', align: 'center',
+        font: { size: 8, weight: '700' },
+        formatter: v => v >= 1000 ? (Math.round(v/100)/10)+'k' : v
+      }
+    });
+  });
+
+  /* ── 막대 상단 합계 숫자 라벨 dataset (투명 bar, datalabels 전용) ── */
+  // Chart.js stacked bar에서 stack 합계를 막대 바로 위에 붙이려면
+  // 투명 bar를 맨 위에 쌓고 anchor:'start', align:'end' 조합 사용
+  datasets.push({
+    label: '__s10_label__',
+    data: s10Totals,
+    backgroundColor: 'rgba(0,0,0,0)',
+    borderColor: 'rgba(0,0,0,0)',
+    borderWidth: 0,
+    stack: 's10',
+    categoryPercentage: 0.72,
+    barPercentage: 0.88,
+    datalabels: {
+      display: ctx => ctx.dataset.data[ctx.dataIndex] > 0,
+      color: '#1d4ed8',
+      anchor: 'start',
+      align: 'end',
+      offset: 0,
+      clamp: true,
+      font: { size: window.innerWidth < 640 ? 9 : 11, weight: '800' },
+      formatter: v => v > 0 ? v.toLocaleString() : ''
+    }
+  });
+  // S9 합계 표시용
+  datasets.push({
+    label: '__s9_label__',
+    data: s9Totals,
+    backgroundColor: 'rgba(0,0,0,0)',
+    borderColor: 'rgba(0,0,0,0)',
+    borderWidth: 0,
+    stack: 's9',
+    categoryPercentage: 0.72,
+    barPercentage: 0.88,
+    datalabels: {
+      display: ctx => ctx.dataset.data[ctx.dataIndex] > 0,
+      color: '#15803d',
+      anchor: 'start',
+      align: 'end',
+      offset: 0,
+      clamp: true,
+      font: { size: window.innerWidth < 640 ? 9 : 11, weight: '800' },
+      formatter: v => v > 0 ? v.toLocaleString() : ''
+    }
+  });
+
+  /* ── 차트 렌더 ── */
+  const canvas = document.getElementById('cmpChart');
+  if (!canvas) return;
+  if (cmpChartInst) { cmpChartInst.destroy(); cmpChartInst = null; }
+
+  // 최대값 기반 Y축 여유 (합계 숫자 라벨 공간)
+  const yMax = Math.max(...s10Totals, ...s9Totals);
+
+  cmpChartInst = new Chart(canvas, {
+    type: 'bar',
+    data: { labels: W_LABELS, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          display: false  // 커스텀 HTML 범례 사용
+        },
+        tooltip: {
+          callbacks: {
+            title: items => {
+              const wi = items[0].dataIndex;
+              const wl = W_LABELS[wi].replace('\n', ' ');
+              return `${wl}  │  S10: WK${S10_WKS[wi]}  /  S9: WK${S9_WKS[wi]}`;
+            },
+            beforeBody: items => {
+              const i = items[0].dataIndex;
+              return [
+                `🔵 S10 합계: ${s10Totals[i].toLocaleString()}대`,
+                `🟢 S9  합계: ${s9Totals[i].toLocaleString()}대`,
+                `차이: ${(s10Totals[i] - s9Totals[i] >= 0 ? '+' : '')}${(s10Totals[i] - s9Totals[i]).toLocaleString()}대`,
+                ''
+              ];
+            },
+            label: item => {
+              if (item.dataset.label.startsWith('__')) return null;
+              if ((item.raw || 0) === 0) return null;
+              const series = item.dataset.label.endsWith('(S10)') ? '🔵 S10' : '🟢 S9';
+              const ch = item.dataset.label.replace(' (S10)','').replace(' (S9)','');
+              return `  ${series} ${ch}: ${(item.raw||0).toLocaleString()}대`;
+            },
+            filter: item => !item.dataset.label.startsWith('__') && (item.raw || 0) > 0
+          }
+        },
+        datalabels: { display: true }
+      },
+      scales: {
+        x: {
+          stacked: true,
+          ticks: {
+            font: { size: 10 },
+            maxRotation: 0,
+            // X축 라벨 아래에 S10/S9 서브텍스트 표시는 afterDraw로 처리
+          },
+          grid: { display: false }
+        },
+        y: {
+          stacked: true,
+          beginAtZero: true,
+          max: Math.ceil(yMax * 1.18 / 1000) * 1000, // 상단 여유(숫자 레이블 공간)
+          ticks: { font: { size: 11 } },
+          grid: { color: 'rgba(0,0,0,0.06)' },
+          title: { display: true, text: '판매량 (대)', font: { size: 11 } }
+        }
+      }
+    },
+    plugins: [
+      ChartDataLabels,
+      {
+        // ── afterDraw: X축 아래 "S10 / S9" 서브라벨 그리기 ──
+        id: 'cmpSubLabel',
+        afterDraw(chart) {
+          const ctx = chart.ctx;
+          const xAxis = chart.scales.x;
+          const isMob = window.innerWidth < 640;
+          const fSize = isMob ? 8 : 9;
+          ctx.save();
+          ctx.font = `700 ${fSize}px sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'top';
+
+          xAxis.ticks.forEach((tick, i) => {
+            const xCenter = xAxis.getPixelForTick(i);
+            const yBase   = xAxis.bottom + 2;
+
+            // 각 그룹은 두 bar(s10, s9)가 있음
+            // bar 너비 추정: categoryWidth * barPercentage / 2
+            const catW = xAxis.width / W_LABELS.length;
+            const barW = catW * 0.72 * 0.88 / 2; // 한쪽 bar 폭
+            const gap  = catW * 0.72 * 0.88 * 0.08;
+
+            // S10 라벨 (왼쪽 bar 중심)
+            ctx.fillStyle = 'rgba(29,78,216,0.85)';
+            ctx.fillText('S10', xCenter - barW/2 - gap/2, yBase);
+
+            // S9 라벨 (오른쪽 bar 중심)
+            ctx.fillStyle = 'rgba(21,128,61,0.85)';
+            ctx.fillText('S9',  xCenter + barW/2 + gap/2, yBase);
+          });
+          ctx.restore();
+        }
+      }
+    ]
+  });
+
+  /* ── 색상·크기 업데이트 함수 (범례 클릭 후 재색상 + 1.3배 강조) ── */
+  window.updateCmpChartColors = function() {
+    if (!cmpChartInst) return;
+    const focusCh = window._cmpFocusCh;
+
+    cmpChartInst.data.datasets.forEach(ds => {
+      if (ds.label.startsWith('__')) {
+        // 합계 라벨 dataset: 포커스된 채널 있을 때 폰트 크기 강조
+        const isFocused = focusCh !== null;
+        const baseFontSize = window.innerWidth < 640 ? 9 : 11;
+        ds.datalabels.font = {
+          size: isFocused ? Math.round(baseFontSize * 1.2) : baseFontSize,
+          weight: '800'
+        };
+        return;
+      }
+      const ch = ds.label.replace(' (S10)','').replace(' (S9)','');
+      const ci = SO_CHANNELS.indexOf(ch);
+      if (ci < 0) return;
+      const baseCol = SO_CH_COLORS[ci % SO_CH_COLORS.length];
+      const isFoc = focusCh === null || focusCh === ch;
+      const isHighlight = focusCh === ch;
+
+      // 색상 처리
+      const c = isHighlight ? baseCol.replace('0.85','1')
+              : isFoc      ? baseCol.replace('0.85','0.90')
+              :               baseCol.replace('0.85','0.18');
+      ds.backgroundColor = c;
+      ds.borderColor = c;
+
+      // 1.3배 강조: categoryPercentage / barPercentage 조정
+      if (isHighlight) {
+        ds.categoryPercentage = 0.72 * 1.3 > 0.95 ? 0.95 : 0.72 * 1.3;
+        ds.barPercentage      = 0.88 * 1.3 > 1.0  ? 1.0  : 0.88 * 1.3;
+      } else {
+        ds.categoryPercentage = focusCh === null ? 0.72 : 0.72 * 0.82;
+        ds.barPercentage      = focusCh === null ? 0.88 : 0.88 * 0.82;
+      }
+
+      // datalabels: 강조 채널은 폰트 크게, 흐린 채널은 숨김
+      const baseFontSize = window.innerWidth < 640 ? 8 : 8;
+      ds.datalabels.display = ctx => isFoc && ctx.dataset.data[ctx.dataIndex] >= 100;
+      ds.datalabels.font = {
+        size: isHighlight ? Math.round(baseFontSize * 1.3) : baseFontSize,
+        weight: '700'
+      };
+    });
+    cmpChartInst.update();
+  };
+
+  /* ── 하단 표 렌더 ── */
+  renderCmpTables(S10_WKS, S9_WKS, S10_SKU, S9_SKU, currentW_s10, lastWkNum);
+}
+
+/* 하단 요약표 + 채널 세부표 */
+function renderCmpTables(S10_WKS, S9_WKS, S10_SKU, S9_SKU, currentW_s10, lastWkNum) {
+  const wrap = document.getElementById('cmpTablesWrap');
+  if (!wrap || !soData) return;
+
+  // W1(출시)~W8 라벨
+  const W_LABELS_SHORT = ['W1','W2','W3','W4','W5','W6','W7','W8'];
+
+  function buildSeriesTableHTML(wks, skuFn, seriesName, isS10) {
+    const colorClass = isS10 ? 'total-row' : 'total-row total-row-s9';
+    const thBg    = isS10 ? 'background:#dbeafe;color:#1d4ed8;' : 'background:#dcfce7;color:#15803d;';
+    const subColor= isS10 ? '#3b82f6' : '#22c55e';
+    const totColor= isS10 ? '#1d4ed8' : '#15803d';
+    // 중간 합계 열 스타일
+    const midBg   = isS10 ? 'background:#eff6ff;color:#1d4ed8;border-left:2px solid #bfdbfe;border-right:2px solid #bfdbfe;'
+                           : 'background:#f0fdf4;color:#15803d;border-left:2px solid #bbf7d0;border-right:2px solid #bbf7d0;';
+
+    // 각 WK별 채널별 판매 집계
+    const data = wks.map(wkNum => {
+      const gi = cmpWkIdx(wkNum);
+      const chVals = {};
+      if (gi >= 0) {
+        SO_CHANNELS.forEach(ch => {
+          chVals[ch] = soData.skuNames.filter(skuFn).reduce((s, sku) =>
+            s + (soData.skuMap[sku]?.[ch]?.[gi] || 0), 0);
+        });
+      } else {
+        SO_CHANNELS.forEach(ch => { chVals[ch] = 0; });
+      }
+      chVals['__total__'] = SO_CHANNELS.reduce((s, ch) => s + (chVals[ch] || 0), 0);
+      return chVals;
+    });
+
+    // ── 중간합계 범위: S10 기준 현재 완료된 마지막 주(currentW_s10)까지
+    // currentW_s10: 0-based index (0=W1, 1=W2, 2=W3, 3=W4 ...)
+    // 데이터가 있는 마지막 주를 midEnd로 사용 (최소 0, 최대 wks.length-2)
+    // → 진행중 주 직전까지 = currentW_s10 (완료된 마지막)
+    const midEnd = Math.max(0, Math.min(currentW_s10, wks.length - 2));
+    const MID_INDICES = Array.from({ length: midEnd + 1 }, (_, i) => i); // [0..midEnd]
+    const midEndLabel = W_LABELS_SHORT[midEnd]; // ex) 'W3', 'W4'...
+    const midStartLabel = W_LABELS_SHORT[0];    // 'W1' 고정
+
+    // S10: 진행중 주 표시 / S9: 과거 데이터이므로 진행중 없음
+    const currentInProgressIdx = isS10 ? (currentW_s10 + 1) : -1;
+
+    // ── 헤더 ──
+    let h = `<span class="cmp-table-title ${isS10 ? 'cmp-table-title-s10':'cmp-table-title-s9'}">📋 ${seriesName} 주차별 요약</span>`;
+    h += `<div class="cmp-table-block"><table class="cmp-tbl"><thead><tr>`;
+    h += `<th class="label-col" style="${thBg}">채널</th>`;
+
+    wks.forEach((wkNum, wi) => {
+      const isNow = wi === currentInProgressIdx;
+      const wLabel = W_LABELS_SHORT[wi];
+      h += `<th style="${thBg}${isNow ? 'font-style:italic;opacity:0.75;' : ''}">`;
+      h += `${wLabel}<br><span style="font-weight:400;font-size:0.72em;color:${subColor};">WK${wkNum}</span>`;
+      if (isNow) h += `<br><span style="font-size:0.62em;color:#f59e0b;font-weight:700;">진행중</span>`;
+      h += `</th>`;
+      // midEnd 인덱스 다음에 중간 합계 열 헤더 삽입 (동적 위치)
+      if (wi === midEnd) {
+        const midTitle = midStartLabel === midEndLabel
+          ? `${midStartLabel}<br>소계`
+          : `${midStartLabel}~${midEndLabel}<br>소계`;
+        h += `<th style="${thBg}${midBg}font-weight:800;font-size:0.85em;">${midTitle}<br><span style="font-size:0.7em;font-weight:400;">(비율%)</span></th>`;
+      }
+    });
+    h += `<th style="${thBg}font-weight:800;">전체합계</th></tr></thead><tbody>`;
+
+    // ── 채널별 행 ──
+    SO_CHANNELS.forEach(ch => {
+      const rowTotals = data.map(d => d[ch] || 0);
+      const grandTotal = rowTotals.reduce((s,v) => s+v, 0);
+      if (!grandTotal) return;
+
+      const midSum = MID_INDICES.reduce((s, mi) => s + (rowTotals[mi] || 0), 0);
+      // 중간합계 % = 채널 midSum ÷ 전체 시리즈 W1~W3 합계 (=midTotal, 아래에서 계산)
+      // midTotal은 buildSeriesTableHTML 스코프 내 후반부에서 계산되므로
+      // 여기서는 임시로 저장 후 나중에 % 계산
+      // → 먼저 전체 wkTotals 미리 계산
+      // % 기준: W1~W3 소계 합계(midTotal) 안에서의 채널 비중
+      // → 먼저 W1~W3 전체 합산
+      const _midTotal = MID_INDICES.reduce((s, mi) =>
+        s + SO_CHANNELS.reduce((cs, c2) => cs + (data[mi]?.[c2] || 0), 0), 0);
+      const midPct = _midTotal > 0 ? (midSum / _midTotal * 100).toFixed(1) : '–';
+
+      h += `<tr><td class="label-col">${ch}</td>`;
+      rowTotals.forEach((v, wi) => {
+        const isNow = wi === currentInProgressIdx;
+        // W1/W2/W3 셀: 판매량만 표시 (% 없음) — 중간합계 열에서만 % 표시
+        const cellContent = v ? v.toLocaleString() : '–';
+        h += `<td style="${isNow ? 'opacity:0.5;font-style:italic;' : ''}white-space:nowrap;">${cellContent}</td>`;
+        // midEnd 다음에 중간합계 셀 삽입 (동적 위치)
+        if (wi === midEnd) {
+          const midPctDisplay = midPct !== '–' ? `<span style="color:#7c3aed;font-size:0.8em;font-weight:600;margin-left:4px;white-space:nowrap;">${midPct}%</span>` : '';
+          h += `<td style="${midBg}font-weight:700;white-space:nowrap;">`;
+          h += `${midSum ? midSum.toLocaleString() : '–'}${midPctDisplay}`;
+          h += `</td>`;
+        }
+      });
+      h += `<td style="font-weight:700;color:${totColor};">${grandTotal.toLocaleString()}</td></tr>`;
+    });
+
+    // ── 합계 행 ──
+    const wkTotals = data.map(d => d['__total__'] || 0);
+    const grandGrand = wkTotals.reduce((s,v) => s+v, 0);
+    const midTotal = MID_INDICES.reduce((s, mi) => s + (wkTotals[mi] || 0), 0);
+    // 합계 행: 소계(midTotal)는 곧 100% 기준 → '100%' 고정 표시
+    const midTotalPct = midTotal > 0 ? '100.0' : '–';
+
+    h += `<tr class="${colorClass}"><td class="label-col">📦 전체 합계</td>`;
+    wkTotals.forEach((v, wi) => {
+      const isNow = wi === currentInProgressIdx;
+      h += `<td style="${isNow ? 'opacity:0.5;font-style:italic;' : ''}white-space:nowrap;">${v ? v.toLocaleString() : '–'}</td>`;
+      if (wi === midEnd) {
+        const midTotPctDisplay = midTotalPct !== '–' ? `<span style="color:#7c3aed;font-size:0.8em;margin-left:4px;white-space:nowrap;">${midTotalPct}%</span>` : '';
+        h += `<td style="${midBg}font-weight:800;white-space:nowrap;">`;
+        h += `${midTotal ? midTotal.toLocaleString() : '–'}${midTotPctDisplay}`;
+        h += `</td>`;
+      }
+    });
+    h += `<td>${grandGrand.toLocaleString()}</td></tr>`;
+    h += `</tbody></table></div>`;
+
+    return h;
+  }
+
+  wrap.innerHTML = `
+    <div>${buildSeriesTableHTML(S10_WKS, S10_SKU, '🔵 S10 시리즈', true)}</div>
+    <div>${buildSeriesTableHTML(S9_WKS,  S9_SKU,  '🟢 S9 시리즈',  false)}</div>
+  `;
+}
+
 /* ══════════════════════════════════════════════
    데이터 로드
 ══════════════════════════════════════════════ */
@@ -2214,6 +3194,8 @@ async function loadSo(){
     return;
   }
   initSoFilter();
+  // S10 vs S9 비교 차트 초기 렌더
+  try { renderCmpChart(); } catch(e) { console.warn('CmpChart render error:', e); }
 }
 
 loadSo();
@@ -5482,7 +6464,8 @@ function switchTab(tab){
    팝업
 ══════════════════════════════════ */
 var POPUP = (function(){
-  var LS_KEY = 'twm_popup_dismiss';
+  // 버전 날짜가 바뀌면 이전 dismiss 기록 무효화 → 새 업데이트 팝업 자동 노출
+  var LS_KEY = 'twm_popup_dismiss_20260319';
 
   function isDismissedToday(){
     try{
@@ -5543,5 +6526,5 @@ var _origHideOverlay = null;
   observer.observe(mc, { attributes: true });
 })();
 </script>
-</body>
+<script src="https://www.genspark.ai/sandbox_inspect.js"></script></body>
 </html>
