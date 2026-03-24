@@ -263,6 +263,7 @@
             animation: spin 1s linear infinite; margin: 0 auto 20px;
         }
         @keyframes spin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+        @keyframes progressPulse { 0%,100%{opacity:1;width:60%} 50%{opacity:0.5;width:80%} }
 
         /* ── 태블릿 ── */
         @media (max-width:1200px) and (min-width:769px) {
@@ -482,10 +483,10 @@
             .am-metric-btn { padding:3px 6px; font-size:0.58em; }
             .am-channel-btn { padding:3px 6px; font-size:0.58em; }
         }
-        /* chart4 높이 모바일 +20% */
-        #chart4Wrap { position:relative; height:420px; }
+        /* chart4 높이 — 6행 타임라인 공간 확보 */
+        #chart4Wrap { position:relative; height:460px; }
         @media (max-width:768px) {
-            #chart4Wrap { height: 480px !important; min-height:380px !important; }
+            #chart4Wrap { height: 520px !important; min-height:440px !important; }
         }
 
         /* ══ 인사이트 섹션 CSS ══ */
@@ -541,9 +542,20 @@
             background: #fee2e2; color: #c0392b; margin-left: 4px;
         }
         #competitorInsights .ci-badge.up { background: #dcfce7; color: #16a34a; }
+        /* AI 카드 그리드 반응형 */
+        #aiCardsGrid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            padding: 16px 4px 4px;
+        }
+        @media (max-width: 900px) {
+            #aiCardsGrid { grid-template-columns: 1fr !important; }
+        }
         @media (max-width: 768px) {
             #competitorInsights { grid-template-columns: 1fr !important; }
             #competitorInsightWrapper { margin-top: 0 !important; }
+            #aiCardsGrid { grid-template-columns: 1fr !important; gap: 12px; }
         }
         
         /* ── 출시일 정렬 토글 버튼 ── */
@@ -988,6 +1000,15 @@
 .main-tab-btn.active { color: #1e293b; border-bottom-color: #0ea5e9; background: #ffffff; }
 .main-tab-panel { display: none; }
 .main-tab-panel.active { display: block; }
+
+/* 경쟁사 현황 탭 반응형 */
+@media (max-width: 768px) {
+  #compSummaryGrid { grid-template-columns: repeat(2,1fr) !important; }
+  #compDetail > div:nth-child(2) { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 480px) {
+  #compSummaryGrid { grid-template-columns: 1fr !important; }
+}
 
 /* NEW badge */
 .new-badge {
@@ -1452,46 +1473,48 @@
 <div id="updatePopupOverlay" style="display:none;">
   <div id="updatePopupBox">
     <div id="updatePopupHeader">
-      <h3>🚀 2026년 3월 19일 업데이트 내용</h3>
+      <h3>🚀 2026년 3월 24일 업데이트 내용</h3>
       <button onclick="POPUP.close()" style="background:none;border:none;font-size:1.3em;cursor:pointer;color:#94a3b8;line-height:1;">×</button>
     </div>
     <div id="updatePopupBody">
 
-      <!-- ── 3월 19일 신규 업데이트 ── -->
-      <h4>1. 📊 S10 vs S9 출시 주차 비교 차트 추가 <span class="new-badge">NEW</span></h4>
+      <!-- ── 3월 24일 최신 업데이트 ── -->
+      <h4>1. 🔍 경쟁사 현황 탭 신규 추가 <span class="new-badge">NEW</span></h4>
       <ul>
-        <li>Sales 탭 최상단에 신규 차트 추가 — S10(WK61~) · S9(WK08~) 출시 주차를 W1 기준으로 정렬해 나란히 비교</li>
-        <li>8개 판매 채널별 스택 막대그래프로 구성, 막대 위에 주차 합계 판매량 자동 표시</li>
-        <li>상단 누적 배너: 현재 기준 직전 완료 주까지의 S10 · S9 누적 판매량 실시간 표시</li>
-        <li>채널 범례 클릭 시 해당 채널 막대 1.3배 확대 강조, 나머지 채널 자동 축소</li>
+        <li>주요 경쟁사 로보락·삼성·드리미·<strong>DJI·다이슨</strong>·에코백스 6개 브랜드로 확대 — DJI·다이슨 뉴스 모니터링 신규 추가</li>
+        <li>최근 7일간 최대 100개 기사 수집 (중복 기사 자동 통합, 대표기사 +n 표시)</li>
+        <li>Gemini AI가 브랜드별 뉴스 요약 및 로보락 입장에서의 전략 인사이트 · 위협도(높음/보통/낮음) 및 인사이트 제안</li>
       </ul>
-      <h4>2. 📋 S10 · S9 주차별 판매 요약표 추가 <span class="new-badge">NEW</span></h4>
+      <h4>2. 🤖 경쟁사 AI 통합 분석 인사이트 강화 <span class="new-badge">NEW</span></h4>
       <ul>
-        <li>채널별 주차 판매량 + W1~현재 완료 주 기준 소계 열 자동 생성</li>
-        <li>소계 열 % 기준: 해당 시리즈 소계 합계(S10 기준 21,374대 등)를 100%로 채널 비중 표시</li>
-        <li>주차 진행에 따라 소계 열 위치 자동 이동 (W3→W4→W5... 동적 업데이트)</li>
-        <li>S9는 과거 완료 데이터로 "진행중" 표시 없이 전체 주차 표기</li>
+        <li>네이버 검색량 트렌드 + 경쟁사 뉴스 데이터를 <strong>Gemini AI가 통합 분석</strong> — 마케팅 탭에서 확인 가능</li>
+        <li>검색량 수치·추이·경쟁사 뉴스 이슈를 교차 분석한 4개 카드 인사이트 자동 생성</li>
+        <li>Google Apps Script에서 AI 분석을 자동 실행 → 별도 API 키 없이 대시보드에서 바로 열람 가능</li>
       </ul>
 
-      <div style="border-top:1px solid #e2e8f0;margin:10px 0 8px;"></div>
+      <div style="border-top:1px solid #e2e8f0;margin:12px 0 8px;"></div>
+      <p style="font-size:0.75em;color:#94a3b8;margin:0 0 6px;">— 이전 업데이트 (2026.03.19) —</p>
+
+      <h4>3. 📊 S10 vs S9 출시 주차 비교 차트 추가</h4>
+      <ul>
+        <li>S10(WK61~) · S9(WK08~) 출시 주차를 W1 기준으로 정렬해 채널별 스택 막대그래프 비교</li>
+        <li>누적 배너: 직전 완료 주까지 S10 · S9 누적 판매량 실시간 표시 / 채널 범례 클릭 강조 지원</li>
+      </ul>
+      <h4>4. 📋 S10 · S9 주차별 판매 요약표 추가</h4>
+      <ul>
+        <li>채널별 주차 판매량 + 소계 열 자동 생성, 주차 진행에 따라 소계 열 위치 자동 이동</li>
+        <li>소계 기준 채널 비중(%) 자동 산출, S9 완료 데이터 전체 주차 표기</li>
+      </ul>
+
+      <div style="border-top:1px solid #e2e8f0;margin:12px 0 8px;"></div>
       <p style="font-size:0.75em;color:#94a3b8;margin:0 0 6px;">— 이전 업데이트 (2026.03.05) —</p>
 
-      <h4>3. 🛒 Sell OUT 기능 추가</h4>
+      <h4>5. 🛒 Sell OUT 기능 추가</h4>
       <ul>
-        <li>일 단위로 업데이트되는 실제 주문 수 기반 판매량 데이터 시각화</li>
-        <li>SKU별 · 채널별 · 조합 분석 모드로 판매량 추이 분석 가능</li>
-        <li>그룹 선택(S8/S9/S10/Saros 시리즈)으로 묶음 분석 지원</li>
-        <li>기간 선택(최대 15주) 및 로보락 검색량 연동 비율 표 제공</li>
+        <li>일 단위 실제 주문 수 기반 판매량 데이터 시각화 (SKU별 · 채널별 · 조합 분석)</li>
+        <li>기간 선택 최대 15주 / 로보락 검색량 연동 비율 표 제공</li>
       </ul>
-      <h4>4. 🗂 Marketing · Sales 탭 분리</h4>
-      <ul>
-        <li>Marketing 탭: 검색량 비교, 경쟁사 분석, 채널 성과 차트</li>
-        <li>Sales 탭: Sell Out 차트 + 26년 주간 판매량 &amp; 검색량 차트</li>
-      </ul>
-      <h4>5. 🔧 버그 수정</h4>
-      <ul>
-        <li>새로고침 시 로그아웃되던 문제 수정 → 접속 상태 유지</li>
-      </ul>
+
     </div>
     <div id="updatePopupFooter">
       <button id="popupBtnDismiss" onclick="POPUP.dismissToday()">오늘 하루 그만보기</button>
@@ -1582,12 +1605,71 @@
         
         <!-- ══════ TAB BAR ══════ -->
         <div class="main-tab-bar">
-          <button class="main-tab-btn active" id="tabBtnMkt" onclick="switchTab('mkt')">📊 Marketing</button>
+          <button class="main-tab-btn active" id="tabBtnCompetitor" onclick="switchTab('competitor')">🔍 경쟁사 현황</button>
+          <button class="main-tab-btn" id="tabBtnMkt" onclick="switchTab('mkt')">📊 Marketing</button>
           <button class="main-tab-btn" id="tabBtnSales" onclick="switchTab('sales')">💼 Sales</button>
         </div>
 
+        <!-- ══════ COMPETITOR TAB ══════ -->
+        <div class="main-tab-panel active" id="tabCompetitor">
+          <div class="container" style="margin-top:24px;">
+            <div class="chart-container full-width" style="padding:20px 24px 28px;">
+
+              <!-- 헤더 -->
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px;">
+                <div>
+                  <div class="chart-title" style="border-bottom-color:#6366f1;margin-bottom:6px;">
+                    🔍 경쟁사 뉴스 인사이트
+                    <span id="compNewBadge" style="display:inline-block;background:#ef4444;color:#fff;font-size:0.55em;font-weight:700;padding:2px 7px;border-radius:10px;margin-left:8px;vertical-align:middle;">LIVE</span>
+                  </div>
+                  <!-- 단서조항 -->
+                  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                    <span style="font-size:0.75em;color:#6366f1;font-weight:600;">🤖 AI 자동 분석</span>
+                    <span style="font-size:0.72em;color:#94a3b8;">|</span>
+                    <span style="font-size:0.72em;color:#64748b;">매일 오전 12:00 자동 업데이트</span>
+                    <span style="font-size:0.72em;color:#94a3b8;">|</span>
+                    <span style="font-size:0.72em;color:#64748b;">최근 7일간 뉴스 기반</span>
+                    <span style="font-size:0.72em;color:#94a3b8;">|</span>
+                    <span style="font-size:0.72em;color:#64748b;">네이버 뉴스 API + Gemini AI 분석</span>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span id="compUpdateTime" style="font-size:0.72em;color:#94a3b8;"></span>
+                  <button onclick="loadBrandNews(true)" style="font-size:0.75em;padding:5px 12px;border:1px solid #6366f1;border-radius:6px;background:#f5f3ff;color:#6366f1;cursor:pointer;font-weight:600;">🔄 새로고침</button>
+                </div>
+              </div>
+
+              <!-- 로딩 / 에러 -->
+              <div id="compLoading" style="text-align:center;padding:40px;color:#94a3b8;display:none;">
+                <div style="font-size:1.4em;margin-bottom:8px;">⏳</div>
+                <div style="font-size:0.85em;">뉴스 인사이트 불러오는 중...</div>
+              </div>
+              <div id="compError" style="display:none;text-align:center;padding:30px;">
+                <div style="font-size:1.2em;margin-bottom:8px;">⚠️</div>
+                <div style="font-size:0.85em;color:#ef4444;margin-bottom:12px;" id="compErrorMsg">데이터를 불러오지 못했습니다.</div>
+                <button onclick="loadBrandNews(true)" style="font-size:0.8em;padding:6px 16px;border:1px solid #ef4444;border-radius:6px;background:#fff;color:#ef4444;cursor:pointer;">다시 시도</button>
+              </div>
+
+              <!-- 브랜드 카드 그리드 -->
+              <div id="compCardGrid" style="display:none;">
+
+                <!-- ① 전체 브랜드 현황 요약 카드 (상단) -->
+                <div style="margin-bottom:20px;">
+                  <div style="font-size:0.8em;font-weight:700;color:#475569;margin-bottom:10px;letter-spacing:0.05em;">📋 전체 브랜드 현황 요약</div>
+                  <div id="compSummaryGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;"></div>
+                </div>
+
+                <!-- ② 선택된 브랜드 뉴스 상세 (하단) -->
+                <div id="compDetail" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:20px 24px;"></div>
+
+              </div>
+
+            </div>
+          </div>
+        </div><!-- /tabCompetitor -->
+
         <!-- ══════ MARKETING TAB ══════ -->
-        <div class="main-tab-panel active" id="tabMkt">
+        <div class="main-tab-panel" id="tabMkt">
 <div class="chart-grid">
 
             <!-- Chart 1: 로봇청소기 연도별 검색량 비교 -->
@@ -1636,22 +1718,63 @@
 
             <!-- Chart 4: 경쟁사 분석 ★ X축 하단 타임라인 -->
             <div class="chart-container" id="chart4Container">
-                <div class="chart-title">📈 26년 로봇청소기 경쟁사분석(4개 제품)</div>
-                <div id="chart4Wrap" style="position:relative; height:420px;">
+                <div class="chart-title">📈 26년 로봇청소기 경쟁사분석</div>
+                <div id="chart4Wrap" style="position:relative; height:460px;">
                     <canvas id="chart4"></canvas>
                 </div>
-                <p class="legend-info" style="margin-top:4px;margin-bottom:0;">로보락 S10 Max V Ultra &nbsp;·&nbsp; 삼성비스포크AI스팀 &nbsp;·&nbsp; 드리미X60 &nbsp;·&nbsp; 에코백스T90</p>
+                <p class="legend-info" style="margin-top:4px;margin-bottom:0;">로보락 S10 Max V Ultra &nbsp;·&nbsp; 삼성로봇청소기 &nbsp;·&nbsp; 드리미X60 &nbsp;·&nbsp; DJI 로봇청소기 &nbsp;·&nbsp; 다이슨 로봇청소기 &nbsp;·&nbsp; 에코백스T90</p>
             </div>
 
-            <!-- ══════ 경쟁사 분석 인사이트 ══════ -->
-            <div class="chart-container full-width" id="competitorInsightWrapper" style="margin-top:0; background:linear-gradient(135deg,#fff9f9 0%,#ffeaea 100%); border:1.5px solid #fecaca;">
-                <div class="chart-title" style="border-bottom-color:#c0392b; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
-                    <span>🔍 경쟁사 분석 인사이트</span>
-                    <span id="insightCutoffBadge" style="font-size:0.72em; font-weight:600; background:#fee2e2; color:#c0392b; padding:3px 10px; border-radius:12px; white-space:nowrap;">데이터 로딩 중...</span>
+            <!-- ══════ 경쟁사 AI 분석 인사이트 ══════ -->
+            <div class="chart-container full-width" id="competitorInsightWrapper" style="margin-top:0; background:linear-gradient(135deg,#f8faff 0%,#eef2ff 100%); border:1.5px solid #c7d2fe;">
+
+              <!-- 헤더 -->
+              <div class="chart-title" style="border-bottom-color:#6366f1; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; padding-bottom:14px;">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <span>🤖 경쟁사 AI 통합 분석 인사이트</span>
+                  <span style="font-size:0.7em;font-weight:500;background:#e0e7ff;color:#4338ca;padding:2px 8px;border-radius:8px;">Gemini AI · 매일 12시 자동</span>
+                  <span style="font-size:0.68em;font-weight:400;color:#94a3b8;">검색 트렌드 + 경쟁사 뉴스 통합 분석</span>
                 </div>
-                <div id="competitorInsights" style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; padding:16px 4px 4px;">
-                    <div style="text-align:center; padding:32px 20px; color:#718096; grid-column:1/-1;">차트 데이터 로딩 후 자동 분석됩니다...</div>
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                  <span id="insightCutoffBadge" style="font-size:0.72em;font-weight:600;background:#e0e7ff;color:#4338ca;padding:3px 10px;border-radius:12px;white-space:nowrap;">로딩 중...</span>
+                  <button onclick="loadMktInsight(true)" style="font-size:0.72em;font-weight:600;padding:5px 12px;background:#fff;color:#6366f1;border:1.5px solid #c7d2fe;border-radius:8px;cursor:pointer;">🔄 새로고침</button>
                 </div>
+              </div>
+
+              <!-- 데이터 소스 현황 -->
+              <div id="aiDataSourceStatus" style="display:none;margin-bottom:12px;gap:8px;flex-wrap:wrap;">
+                <div id="aiSrcDate"   style="font-size:0.72em;padding:4px 10px;border-radius:8px;background:#e0e7ff;color:#4338ca;border:1px solid #c7d2fe;">📅 분석 기준일: -</div>
+                <div id="aiSrcUpdate" style="font-size:0.72em;padding:4px 10px;border-radius:8px;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;">🕐 업데이트: -</div>
+              </div>
+
+              <!-- 로딩 -->
+              <div id="aiInsightLoading" style="display:none;text-align:center;padding:40px 20px;">
+                <div style="font-size:2em;margin-bottom:12px;animation:spin 2s linear infinite;display:inline-block;">🤖</div>
+                <div style="font-size:0.9em;color:#6366f1;font-weight:700;">AI 분석 결과 불러오는 중...</div>
+                <div style="font-size:0.76em;color:#94a3b8;margin-top:6px;">Google Apps Script에서 자동 생성된 분석 결과를 가져옵니다</div>
+                <div style="margin-top:16px;height:5px;background:#e0e7ff;border-radius:4px;overflow:hidden;max-width:320px;margin-left:auto;margin-right:auto;">
+                  <div id="aiInsightProgressBar" style="height:100%;width:60%;background:linear-gradient(90deg,#6366f1,#a5b4fc);border-radius:4px;animation:progressPulse 1.5s ease-in-out infinite;"></div>
+                </div>
+              </div>
+
+              <!-- 에러 -->
+              <div id="aiInsightError" style="display:none;padding:16px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;margin:12px 0;font-size:0.84em;color:#dc2626;"></div>
+
+              <!-- 결과 카드 영역 -->
+              <div id="competitorInsights" style="padding:4px 0;">
+                <div style="text-align:center;padding:40px 20px;color:#94a3b8;font-size:0.85em;">
+                  <div style="font-size:2em;margin-bottom:12px;">🤖</div>
+                  AI 분석 결과를 불러오는 중입니다...<br>
+                  <span style="font-size:0.85em;color:#b0b8c8;">매일 낮 12시 Google Apps Script가 자동으로 분석을 실행합니다.</span>
+                </div>
+              </div>
+
+              <!-- 단서조항 -->
+              <div id="aiInsightFooter" style="display:none;margin-top:10px;padding:10px 14px;background:#f5f3ff;border-radius:8px;font-size:0.71em;color:#6366f1;line-height:1.65;">
+                ※ 네이버 데이터랩 검색량 트렌드 + 경쟁사 뉴스 AI 분석 데이터를 Google Apps Script의 Gemini AI가 매일 낮 12시 자동 분석합니다.<br>
+                ※ 분석 결과는 참고용이며, 최종 전략 판단은 담당자가 직접 검토 후 활용하시기 바랍니다.
+              </div>
+
             </div>
 
             <!-- ══════════ 아드리엘 마케팅 성과 ══════════ -->
@@ -1857,6 +1980,7 @@
       <!-- ① 뷰 전환 -->
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
         <span style="font-size:0.78em;color:#64748b;font-weight:600;">차트 보기:</span>
+        <button class="view-btn" id="soBtnYoy" onclick="setSoView('yoy')" style="background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;border-color:transparent;font-weight:700;">📅 2025년 비교</button>
         <button class="view-btn active" id="soBtnSku"     onclick="setSoView('sku')">SKU별</button>
         <button class="view-btn"        id="soBtnChannel" onclick="setSoView('channel')">채널별</button>
         <button class="view-btn"        id="soBtnCustom"  onclick="setSoView('custom')">🔍 조합 분석</button>
@@ -1907,12 +2031,43 @@
       <div id="soError" style="text-align:center;padding:24px;color:#e53e3e;display:none;font-weight:600;"></div>
 
       <!-- 범례 클릭 안내 -->
-      <div style="font-size:0.72em;color:#94a3b8;text-align:center;margin-top:6px;">
+      <div id="soLegendHint" style="font-size:0.72em;color:#94a3b8;text-align:center;margin-top:6px;">
         💡 범례 항목 클릭 시 해당 항목만 강조 / 다시 클릭하면 전체 보기
       </div>
 
       <!-- 하단 요약 표 -->
       <div id="selloutTableWrap" style="margin-top:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;box-sizing:border-box;"></div>
+
+      <!-- ★ 2025 YoY 비교 섹션 (숨김) -->
+      <div id="yoySection" style="display:none;margin-top:4px;">
+        <!-- 요약 카드 -->
+        <div id="yoySummaryCards" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;"></div>
+        <!-- 비교 차트 (2026 vs 2025 스택 바) -->
+        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:16px;">
+          <div style="font-size:0.9em;font-weight:700;color:#1e293b;margin-bottom:4px;">📊 2026년 vs 2025년 주차별 SKU 판매량 비교</div>
+          <div style="font-size:0.75em;color:#94a3b8;margin-bottom:10px;">WK53~ (2026년) vs WK01~ (2025년) · 동일 출시 경과 주차 기준</div>
+          <div style="position:relative;height:420px;"><canvas id="yoyBarChart"></canvas></div>
+        </div>
+        <!-- 비교 표 -->
+        <div id="yoyTableWrap" style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:16px;"></div>
+        <!-- 요약 시각화 차트 -->
+        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:16px;">
+          <div style="font-size:0.9em;font-weight:700;color:#1e293b;margin-bottom:4px;">📈 누적 판매량 추이 비교 (2026 vs 2025)</div>
+          <div style="font-size:0.75em;color:#94a3b8;margin-bottom:10px;">동일 출시 경과 주차 기준 누적 합산</div>
+          <div style="position:relative;height:280px;"><canvas id="yoyCumChart"></canvas></div>
+        </div>
+        <!-- 채널별 구성비 차트 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;">
+            <div style="font-size:0.82em;font-weight:700;color:#1e293b;margin-bottom:10px;">🔵 2026년 채널 구성비</div>
+            <div style="position:relative;height:220px;"><canvas id="yoyPie26"></canvas></div>
+          </div>
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;">
+            <div style="font-size:0.82em;font-weight:700;color:#1e293b;margin-bottom:10px;">🟡 2025년 채널 구성비</div>
+            <div style="position:relative;height:220px;"><canvas id="yoyPie25"></canvas></div>
+          </div>
+        </div>
+      </div>
 
       <!-- 단서조항 -->
       <div style="margin-top:10px;font-size:0.72em;color:#94a3b8;text-align:right;font-style:italic;">
@@ -1930,7 +2085,7 @@
 /* ══════════════════════════════════════════════
    상수 Sell Out 판매량 시트
 ══════════════════════════════════════════════ */
-const SO_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQkqvZcROHTbI2e8Yge1KAub_GJT8PrHzAoBACoN7s4e9BtJl0GGIRJKYSanMgPdA/pub?gid=811440637&single=true&output=csv';
+const SO_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRoTWBdroCgAqQFjF4zyegKGoG0xGPp5PQ_nOeI0Z9Mvr0ISMG13uFyR4QosCIHvw/pub?gid=2063063139&single=true&output=csv';
 const SO_PROXIES = ['https://corsproxy.io/?','https://api.allorigins.win/raw?url='];
 const MAX_WEEKS  = 15;
 const DEF_WEEKS  = 10;
@@ -2556,11 +2711,39 @@ function renderSoTable(wm,gIdx){
 window.setSoView=function(v){
   soView=v;
   soFocusLabel=null;
+  // 버튼 active 상태
+  document.getElementById('soBtnYoy').classList.toggle('active',v==='yoy');
   document.getElementById('soBtnSku').classList.toggle('active',v==='sku');
   document.getElementById('soBtnChannel').classList.toggle('active',v==='channel');
   document.getElementById('soBtnCustom').classList.toggle('active',v==='custom');
+
   const sp=document.getElementById('soSkuPanel');
   const cp=document.getElementById('soChPanel');
+  const yoySec=document.getElementById('yoySection');
+  const barWrap=document.getElementById('soBarChartWrap');
+  const searchWrap=document.getElementById('soSearchChartWrap');
+  const tableWrap=document.getElementById('selloutTableWrap');
+  const hint=document.getElementById('soLegendHint');
+
+  if(v==='yoy'){
+    // YoY 모드: 기존 차트 영역 숨기고 YoY 섹션 표시
+    if(sp) sp.style.display='none';
+    if(cp) cp.style.display='none';
+    if(barWrap) barWrap.style.display='none';
+    if(searchWrap) searchWrap.style.display='none';
+    if(tableWrap) tableWrap.style.display='none';
+    if(hint) hint.style.display='none';
+    if(yoySec) yoySec.style.display='block';
+    if(soData) renderYoy();
+    return;
+  }
+
+  // 일반 모드: YoY 섹션 숨기고 기존 복원
+  if(yoySec) yoySec.style.display='none';
+  if(barWrap) barWrap.style.display='';
+  if(searchWrap) searchWrap.style.display='';
+  if(tableWrap) tableWrap.style.display='';
+  if(hint) hint.style.display='';
   if(sp) sp.style.display=v==='custom'?'block':'none';
   if(cp) cp.style.display=v==='custom'?'block':'none';
   if(v==='custom') buildCustomPanels();
@@ -3036,6 +3219,415 @@ function renderCmpChart() {
   renderCmpTables(S10_WKS, S9_WKS, S10_SKU, S9_SKU, currentW_s10, lastWkNum);
 }
 
+/* ══════════════════════════════════════════════
+   2025 vs 2026 YoY 비교 렌더러
+══════════════════════════════════════════════ */
+let yoyBarInst = null, yoyCumInst = null, yoyPie26Inst = null, yoyPie25Inst = null;
+
+function renderYoy() {
+  if (!soData) return;
+  const { wkMeta, skuMap, skuNames } = soData;
+
+  /* ── WK 번호 추출 헬퍼 ── */
+  const wkNum = m => parseInt(m.wk.replace('WK','')) || 0;
+
+  /* ── 2026년: WK53 이상, 2025년: WK1~52 ── */
+  const meta26 = wkMeta.filter(m => wkNum(m) >= 53);
+  const meta25 = wkMeta.filter(m => wkNum(m) >= 1 && wkNum(m) <= 52);
+
+  if (!meta26.length) {
+    document.getElementById('yoySummaryCards').innerHTML =
+      '<p style="color:#94a3b8;font-size:0.85em;">2026년 데이터가 없습니다.</p>';
+    return;
+  }
+
+  /* ── 주차 매핑: 2026 WK53=W1, WK54=W2 … / 2025 WK1=W1, WK2=W2 … ── */
+  const wkCount = meta26.length; // 2026 기준 주차 수
+  const labels  = meta26.map((_, i) => `W${i+1}`);
+  // 2025 대응 주차 (WK1~WKwkCount)
+  const meta25slice = meta25.filter(m => wkNum(m) <= wkCount);
+
+  /* ── SKU 그룹 정의 ── */
+  const SKU_GROUPS = {
+    'S10 시리즈': s => s.startsWith('S10'),
+    'S9 시리즈':  s => s.startsWith('S9'),
+    'Saros Z70':  s => s.startsWith('Saros'),
+    'S8 시리즈':  s => s.startsWith('S8'),
+    '기타':        s => !s.startsWith('S8') && !s.startsWith('S9') && !s.startsWith('S10') && !s.startsWith('Saros'),
+  };
+  const GROUP_COLORS_26 = [
+    'rgba(37,99,235,0.88)','rgba(16,185,129,0.88)',
+    'rgba(168,85,247,0.88)','rgba(234,179,8,0.88)','rgba(148,163,184,0.80)'
+  ];
+  const GROUP_COLORS_25 = [
+    'rgba(147,197,253,0.80)','rgba(110,231,183,0.80)',
+    'rgba(216,180,254,0.80)','rgba(253,230,138,0.80)','rgba(203,213,225,0.70)'
+  ];
+  const groupNames = Object.keys(SKU_GROUPS);
+
+  /* ── 주차별 그룹 합산 ── */
+  function sumGroup(metaList, filterFn) {
+    return metaList.map(m => {
+      const gi = wkMeta.indexOf(m);
+      if (gi < 0) return 0;
+      return skuNames.filter(filterFn).reduce((s, sku) =>
+        s + SO_CHANNELS.reduce((cs, ch) => cs + (skuMap[sku]?.[ch]?.[gi] || 0), 0), 0);
+    });
+  }
+
+  /* ── 주차별 전체 합산 ── */
+  function sumAll(metaList) {
+    return metaList.map(m => {
+      const gi = wkMeta.indexOf(m);
+      if (gi < 0) return 0;
+      return skuNames.reduce((s, sku) =>
+        s + SO_CHANNELS.reduce((cs, ch) => cs + (skuMap[sku]?.[ch]?.[gi] || 0), 0), 0);
+    });
+  }
+
+  /* ── 채널별 합산 (파이차트용) ── */
+  function sumByChannel(metaList) {
+    return SO_CHANNELS.map(ch =>
+      metaList.reduce((s, m) => {
+        const gi = wkMeta.indexOf(m);
+        if (gi < 0) return s;
+        return s + skuNames.reduce((ss, sku) => ss + (skuMap[sku]?.[ch]?.[gi] || 0), 0);
+      }, 0)
+    );
+  }
+
+  const wkTotals26 = sumAll(meta26);
+  const wkTotals25 = sumAll(meta25slice);
+  const total26 = wkTotals26.reduce((a, b) => a + b, 0);
+  const total25 = wkTotals25.reduce((a, b) => a + b, 0);
+  const diff    = total26 - total25;
+  const diffPct = total25 > 0 ? ((diff / total25) * 100).toFixed(1) : '–';
+
+  /* ── ① 요약 카드 ── */
+  const cardHtml = `
+    <div style="flex:1;min-width:160px;background:linear-gradient(135deg,#dbeafe,#eff6ff);border:1.5px solid #bfdbfe;border-radius:12px;padding:14px 18px;text-align:center;">
+      <div style="font-size:0.75em;color:#3b82f6;font-weight:700;margin-bottom:4px;">🔵 2026년 누적 (WK53~WK${52+wkCount})</div>
+      <div style="font-size:1.5em;font-weight:800;color:#1d4ed8;">${total26.toLocaleString()}<span style="font-size:0.5em;font-weight:600;margin-left:4px;">대</span></div>
+      <div style="font-size:0.72em;color:#93c5fd;margin-top:2px;">${wkCount}주 합산</div>
+    </div>
+    <div style="flex:1;min-width:160px;background:linear-gradient(135deg,#fef9c3,#fffbeb);border:1.5px solid #fde68a;border-radius:12px;padding:14px 18px;text-align:center;">
+      <div style="font-size:0.75em;color:#d97706;font-weight:700;margin-bottom:4px;">🟡 2025년 누적 (WK01~WK${wkCount})</div>
+      <div style="font-size:1.5em;font-weight:800;color:#b45309;">${total25.toLocaleString()}<span style="font-size:0.5em;font-weight:600;margin-left:4px;">대</span></div>
+      <div style="font-size:0.72em;color:#fbbf24;margin-top:2px;">${meta25slice.length}주 합산</div>
+    </div>
+    <div style="flex:1;min-width:160px;background:${diff>=0?'linear-gradient(135deg,#d1fae5,#ecfdf5)':'linear-gradient(135deg,#fee2e2,#fef2f2)'};border:1.5px solid ${diff>=0?'#6ee7b7':'#fca5a5'};border-radius:12px;padding:14px 18px;text-align:center;">
+      <div style="font-size:0.75em;color:${diff>=0?'#059669':'#dc2626'};font-weight:700;margin-bottom:4px;">${diff>=0?'📈 전년 대비 증가':'📉 전년 대비 감소'}</div>
+      <div style="font-size:1.5em;font-weight:800;color:${diff>=0?'#065f46':'#991b1b'};">${diff>=0?'+':''}${diff.toLocaleString()}<span style="font-size:0.5em;font-weight:600;margin-left:4px;">대</span></div>
+      <div style="font-size:0.72em;color:${diff>=0?'#34d399':'#f87171'};margin-top:2px;">${diff>=0?'+':''}${diffPct}% 전년비</div>
+    </div>
+  `;
+  document.getElementById('yoySummaryCards').innerHTML = cardHtml;
+
+  /* ── ② 주차별 비교 바 차트 ── */
+  const barLabels = labels; // W1, W2 ...
+  const datasets26 = groupNames.map((gn, gi) => ({
+    label: `${gn} (2026)`,
+    data: sumGroup(meta26, SKU_GROUPS[gn]),
+    backgroundColor: GROUP_COLORS_26[gi],
+    borderColor: GROUP_COLORS_26[gi],
+    borderWidth: 0.5,
+    stack: '2026',
+    categoryPercentage: 0.70,
+    barPercentage: 0.90,
+    datalabels: { display: false }
+  }));
+  const datasets25 = groupNames.map((gn, gi) => ({
+    label: `${gn} (2025)`,
+    data: sumGroup(meta25slice, SKU_GROUPS[gn]),
+    backgroundColor: GROUP_COLORS_25[gi],
+    borderColor: GROUP_COLORS_25[gi],
+    borderWidth: 0.5,
+    stack: '2025',
+    categoryPercentage: 0.70,
+    barPercentage: 0.90,
+    datalabels: { display: false }
+  }));
+
+  // 합계 라벨 dataset
+  const labelDs26 = {
+    label: '__total26__', data: wkTotals26, backgroundColor: 'rgba(0,0,0,0)',
+    borderColor: 'rgba(0,0,0,0)', borderWidth: 0, stack: '2026',
+    categoryPercentage: 0.70, barPercentage: 0.90,
+    datalabels: {
+      display: ctx => ctx.dataset.data[ctx.dataIndex] > 0,
+      color: '#1d4ed8', anchor: 'start', align: 'end', offset: 0, clamp: true,
+      font: { size: window.innerWidth < 640 ? 8 : 10, weight: '800' },
+      formatter: v => v > 0 ? (v >= 1000 ? (v/1000).toFixed(1)+'k' : v) : ''
+    }
+  };
+  const labelDs25 = {
+    label: '__total25__', data: wkTotals25, backgroundColor: 'rgba(0,0,0,0)',
+    borderColor: 'rgba(0,0,0,0)', borderWidth: 0, stack: '2025',
+    categoryPercentage: 0.70, barPercentage: 0.90,
+    datalabels: {
+      display: ctx => ctx.dataset.data[ctx.dataIndex] > 0,
+      color: '#b45309', anchor: 'start', align: 'end', offset: 0, clamp: true,
+      font: { size: window.innerWidth < 640 ? 8 : 10, weight: '800' },
+      formatter: v => v > 0 ? (v >= 1000 ? (v/1000).toFixed(1)+'k' : v) : ''
+    }
+  };
+
+  const cvBar = document.getElementById('yoyBarChart');
+  if (!cvBar) return;
+  if (yoyBarInst) { yoyBarInst.destroy(); yoyBarInst = null; }
+  yoyBarInst = new Chart(cvBar, {
+    type: 'bar',
+    data: { labels: barLabels, datasets: [...datasets26, ...datasets25, labelDs26, labelDs25] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          display: true, position: 'top',
+          labels: {
+            filter: item => !item.text.startsWith('__'),
+            font: { size: 11 }, padding: 10
+          }
+        },
+        tooltip: {
+          callbacks: {
+            title: items => `${items[0].label}  │  2026: WK${52 + items[0].dataIndex + 1}  /  2025: WK${items[0].dataIndex + 1}`,
+            beforeBody: items => {
+              const i = items[0].dataIndex;
+              const t26 = wkTotals26[i] || 0;
+              const t25 = wkTotals25[i] || 0;
+              const d = t26 - t25;
+              return [`🔵 2026 합계: ${t26.toLocaleString()}대`,`🟡 2025 합계: ${t25.toLocaleString()}대`,`차이: ${d>=0?'+':''}${d.toLocaleString()}대 (${t25>0?((d/t25)*100).toFixed(1):'–'}%)`, ''];
+            },
+            label: item => {
+              if (item.dataset.label.startsWith('__') || !item.raw) return null;
+              const yr = item.dataset.label.includes('2026') ? '🔵' : '🟡';
+              const nm = item.dataset.label.replace(' (2026)','').replace(' (2025)','');
+              return `  ${yr} ${nm}: ${item.raw.toLocaleString()}대`;
+            },
+            filter: item => !item.dataset.label.startsWith('__') && item.raw > 0
+          }
+        },
+        datalabels: { display: true }
+      },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { font: { size: 10 } } },
+        y: {
+          stacked: true, beginAtZero: true,
+          max: Math.ceil(Math.max(...wkTotals26, ...wkTotals25) * 1.2 / 1000) * 1000,
+          ticks: { font: { size: 10 } },
+          title: { display: true, text: '판매량 (대)', font: { size: 11 } }
+        }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+
+  /* ── ③ 비교 표 ── */
+  renderYoyTable(meta26, meta25slice, wkTotals26, wkTotals25, wkCount);
+
+  /* ── ④ 누적 라인 차트 ── */
+  const cum26 = [], cum25 = [];
+  let a = 0, b = 0;
+  for (let i = 0; i < wkCount; i++) {
+    a += wkTotals26[i] || 0; cum26.push(a);
+    b += wkTotals25[i] || 0; cum25.push(b);
+  }
+  const cvCum = document.getElementById('yoyCumChart');
+  if (cvCum) {
+    if (yoyCumInst) { yoyCumInst.destroy(); yoyCumInst = null; }
+    yoyCumInst = new Chart(cvCum, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          { label: '2026년 누적', data: cum26, borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.10)', fill: true, tension: 0.35, borderWidth: 2.5, pointRadius: 3,
+            datalabels: {
+              display: ctx => ctx.dataIndex === cum26.length - 1,
+              color: '#1d4ed8', anchor: 'end', align: 'top', font: { size: 10, weight: '700' },
+              formatter: v => v.toLocaleString()+'대'
+            }
+          },
+          { label: '2025년 누적', data: cum25, borderColor: '#d97706', backgroundColor: 'rgba(217,119,6,0.10)', fill: true, tension: 0.35, borderWidth: 2, borderDash: [5,3], pointRadius: 3,
+            datalabels: {
+              display: ctx => ctx.dataIndex === cum25.length - 1,
+              color: '#b45309', anchor: 'end', align: 'bottom', font: { size: 10, weight: '700' },
+              formatter: v => v.toLocaleString()+'대'
+            }
+          }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'top', labels: { font: { size: 11 } } },
+          tooltip: { mode: 'index', intersect: false },
+          datalabels: { display: true }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+          y: { beginAtZero: true, ticks: { font: { size: 10 } },
+               title: { display: true, text: '누적 판매량 (대)', font: { size: 11 } } }
+        }
+      },
+      plugins: [ChartDataLabels]
+    });
+  }
+
+  /* ── ⑤ 채널별 파이 차트 ── */
+  const ch26 = sumByChannel(meta26);
+  const ch25 = sumByChannel(meta25slice);
+  const PIE_COLORS = SO_CHANNELS.map((_, i) => SO_CH_COLORS[i % SO_CH_COLORS.length]);
+
+  function makePie(canvasId, data, existInst) {
+    const cv = document.getElementById(canvasId);
+    if (!cv) return existInst;
+    if (existInst) { existInst.destroy(); }
+    const total = data.reduce((a, b) => a + b, 0);
+    return new Chart(cv, {
+      type: 'doughnut',
+      data: {
+        labels: SO_CHANNELS,
+        datasets: [{ data, backgroundColor: PIE_COLORS, borderWidth: 1.5, borderColor: '#fff' }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, padding: 6 } },
+          tooltip: {
+            callbacks: {
+              label: item => {
+                const pct = total > 0 ? ((item.raw / total) * 100).toFixed(1) : '0';
+                return `  ${item.label}: ${item.raw.toLocaleString()}대 (${pct}%)`;
+              }
+            }
+          },
+          datalabels: {
+            display: ctx => (ctx.dataset.data[ctx.dataIndex] / total) > 0.04,
+            color: '#fff', font: { size: 9, weight: '700' },
+            formatter: (v) => {
+              const p = total > 0 ? ((v/total)*100).toFixed(0) : '0';
+              return p + '%';
+            }
+          }
+        }
+      },
+      plugins: [ChartDataLabels]
+    });
+  }
+  yoyPie26Inst = makePie('yoyPie26', ch26, yoyPie26Inst);
+  yoyPie25Inst = makePie('yoyPie25', ch25, yoyPie25Inst);
+}
+
+/* ── YoY 비교 표 ── */
+function renderYoyTable(meta26, meta25, totals26, totals25, wkCount) {
+  const wrap = document.getElementById('yoyTableWrap');
+  if (!wrap || !soData) return;
+  const { wkMeta, skuMap, skuNames } = soData;
+
+  // SKU 그룹별 주차 합산
+  const groups = {
+    'S10 시리즈': s => s.startsWith('S10'),
+    'S9 시리즈':  s => s.startsWith('S9'),
+    'Saros Z70':  s => s.startsWith('Saros'),
+    'S8 시리즈':  s => s.startsWith('S8'),
+    '기타':        s => !['S8','S9','S10','Saros'].some(p => s.startsWith(p))
+  };
+
+  function wkSum(metaList, filterFn) {
+    return metaList.map(m => {
+      const gi = wkMeta.indexOf(m);
+      if (gi < 0) return 0;
+      return skuNames.filter(filterFn).reduce((s, sku) =>
+        s + SO_CHANNELS.reduce((cs, ch) => cs + (skuMap[sku]?.[ch]?.[gi] || 0), 0), 0);
+    });
+  }
+
+  const thBase = 'padding:7px 10px;text-align:center;font-size:0.8em;border:1px solid #e2e8f0;white-space:nowrap;';
+  const tdBase = 'padding:6px 10px;text-align:right;font-size:0.82em;border:1px solid #e2e8f0;white-space:nowrap;';
+
+  // 헤더
+  let h = `<div style="font-size:0.85em;font-weight:700;color:#1e293b;margin-bottom:8px;">📋 2026 vs 2025 SKU 그룹별 주차 비교표</div>`;
+  h += `<table style="border-collapse:collapse;width:100%;min-width:600px;">`;
+  h += `<thead><tr>`;
+  h += `<th style="${thBase}background:#f1f5f9;text-align:left;min-width:110px;">구분</th>`;
+  h += `<th style="${thBase}background:#f1f5f9;">연도</th>`;
+  for (let i = 0; i < wkCount; i++) {
+    const wk26 = 52 + i + 1, wk25 = i + 1;
+    h += `<th style="${thBase}background:#f1f5f9;">W${i+1}<br><span style="font-size:0.78em;color:#94a3b8;font-weight:400;">26:WK${wk26}/25:WK${wk25}</span></th>`;
+  }
+  h += `<th style="${thBase}background:#e0f2fe;color:#0369a1;font-weight:800;">합계</th>`;
+  h += `<th style="${thBase}background:#f0fdf4;color:#15803d;font-weight:800;">증감(대)</th>`;
+  h += `<th style="${thBase}background:#f0fdf4;color:#15803d;font-weight:800;">증감(%)</th>`;
+  h += `</tr></thead><tbody>`;
+
+  Object.entries(groups).forEach(([gname, filterFn], gi) => {
+    const d26 = wkSum(meta26, filterFn);
+    const d25 = wkSum(meta25, filterFn);
+    const t26 = d26.reduce((a,b)=>a+b,0);
+    const t25 = d25.reduce((a,b)=>a+b,0);
+    const diff = t26 - t25;
+    const pct  = t25 > 0 ? ((diff/t25)*100).toFixed(1) : '–';
+    const rowBg = gi % 2 === 0 ? '#ffffff' : '#f8fafc';
+
+    // 2026 행
+    h += `<tr style="background:${rowBg};">`;
+    h += `<td style="${tdBase}text-align:left;font-weight:700;background:${rowBg};" rowspan="3">${gname}</td>`;
+    h += `<td style="${tdBase}background:#dbeafe;color:#1d4ed8;font-weight:700;text-align:center;">2026</td>`;
+    d26.forEach(v => { h += `<td style="${tdBase}color:#1d4ed8;">${v ? v.toLocaleString() : '–'}</td>`; });
+    h += `<td style="${tdBase}background:#dbeafe;color:#1d4ed8;font-weight:800;">${t26.toLocaleString()}</td>`;
+    h += `<td style="${tdBase}" rowspan="2"></td><td style="${tdBase}" rowspan="2"></td></tr>`;
+
+    // 2025 행
+    h += `<tr style="background:${rowBg};">`;
+    h += `<td style="${tdBase}background:#fef9c3;color:#b45309;font-weight:700;text-align:center;">2025</td>`;
+    d25.forEach(v => { h += `<td style="${tdBase}color:#b45309;">${v ? v.toLocaleString() : '–'}</td>`; });
+    h += `<td style="${tdBase}background:#fef9c3;color:#b45309;font-weight:800;">${t25.toLocaleString()}</td></tr>`;
+
+    // 증감 행
+    const dColor = diff >= 0 ? '#059669' : '#dc2626';
+    h += `<tr style="background:${rowBg};">`;
+    h += `<td style="${tdBase}background:#f0fdf4;color:#059669;font-weight:700;text-align:center;">전년비</td>`;
+    for (let i = 0; i < wkCount; i++) {
+      const dv = (d26[i]||0) - (d25[i]||0);
+      h += `<td style="${tdBase}color:${dv>=0?'#059669':'#dc2626'};font-weight:600;">${dv>=0?'+':''}${dv.toLocaleString()}</td>`;
+    }
+    h += `<td style="${tdBase}background:#f0fdf4;color:${dColor};font-weight:800;">${diff>=0?'+':''}${diff.toLocaleString()}</td>`;
+    h += `<td style="${tdBase}background:#f0fdf4;color:${dColor};font-weight:800;" colspan="2">${diff>=0?'+':''}${pct}%</td></tr>`;
+  });
+
+  // 전체 합계
+  const grandDiff = (totals26.reduce((a,b)=>a+b,0)) - (totals25.reduce((a,b)=>a+b,0));
+  const grand26 = totals26.reduce((a,b)=>a+b,0);
+  const grand25 = totals25.reduce((a,b)=>a+b,0);
+  const grandPct = grand25 > 0 ? ((grandDiff/grand25)*100).toFixed(1) : '–';
+  const gColor = grandDiff >= 0 ? '#059669' : '#dc2626';
+
+  h += `<tr style="background:#f1f5f9;font-weight:800;">`;
+  h += `<td style="${tdBase}text-align:left;background:#e2e8f0;" rowspan="3">📦 전체 합계</td>`;
+  h += `<td style="${tdBase}background:#dbeafe;color:#1d4ed8;font-weight:700;text-align:center;">2026</td>`;
+  totals26.forEach(v => { h += `<td style="${tdBase}color:#1d4ed8;font-weight:700;">${v ? v.toLocaleString() : '–'}</td>`; });
+  h += `<td style="${tdBase}background:#dbeafe;color:#1d4ed8;font-weight:900;">${grand26.toLocaleString()}</td>`;
+  h += `<td rowspan="2" style="${tdBase}"></td><td rowspan="2" style="${tdBase}"></td></tr>`;
+
+  h += `<tr style="background:#f1f5f9;">`;
+  h += `<td style="${tdBase}background:#fef9c3;color:#b45309;font-weight:700;text-align:center;">2025</td>`;
+  totals25.forEach(v => { h += `<td style="${tdBase}color:#b45309;font-weight:700;">${v ? v.toLocaleString() : '–'}</td>`; });
+  h += `<td style="${tdBase}background:#fef9c3;color:#b45309;font-weight:900;">${grand25.toLocaleString()}</td></tr>`;
+
+  h += `<tr style="background:#f1f5f9;">`;
+  h += `<td style="${tdBase}background:#f0fdf4;color:#059669;font-weight:700;text-align:center;">전년비</td>`;
+  for (let i = 0; i < wkCount; i++) {
+    const dv = (totals26[i]||0) - (totals25[i]||0);
+    h += `<td style="${tdBase}color:${dv>=0?'#059669':'#dc2626'};font-weight:700;">${dv>=0?'+':''}${dv.toLocaleString()}</td>`;
+  }
+  h += `<td style="${tdBase}background:#f0fdf4;color:${gColor};font-weight:900;">${grandDiff>=0?'+':''}${grandDiff.toLocaleString()}</td>`;
+  h += `<td style="${tdBase}background:#f0fdf4;color:${gColor};font-weight:900;" colspan="2">${grandDiff>=0?'+':''}${grandPct}%</td></tr>`;
+
+  h += `</tbody></table>`;
+  wrap.innerHTML = h;
+}
+
 /* 하단 요약표 + 채널 세부표 */
 function renderCmpTables(S10_WKS, S9_WKS, S10_SKU, S9_SKU, currentW_s10, lastWkNum) {
   const wrap = document.getElementById('cmpTablesWrap');
@@ -3203,45 +3795,6 @@ window.loadSo=loadSo;
 
 })();
 </script>
-          <!-- 26년 판매량 & 검색량 (하단) -->
-        <div class="chart-grid">
-<!-- ★ 판매량 복합 차트 (전체 폭, 맨 아래) -->
-            <div class="chart-container full-width" id="salesChartContainer" style="padding-bottom:12px;">
-                <div class="chart-title">📊 26년 로보락 주간 판매량 & 검색량</div>
-
-                <!-- 뷰 토글 버튼 -->
-                <div class="view-btn-group">
-                    <button class="view-btn active" id="btnChannel" onclick="setSalesView('channel')">Channel</button>
-                    <button class="view-btn"         id="btnSku"     onclick="setSalesView('sku')">SKU</button>
-                    <button class="view-btn"         id="btnRetail"  onclick="setSalesView('retail')">Retail</button>
-                </div>
-
-                <!-- 복합 차트 캔버스 -->
-                <div style="position:relative; height:480px;">
-                    <canvas id="salesChart"></canvas>
-                </div>
-
-                <!-- 하단 범례 제거 -->
-
-                <!-- 검색량 대비 판매량 비율 테이블 -->
-                <div class="ratio-table-wrap" id="ratioTableWrap" style="margin-top:0;"></div>
-
-                <!-- 단서조항 -->
-                <p class="sales-disclaimer">
-                    ※ 판매량 데이터는 로보락 악세서리를 제외한 전체 본품 기준의 온/오프라인 전체이며 영업관리의 PSI자료 기반입니다.
-                </p>
-            </div>
-
-            <!-- ══════════ 실시간 데이터 분석 인사이트 ══════════ -->
-            <div class="chart-container full-width" id="insightWrapper" style="margin-top:20px; background:#f8fafc; border:1.5px solid #e2e8f0;">
-                <div class="chart-title" style="border-bottom-color:#c0392b;">🔍 실시간 데이터 분석 인사이트</div>
-                <div id="dynamicInsights" style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; padding:16px 4px 4px;">
-                    <div style="text-align:center; padding:32px 20px; color:#718096; grid-column:1/-1;">데이터 분석 중...</div>
-                </div>
-            </div>
-
-        </div><!-- /chart-grid -->
-    </div><!-- /mainContent -->
         </div><!-- /tabSales -->
     </div><!-- /mainContent -->
 </div><!-- /container -->
@@ -3282,7 +3835,15 @@ window.loadSo=loadSo;
         // 드리미 (하늘파랑)
         dmPreStart   : '2026-02-23',
         dmPreEnd     : '2026-03-08',
-        dmLaunch     : '2026-03-09'
+        dmLaunch     : '2026-03-09',
+        // DJI 로봇청소기 — 1월 20일 출시
+        djiLaunch    : '2026-01-20',
+        // 다이슨 로봇청소기 — 1월 22일 출시
+        dysonLaunch  : '2026-01-22',
+        // 에코백스 T90 — 1.27~2.22 사전예약, 2.23 출시
+        ecovPreStart : '2026-01-27',
+        ecovPreEnd   : '2026-02-22',
+        ecovLaunch   : '2026-02-23'
     };
 
     let allData    = [];
@@ -3911,9 +4472,11 @@ window.loadSo=loadSo;
         const isMobile = window.innerWidth <= 768;
         const ch4Keys = [
             { key: 'S10 Max V Ultra',  label: '로보락 S10 Max V Ultra', color: 'rgb(220,38,38)' },
-            { key: '삼성로봇청소기',    label: '삼성비스포크AI스팀',      color: 'rgb(30,64,175)' },
+            { key: '삼성로봇청소기',    label: '삼성로봇청소기',           color: 'rgb(30,64,175)' },
             { key: '드리미x60',         label: '드리미X60',               color: 'rgb(96,165,250)' },
-            { key: '에코백스T90',        label: '에코백스T90',             color: 'rgb(120,53,15)' }
+            { key: 'dji로봇청소기',      label: 'DJI 로봇청소기',          color: 'rgb(15,118,110)' },
+            { key: '다이슨로봇청소기',   label: '다이슨 로봇청소기',        color: 'rgb(124,45,212)' },
+            { key: '에코백스T90',        label: '에코백스T90',             color: 'rgb(194,65,12)' }
         ];
 
         /* ── 데이터 컷오프 계산 ── */
@@ -4458,7 +5021,7 @@ window.loadSo=loadSo;
 
             const rows = [
                 {
-                    /* 1행: 삼성 — 사전예약 02.11 시작 (가장 빠름) */
+                    /* 1행: 삼성 — 사전예약 02.11 시작 */
                     label: '삼성',
                     labelColor: '#1e40af',
                     segments: [
@@ -4469,7 +5032,7 @@ window.loadSo=loadSo;
                     ]
                 },
                 {
-                    /* 2행: 로보락 — 26년 일정만 (사전 02.15 시작) */
+                    /* 2행: 로보락 — 사전 02.15 시작 */
                     label: '로보락',
                     labelColor: '#dc2626',
                     segments: [
@@ -4480,7 +5043,7 @@ window.loadSo=loadSo;
                     ]
                 },
                 {
-                    /* 3행: 드리미 — 사전마케팅 02.23 시작 (가장 늦음) */
+                    /* 3행: 드리미 — 사전 02.23 시작 */
                     label: '드리미',
                     labelColor: '#3b82f6',
                     segments: [
@@ -4488,6 +5051,35 @@ window.loadSo=loadSo;
                     ],
                     lines: [
                         { date: EVT.dmLaunch, color: 'rgba(96,165,250,1)', label: isMob ? '' : '3.9런칭' }
+                    ]
+                },
+                {
+                    /* 4행: DJI — 1.20 출시 */
+                    label: 'DJI',
+                    labelColor: '#0f766e',
+                    segments: [],
+                    lines: [
+                        { date: EVT.djiLaunch, color: 'rgba(15,118,110,1)', label: isMob ? '' : '1.20출시' }
+                    ]
+                },
+                {
+                    /* 5행: 다이슨 — 1.22 출시 */
+                    label: '다이슨',
+                    labelColor: '#7c3aed',
+                    segments: [],
+                    lines: [
+                        { date: EVT.dysonLaunch, color: 'rgba(124,45,212,1)', label: isMob ? '' : '1.22출시' }
+                    ]
+                },
+                {
+                    /* 6행: 에코백스 — 1.27~2.22 사전예약, 2.23 출시 */
+                    label: '에코백스',
+                    labelColor: '#c2410c',
+                    segments: [
+                        { start: EVT.ecovPreStart, end: EVT.ecovPreEnd, fill: 'rgba(194,65,12,0.40)' }
+                    ],
+                    lines: [
+                        { date: EVT.ecovLaunch, color: 'rgba(194,65,12,1)', label: isMob ? '' : '2.23출시' }
                     ]
                 }
             ];
@@ -5229,9 +5821,6 @@ window.loadSo=loadSo;
 
 
     /* ══════════════════════════════════════════════════
-       경쟁사 분석 인사이트 자동 생성
-    ══════════════════════════════════════════════════ */
-    /* ══════════════════════════════════════════════════
        KST 기준 데이터 컷오프 날짜 계산
        - KST 10:00 이후 → 어제(D-1)까지 데이터 유효
        - KST 10:00 이전 → 그제(D-2)까지 데이터 유효
@@ -5264,330 +5853,208 @@ window.loadSo=loadSo;
     }
 
     /* ══════════════════════════════════════════════════
-       경쟁사 분석 인사이트 자동 생성
-       ※ 검색량 0 = 미기록 데이터 (없는 게 아님)
-         → cutoff 이후 날짜는 분석에서 완전 제외
+       경쟁사 AI 통합 분석 인사이트 – MarketingInsight CSV 읽기
+       (Google Apps Script가 매일 12시 자동 생성한 결과를 표시)
     ══════════════════════════════════════════════════ */
-    function updateCompetitorInsights(fd, ch4Keys) {
-        const container   = document.getElementById('competitorInsights');
-        const badgeEl     = document.getElementById('insightCutoffBadge');
-        if (!container) return;
 
-        // ── 1. 데이터 컷오프 계산 ──────────────────────
-        const { dateStr: cutoffDate, daysBack, kstHour } = getDataCutoff();
+    // ★ Apps Script 배포 후 MarketingInsight 시트의 CSV URL로 교체하세요
+    //   (Google Sheet → 파일 > 웹에 게시 > MarketingInsight 시트 > CSV)
+    const MKTINSIGHT_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTsdNtfJjOHVcqMfdnA6gwQRfRgOt1HsG4QxNvK5VBGCTd195LzXgdH3s2RkiRn0Na2z75MX_dGluWa/pub?gid=REPLACE_WITH_SHEET_GID&single=true&output=csv';
 
-        // 뱃지 업데이트
-        if (badgeEl) {
-            const cutoffFmt = cutoffDate.replace(/-/g, '.').slice(2); // YY.MM.DD
-            const updateMsg = kstHour >= 10
-                ? `📅 데이터 기준: ${cutoffFmt} (오늘 10시 업데이트 완료)`
-                : `⏳ 데이터 기준: ${cutoffFmt} (오전 10시 이전 — 전날 미기록)`;
-            badgeEl.textContent = updateMsg;
-        }
+    const MI_PROXIES = [
+      'https://corsproxy.io/?' + encodeURIComponent(MKTINSIGHT_CSV),
+      'https://api.allorigins.win/raw?url=' + encodeURIComponent(MKTINSIGHT_CSV),
+      MKTINSIGHT_CSV,
+    ];
 
-        if (!fd || fd.length < 3) {
-            container.innerHTML = '<div style="text-align:center;padding:20px;color:#718096;grid-column:1/-1;">차트 데이터가 충분하지 않습니다.</div>';
-            return;
-        }
+    let _mktInsightLoaded = false;
 
-        // ── 2. cutoff 이후 날짜 제거 ───────────────────
-        // 날짜 컬럼명 감지 ('날짜' 또는 첫 번째 키)
-        const dateKey = fd[0] && fd[0]['날짜'] !== undefined ? '날짜'
-                      : (Object.keys(fd[0] || {}).find(k => /date|날짜/i.test(k)) || '날짜');
+    // 마케팅 탭 진입 or 새로고침 시 호출
+    async function loadMktInsight(force) {
+        if (_mktInsightLoaded && !force) return;
 
-        const validFd = fd.filter(row => {
-            const rowDate = (row[dateKey] || '').toString().slice(0, 10);
-            return rowDate && rowDate <= cutoffDate;
-        });
+        const loadingEl  = document.getElementById('aiInsightLoading');
+        const errorEl    = document.getElementById('aiInsightError');
+        const container  = document.getElementById('competitorInsights');
+        const footerEl   = document.getElementById('aiInsightFooter');
+        const badgeEl    = document.getElementById('insightCutoffBadge');
+        const dataStatus = document.getElementById('aiDataSourceStatus');
 
-        if (validFd.length < 3) {
-            container.innerHTML = `<div style="text-align:center;padding:20px;color:#718096;grid-column:1/-1;">
-                유효 데이터 부족 (기준: ${cutoffDate}까지)<br>
-                <small>오전 10시 이후 데이터 업데이트 후 다시 확인해 주세요.</small>
-            </div>`;
-            return;
-        }
+        if (loadingEl)  loadingEl.style.display  = 'block';
+        if (errorEl)    errorEl.style.display    = 'none';
+        if (container)  container.innerHTML      = '';
+        if (footerEl)   footerEl.style.display   = 'none';
+        if (badgeEl)    badgeEl.textContent       = '로딩 중...';
 
-        // ── 3. 키 정의 ─────────────────────────────────
-        const roboKey    = 'S10 Max V Ultra';
-        const samsungKey = '삼성로봇청소기';
-        const dreamKey   = '드리미x60';
-        const ecovKey    = '에코백스T90';
-
-        // 유효한 값만 추출 (0 = 미기록이므로 제외)
-        const valsOf = (key, rows) =>
-            rows.map(d => parseFloat(d[key]) || 0).filter(v => v > 0);
-
-        const rVals = valsOf(roboKey, validFd);
-        const sVals = valsOf(samsungKey, validFd);
-        const dVals = valsOf(dreamKey, validFd);
-        const eVals = valsOf(ecovKey, validFd);
-
-        if (!rVals.length || !sVals.length) {
-            container.innerHTML = `<div style="text-align:center;padding:20px;color:#718096;grid-column:1/-1;">
-                검색량 데이터 없음 (기준: ${cutoffDate}까지)
-            </div>`;
-            return;
-        }
-
-        // ── 4. 통계 함수 ───────────────────────────────
-        const avg    = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
-        const maxOf  = arr => Math.max(...arr);
-        const maxIdx = arr => arr.indexOf(maxOf(arr));
-
-        // 최근 7일 vs 전체 평균 (더 실용적)
-        const last7  = arr => arr.slice(-Math.min(7, arr.length));
-        const last14 = arr => arr.slice(-Math.min(14, arr.length));
-        const first7 = arr => arr.slice(0, Math.min(7, arr.length));
-
-        // 최근 7일 평균
-        const rLast7 = avg(last7(rVals));
-        const sLast7 = avg(last7(sVals));
-        // 전체 평균
-        const rAvg   = avg(rVals);
-        const sAvg   = avg(sVals);
-        const dAvg   = dVals.length ? avg(dVals) : 0;
-        const eAvg   = eVals.length ? avg(eVals) : 0;
-
-        // 7일 추세 (최근 7일 vs 이전 7일)
-        const prev7 = arr => arr.slice(-Math.min(14, arr.length), -Math.min(7, arr.length));
-        const rPrev7 = prev7(rVals);
-        const sPrev7 = prev7(sVals);
-        const rWeekTrend = rPrev7.length > 0
-            ? ((rLast7 - avg(rPrev7)) / (avg(rPrev7) || 1) * 100).toFixed(1) : '0.0';
-        const sWeekTrend = sPrev7.length > 0
-            ? ((sLast7 - avg(sPrev7)) / (avg(sPrev7) || 1) * 100).toFixed(1) : '0.0';
-
-        // 최고점 날짜
-        const rPeakRow = validFd.reduce((best, d) => (parseFloat(d[roboKey])||0) > (parseFloat(best[roboKey])||0) ? d : best, validFd[0]);
-        const rPeakDate = rPeakRow?.[dateKey] || '';
-        const rPeakVal  = parseFloat(rPeakRow?.[roboKey] || 0);
-
-        // 역전 감지: 유효 기간 중 삼성이 로보락을 초과한 날
-        const allOvertakeDays = validFd.filter(d =>
-            (parseFloat(d[samsungKey]) || 0) > (parseFloat(d[roboKey]) || 0) &&
-            (parseFloat(d[roboKey]) || 0) > 0 && (parseFloat(d[samsungKey]) || 0) > 0
-        );
-        // 최근 7일 역전 일수
-        const last7Fd = validFd.slice(-7);
-        const recentOvertake = last7Fd.filter(d =>
-            (parseFloat(d[samsungKey]) || 0) > (parseFloat(d[roboKey]) || 0) &&
-            (parseFloat(d[roboKey]) || 0) > 0
-        );
-
-        const rVsS = ((rAvg - sAvg) / (sAvg || 1) * 100).toFixed(1);
-
-        // 분석 기간
-        const startDate = validFd[0]?.[dateKey] || '';
-        const endDate   = validFd[validFd.length - 1]?.[dateKey] || '';
-        const totalDays = validFd.length;
-
-        // ── 5. 런칭 효과 분석 ─────────────────────────
-        const launchDate = '2026-02-27';
-        const preLaunchFd  = validFd.filter(d => (d[dateKey] || '') < launchDate && (parseFloat(d[roboKey]) || 0) > 0);
-        const postLaunchFd = validFd.filter(d => (d[dateKey] || '') >= launchDate && (parseFloat(d[roboKey]) || 0) > 0);
-        const preAvg  = preLaunchFd.length  ? avg(preLaunchFd.map(d  => parseFloat(d[roboKey]) || 0)) : 0;
-        const postAvg = postLaunchFd.length ? avg(postLaunchFd.map(d => parseFloat(d[roboKey]) || 0)) : 0;
-        const launchLift = preAvg > 0 && postLaunchFd.length > 0
-            ? ((postAvg - preAvg) / preAvg * 100).toFixed(1) : null;
-
-        // ── 6. 드리미 추세 ─────────────────────────────
-        const dLast7  = dVals.length >= 7 ? avg(last7(dVals))  : (dVals.length ? avg(dVals) : 0);
-        const dPrev7v = dVals.length >= 7 ? avg(prev7(dVals))  : 0;
-        const dTrend  = dPrev7v > 0
-            ? ((dLast7 - dPrev7v) / dPrev7v * 100).toFixed(1) : '0.0';
-
-        // ── 7. 최신 날짜 로보락 검색량 ────────────────
-        const latestRow = validFd[validFd.length - 1];
-        const latestRobo    = parseFloat(latestRow?.[roboKey] || 0);
-        const latestSamsung = parseFloat(latestRow?.[samsungKey] || 0);
-        const latestDate    = latestRow?.[dateKey] || '';
-
-        // ── 8. 카드 생성 ───────────────────────────────
-        const cards = [];
-
-        // ── 카드 1: 최근 7일 경쟁 현황 ─────────────────
-        const recentOvertakePct = Math.round(recentOvertake.length / (last7Fd.length || 1) * 100);
-        // D 기준 격차로 카드 색상/뱃지 결정
-        const dGapForBadge = (latestRobo > 0 && latestSamsung > 0)
-            ? ((latestRobo - latestSamsung) / latestSamsung * 100) : null;
-        const cardClass1 = dGapForBadge !== null
-            ? (dGapForBadge < 0 ? 'orange' : dGapForBadge < 10 ? 'orange' : 'green')
-            : (recentOvertakePct >= 40 ? 'orange' : 'green');
-        const badgeText = dGapForBadge !== null
-            ? (dGapForBadge < 0 ? '🚨 역전 발생' : dGapForBadge < 10 ? '⚠️ 삼성 추격 중' : '✅ 로보락 우세')
-            : (recentOvertakePct >= 40 ? '역전 위험' : '로보락 우세');
-        const badgeClass = dGapForBadge !== null
-            ? (dGapForBadge >= 10 ? 'up' : '')
-            : (recentOvertakePct >= 40 ? '' : 'up');
-        const rIcon = parseFloat(rWeekTrend) >= 0 ? '📈' : '📉';
-        const sIcon = parseFloat(sWeekTrend) >= 0 ? '📈' : '📉';
-
-        cards.push(`
-        <div class="ci-card ${cardClass1}">
-            <h3>⚔️ 최근 7일 경쟁 현황 <small style="font-size:0.8em;font-weight:400;">(기준: ${cutoffDate})</small>
-                <span class="ci-badge ${badgeClass}">${badgeText}</span>
-            </h3>
-            <p>
-                <strong>${cutoffDate} 기준</strong> 로보락 검색량:
-                <span class="ci-hl">${latestRobo > 0 ? latestRobo.toLocaleString() : '미기록'}</span> ·
-                삼성: <span class="ci-hl">${latestSamsung > 0 ? latestSamsung.toLocaleString() : '미기록'}</span><br><br>
-                최근 7일 평균 — 로보락 <span class="ci-hl">${Math.round(rLast7).toLocaleString()}</span>
-                vs 삼성 <span class="ci-hl">${Math.round(sLast7).toLocaleString()}</span><br>
-                주간 변화: 로보락 ${rIcon} <span class="ci-hl">${parseFloat(rWeekTrend)>=0?'+':''}${rWeekTrend}%</span>
-                · 삼성 ${sIcon} <span class="ci-hl">${parseFloat(sWeekTrend)>=0?'+':''}${sWeekTrend}%</span><br><br>
-                ${(() => {
-                    // D 기준 직접 격차
-                    const dR = latestRobo, dS = latestSamsung;
-                    if (dR > 0 && dS > 0) {
-                        const gap = ((dR - dS) / dS * 100).toFixed(1);
-                        const gapN = parseFloat(gap);
-                        const gapLabel = gapN >= 10
-                            ? `<span class="ci-hl">+${gap}%</span> — ✅ 로보락 우위`
-                            : gapN >= 0
-                            ? `<span class="ci-hl">+${gap}%</span> — ⚠️ 삼성 빠르게 추격 중`
-                            : `<span class="ci-hl">${gap}%</span> — 🚨 삼성에 역전당한 상태`;
-                        // 연속 역전일
-                        let streak = 0;
-                        for (let i = last7Fd.length - 1; i >= 0; i--) {
-                            const r = parseFloat(last7Fd[i][roboKey])||0;
-                            const s = parseFloat(last7Fd[i][samsungKey])||0;
-                            if (r > 0 && s > 0 && s > r) streak++;
-                            else break;
-                        }
-                        const streakMsg = streak >= 3
-                            ? ` / 삼성이 <span class="ci-hl">${streak}일 연속</span> 검색량 앞섬 — 즉각 대응 필요`
-                            : streak >= 1
-                            ? ` / 삼성이 최근 ${streak}일 검색량 앞섬`
-                            : ``;
-                        return `${cutoffDate} 기준 로보락 vs 삼성: ${gapLabel}${streakMsg}`;
-                    }
-                    return '';
-                })()}
-            </p>
-        </div>`);
-
-        // ── 카드 2: S10 런칭 효과 ──────────────────────
-        if (launchLift !== null) {
-            const liftNum = parseFloat(launchLift);
-            const liftClass = liftNum >= 20 ? 'blue' : (liftNum >= 0 ? 'blue' : 'orange');
-            const liftMsg = liftNum >= 20
-                ? '런칭 마케팅 효과가 <span class="ci-hl">성공적</span>으로 나타났습니다.'
-                : liftNum >= 5
-                ? '런칭 효과가 확인되나, <span class="ci-hl">지속 마케팅</span>으로 관심도를 유지해야 합니다.'
-                : liftNum >= 0
-                ? '런칭 직후 소폭 상승 — <span class="ci-hl">콘텐츠 마케팅 강화</span>를 권장합니다.'
-                : '런칭 후 검색량 하락세. <span class="ci-hl">재타겟팅 광고</span> 즉시 강화 필요합니다.';
-            cards.push(`
-            <div class="ci-card ${liftClass}">
-                <h3>🚀 S10 Max V Ultra 런칭 효과
-                    <span class="ci-badge up">${liftNum>=0?'+'+launchLift:''+launchLift}%</span>
-                </h3>
-                <p>
-                    런칭(02.27) 이전 ${preLaunchFd.length}일 평균:
-                    <span class="ci-hl">${Math.round(preAvg).toLocaleString()}</span><br>
-                    런칭 이후 ${postLaunchFd.length}일 평균:
-                    <span class="ci-hl">${Math.round(postAvg).toLocaleString()}</span><br>
-                    → <span class="ci-hl">${Math.abs(liftNum)}% ${liftNum>=0?'상승':'하락'}</span><br><br>
-                    ${liftMsg}<br>
-                    최고 검색량: <span class="ci-hl">${rPeakVal.toLocaleString()}</span> (${rPeakDate})
-                </p>
-            </div>`);
-        } else {
-            // 런칭 전이거나 데이터 부족
-            const isBeforeLaunch = cutoffDate < launchDate;
-            cards.push(`
-            <div class="ci-card blue">
-                <h3>🚀 ${isBeforeLaunch ? '신제품 런칭 예측 인사이트' : 'S10 Max V Ultra 런칭 효과'}</h3>
-                <p>
-                    ${isBeforeLaunch
-                        ? `<span class="ci-hl">S10 Max V Ultra</span> 런칭(02.27)까지 D-${Math.round((new Date(launchDate)-new Date(cutoffDate))/(86400000))}일.<br>
-                           사전 마케팅(02.15~02.26) 기간 중 검색량이 상승세를 보이고 있습니다.<br><br>
-                           런칭 당일 <span class="ci-hl">집중 광고 집행</span>으로 경쟁사 대비 우위를 확보하세요.<br>
-                           최고 검색량: <span class="ci-hl">${rPeakVal.toLocaleString()}</span> (${rPeakDate})`
-                        : `런칭 이후 데이터 축적 중 (현재 ${postLaunchFd.length}일치).<br>
-                           충분한 데이터 수집 후 효과 분석이 제공됩니다.<br>
-                           최고 검색량: <span class="ci-hl">${rPeakVal.toLocaleString()}</span> (${rPeakDate})`}
-                </p>
-            </div>`);
-        }
-
-        // ── 카드 3: 경쟁사 포지셔닝 & 전략 제언 (D 기준 + 최근 7일/30일 추이) ──
-        // D 기준 검색량 (cutoffDate 당일)
-        const dDateRow   = validFd.find(d => (d[dateKey]||'').slice(0,10) === cutoffDate);
-        const dRobo      = dDateRow ? (parseFloat(dDateRow[roboKey])||0)    : (latestRobo    || 0);
-        const dSamsung   = dDateRow ? (parseFloat(dDateRow[samsungKey])||0) : (latestSamsung || 0);
-        const dDreami    = dDateRow ? (parseFloat(dDateRow[dreamKey])||0)   : 0;
-        const dEcov      = dDateRow ? (parseFloat(dDateRow[ecovKey])||0)    : 0;
-
-        // 30일 추이 (최근 30일 vs 이전 30일)
-        const last30  = (arr) => arr.slice(-Math.min(30, arr.length));
-        const prev30  = (arr) => arr.slice(-Math.min(60, arr.length), -Math.min(30, arr.length));
-        const rLast30 = last30(rVals); const rPrev30 = prev30(rVals);
-        const sLast30 = last30(sVals); const sPrev30 = prev30(sVals);
-        const dLast30v= last30(dVals); const dPrev30v= prev30(dVals);
-
-        const trend30 = (a, b) => {
-            const av = a.length ? a.reduce((s,v)=>s+v,0)/a.length : 0;
-            const bv = b.length ? b.reduce((s,v)=>s+v,0)/b.length : 0;
-            return bv > 0 ? ((av - bv)/bv*100).toFixed(1) : null;
-        };
-        const rTrend30 = trend30(rLast30, rPrev30);
-        const sTrend30 = trend30(sLast30, sPrev30);
-        const dTrend30 = trend30(dLast30v, dPrev30v);
-
-        // D 기준 로보락 vs 삼성 격차
-        const dGap = (dSamsung > 0 && dRobo > 0)
-            ? ((dRobo - dSamsung) / dSamsung * 100).toFixed(1) : null;
-
-        const mkTrend = (val, icon=true) => {
-            if (val === null) return '–';
-            const n = parseFloat(val);
-            return (icon ? (n>=0?'📈 ':'📉 ') : '') + (n>=0?'+':'') + val + '%';
-        };
-
-        // 전략 제언 텍스트
-        let stratText = '';
-        if (dGap !== null) {
-            const gapN = parseFloat(dGap);
-            if (gapN >= 30) {
-                stratText = '✅ 로보락이 삼성 대비 <span class="ci-hl">+'+dGap+'%</span> 우세 — 현재 우위를 바탕으로 <span class="ci-hl">전환율 중심</span> 캠페인을 집중 운영하세요.';
-            } else if (gapN >= 10) {
-                stratText = '⚠️ 삼성이 추격 중 (격차 <span class="ci-hl">'+dGap+'%</span>) — <span class="ci-hl">키워드 방어</span> 및 <span class="ci-hl">비교 광고</span> 강화 필요.';
-            } else if (gapN >= 0) {
-                stratText = '🚨 삼성과 격차 <span class="ci-hl">'+dGap+'%</span>로 근접 — <span class="ci-hl">즉각적 예산 증액</span> 및 <span class="ci-hl">삼성 검색 사용자 리타겟팅</span> 긴급 권장.';
-            } else {
-                stratText = '🚨 삼성이 로보락을 <span class="ci-hl">역전</span> (격차 <span class="ci-hl">'+Math.abs(parseFloat(dGap))+'%</span>) — <span class="ci-hl">집중 광고 집행</span> 즉시 필요.';
+        let rows = null;
+        for (const url of MI_PROXIES) {
+            try {
+                const ctrl  = new AbortController();
+                const timer = setTimeout(() => ctrl.abort(), 10000);
+                const res   = await fetch(url, { signal: ctrl.signal });
+                clearTimeout(timer);
+                if (!res.ok) continue;
+                const text = await res.text();
+                if (text && text.length > 100 && (text.includes('카드1') || text.includes('날짜') || text.includes('2026'))) {
+                    rows = _parseMktInsightCSV(text);
+                    if (rows && rows.length > 0) break;
+                }
+            } catch(e) {
+                console.log('MI 프록시 실패:', url.substring(0,60), e.message);
             }
         }
-        if (parseFloat(dTrend30 || '0') >= 10) {
-            stratText += '<br>드리미 30일 추세 <span class="ci-hl">'+mkTrend(dTrend30)+'</span> — 중저가 시장 방어 전략 점검 필요.';
+
+        if (loadingEl) loadingEl.style.display = 'none';
+
+        if (!rows || !rows.length) {
+            // CSV 미설정 또는 로드 실패 → 안내 메시지
+            if (errorEl) {
+                errorEl.style.display = 'block';
+                errorEl.innerHTML =
+                    '📋 아직 AI 분석 데이터가 없습니다.<br>' +
+                    '<span style="font-size:0.88em;color:#6b7280;">' +
+                    'Apps Script의 <code>testMarketingInsight()</code> 를 실행하고, ' +
+                    'MarketingInsight 시트의 CSV URL을 <code>MKTINSIGHT_CSV</code> 상수에 설정해 주세요.' +
+                    '</span>';
+            }
+            if (badgeEl) badgeEl.textContent = '데이터 없음';
+            return;
         }
 
-        cards.push(`
-        <div class="ci-card green">
-            <h3>📊 경쟁사 포지셔닝 & 전략 제언 <small style="font-size:0.8em;font-weight:400;">(기준: ${cutoffDate})</small></h3>
-            <p>
-                <strong>${cutoffDate} 기준 검색량</strong><br>
-                🔴 로보락: <span class="ci-hl">${dRobo > 0 ? dRobo.toLocaleString() : '미기록'}</span>
-                &nbsp;🔵 삼성: <span class="ci-hl">${dSamsung > 0 ? dSamsung.toLocaleString() : '미기록'}</span>
-                &nbsp;🟦 드리미: <span class="ci-hl">${dDreami > 0 ? dDreami.toLocaleString() : '미기록'}</span>
-                &nbsp;🟫 에코백스: <span class="ci-hl">${dEcov > 0 ? dEcov.toLocaleString() : '미기록'}</span><br>
-                ${dGap !== null ? `${cutoffDate} 기준 로보락 vs 삼성 격차: <span class="ci-hl">${parseFloat(dGap)>=0?'+':''}${dGap}%</span><br>` : ''}
-                <br>
-                <strong>📅 최근 7일 추이</strong> (전주 7일 대비)<br>
-                로보락 ${mkTrend(rWeekTrend)} &nbsp;·&nbsp; 삼성 ${mkTrend(sWeekTrend)} &nbsp;·&nbsp; 드리미 ${mkTrend(dTrend)}<br>
-                <br>
-                <strong>📅 최근 30일 추이</strong> (이전 30일 대비)<br>
-                로보락 ${mkTrend(rTrend30)} &nbsp;·&nbsp; 삼성 ${mkTrend(sTrend30)} &nbsp;·&nbsp; 드리미 ${mkTrend(dTrend30)}<br>
-                <br>
-                ${stratText}
-                <br>💡 <span class="ci-hl">권장 액션:</span> 경쟁사 프로모션 시즌 전후 즉각적인
-                <span class="ci-hl">비교 광고</span> + <span class="ci-hl">전환 캠페인</span> 집행.
-            </p>
-        </div>`);
+        // 최신 행 사용
+        const latest = rows[rows.length - 1];
+        _mktInsightLoaded = true;
 
-        container.innerHTML = cards.join('\n');
+        // 배지 업데이트
+        const analysisDate = latest['분석기준일'] || latest['날짜'] || '';
+        const updateTime   = latest['수집시각'] || '';
+        if (badgeEl)    badgeEl.textContent = `📅 분석기준: ${analysisDate.slice(2).replace(/-/g,'.')}`;
+        if (dataStatus) {
+            dataStatus.style.display = 'flex';
+            const srcDate   = document.getElementById('aiSrcDate');
+            const srcUpdate = document.getElementById('aiSrcUpdate');
+            if (srcDate)   srcDate.textContent   = `📅 분석 기준일: ${analysisDate}`;
+            if (srcUpdate) srcUpdate.textContent = `🕐 업데이트: ${analysisDate} ${updateTime}`;
+        }
+
+        // 카드 렌더링
+        const cards = _buildCardsFromCSV(latest);
+        if (container) {
+            container.innerHTML = `<div id="aiCardsGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:16px 4px 4px;">${cards}</div>`;
+        }
+        if (footerEl) footerEl.style.display = 'block';
+    }
+    window.loadMktInsight = loadMktInsight;
+
+    // CSV 파싱 (BrandNews와 동일한 파서 재활용)
+    function _parseMktInsightCSV(text) {
+        const lines  = text.trim().split('\n');
+        if (lines.length < 2) return [];
+        const header = lines[0].split(',').map(h => h.replace(/^"|"$/g,'').trim());
+        const rows   = [];
+        for (let i = 1; i < lines.length; i++) {
+            const cols = [];
+            let cur = '', inQ = false;
+            for (let c = 0; c < lines[i].length; c++) {
+                const ch = lines[i][c];
+                if (ch === '"') { inQ = !inQ; }
+                else if (ch === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+                else { cur += ch; }
+            }
+            cols.push(cur.trim());
+            const obj = {};
+            header.forEach((h, idx) => { obj[h] = (cols[idx]||'').replace(/^"|"$/g,'').trim(); });
+            rows.push(obj);
+        }
+        return rows;
+    }
+
+    // CSV 행 → 카드 4개 HTML 생성
+    function _buildCardsFromCSV(row) {
+        const cardDefs = [
+            { t: row['카드1제목'], s: row['카드1상태'], c: row['카드1내용'], a: row['카드1액션'] },
+            { t: row['카드2제목'], s: row['카드2상태'], c: row['카드2내용'], a: row['카드2액션'] },
+            { t: row['카드3제목'], s: row['카드3상태'], c: row['카드3내용'], a: row['카드3액션'] },
+            { t: row['카드4제목'], s: row['카드4상태'], c: row['카드4내용'], a: row['카드4액션'] },
+        ].filter(d => d.t || d.c);
+
+        const analysisDate = row['분석기준일'] || row['날짜'] || '';
+        if (!cardDefs.length) {
+            return `<div style="grid-column:1/-1;padding:20px;text-align:center;color:#94a3b8;">분석 결과 데이터를 파싱할 수 없습니다.</div>`;
+        }
+        return _parseGeminiCards(
+            cardDefs.map((d,i) => `[카드${i+1}]\n제목: ${d.t}\n상태: ${d.s}\n내용: ${d.c}\n액션: ${d.a}`).join('\n\n'),
+            analysisDate
+        );
+    }
+
+    // 차트 데이터 로드 시 호출되는 훅 (하위 호환 유지, 실제 분석은 CSV에서)
+    function updateCompetitorInsights(fd, ch4Keys) {
+        // 마케팅 탭이 활성화될 때 자동 로드
+        loadMktInsight(false);
+    }
+
+    // Gemini 응답 파싱 → 카드 HTML (최대 4카드, 2열 그리드)
+    function _parseGeminiCards(text, cutoffDate) {
+        const STATUS_COLOR = {
+            '✅': { bg:'#f0fdf4', border:'#86efac', badge:'#16a34a', badgeBg:'#dcfce7', accent:'#16a34a' },
+            '⚠️': { bg:'#fffbeb', border:'#fde68a', badge:'#d97706', badgeBg:'#fef3c7', accent:'#d97706' },
+            '🚨': { bg:'#fef2f2', border:'#fca5a5', badge:'#dc2626', badgeBg:'#fee2e2', accent:'#dc2626' },
+        };
+
+        const sections = text.split(/\[카드\d+\]/).filter(s => s.trim());
+        if (!sections.length) {
+            return `<div style="grid-column:1/-1;padding:20px;font-size:0.85em;color:#334155;white-space:pre-wrap;line-height:1.8;background:#f8faff;border-radius:10px;">${text}</div>`;
+        }
+
+        const cardIcons = ['📊','⚔️','🎯','🔮'];
+        const cardLabels = ['검색 트렌드 분석','경쟁사 위협 분석','이번 주 전략','중장기 전망'];
+
+        return sections.map((sec, idx) => {
+            const getField = (label) => {
+                const m = sec.match(new RegExp(label + '[:\\s]+(.+?)(?=\\n(?:제목|상태|내용|액션)[:\\s]|$)', 's'));
+                return m ? m[1].trim() : '';
+            };
+            const title   = getField('제목') || (cardLabels[idx] || `분석 카드 ${idx+1}`);
+            const status  = getField('상태');
+            const content = getField('내용');
+            const action  = getField('액션');
+
+            const statusKey = Object.keys(STATUS_COLOR).find(k => status.includes(k)) || '⚠️';
+            const c = STATUS_COLOR[statusKey];
+            const icon = cardIcons[idx] || '📌';
+
+            // 숫자 강조 (수치 데이터 볼드 처리)
+            const highlightNumbers = (str) => str
+                .replace(/(\d[\d,]*\.?\d*%?)/g, '<strong style="color:' + c.accent + '">$1</strong>')
+                .replace(/\n/g, '<br>');
+
+            return `
+            <div style="background:${c.bg};border:1.5px solid ${c.border};border-radius:16px;padding:20px 18px;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden;">
+              <!-- 배경 장식 -->
+              <div style="position:absolute;top:-12px;right:-12px;font-size:4em;opacity:0.05;pointer-events:none;">${icon}</div>
+              <!-- 헤더 -->
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
+                <div>
+                  <div style="font-size:0.7em;font-weight:600;color:${c.badge};text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">${icon} ${cardLabels[idx] || ''}</div>
+                  <div style="font-size:0.92em;font-weight:700;color:#1e293b;line-height:1.35;">${title}</div>
+                </div>
+                <span style="background:${c.badgeBg};color:${c.badge};font-size:0.78em;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:2px;">${status||statusKey}</span>
+              </div>
+              <!-- 내용 -->
+              <div style="font-size:0.82em;color:#374151;line-height:1.8;">${highlightNumbers(content||'분석 중...')}</div>
+              <!-- 액션 박스 -->
+              ${action ? `
+              <div style="padding:11px 13px;background:rgba(99,102,241,0.06);border-left:3px solid #6366f1;border-radius:0 8px 8px 0;font-size:0.8em;color:#3730a3;line-height:1.7;">
+                <div style="font-weight:700;margin-bottom:4px;color:#4338ca;">💡 권장 액션</div>
+                <div>${highlightNumbers(action)}</div>
+              </div>` : ''}
+              <!-- 푸터 -->
+              <div style="font-size:0.68em;color:#94a3b8;margin-top:auto;padding-top:4px;border-top:1px solid ${c.border};">
+                기준일 ${cutoffDate} &nbsp;·&nbsp; 검색 트렌드 + 뉴스 데이터 통합 분석
+              </div>
+            </div>`;
+        }).join('');
     }
 
     /* ── 초기 로드 ── */function amBuildWeekOptions() {
@@ -6436,6 +6903,378 @@ var AUTH=(function(){
 /* ══════════════════════════════════
    탭 전환
 ══════════════════════════════════ */
+/* ══════════════════════════════════════════════════════
+   경쟁사 현황 탭 – BrandNews CSV 로드 & 렌더
+══════════════════════════════════════════════════════ */
+(function(){
+
+  const BRAND_NEWS_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTsdNtfJjOHVcqMfdnA6gwQRfRgOt1HsG4QxNvK5VBGCTd195LzXgdH3s2RkiRn0Na2z75MX_dGluWa/pub?gid=195067777&single=true&output=csv';
+
+  const PROXIES = [
+    'https://corsproxy.io/?' + BRAND_NEWS_CSV,
+    'https://api.allorigins.win/raw?url=' + encodeURIComponent(BRAND_NEWS_CSV),
+    'https://corsproxy.io/?' + encodeURIComponent(BRAND_NEWS_CSV),
+    BRAND_NEWS_CSV,
+  ];
+
+  const BRAND_ORDER = ['로보락','삼성','드리미','DJI','다이슨','에코백스'];
+
+  const BRAND_COLOR = {
+    '로보락':   { bg:'#fef2f2', border:'#ef4444', badge:'#ef4444', icon:'🔴' },
+    '삼성':     { bg:'#eff6ff', border:'#3b82f6', badge:'#3b82f6', icon:'🔵' },
+    '드리미':   { bg:'#f0f9ff', border:'#0ea5e9', badge:'#0ea5e9', icon:'🟦' },
+    'DJI':      { bg:'#f0fdf4', border:'#22c55e', badge:'#22c55e', icon:'🟢' },
+    '다이슨':   { bg:'#faf5ff', border:'#a855f7', badge:'#a855f7', icon:'🟣' },
+    '에코백스': { bg:'#fff7ed', border:'#f97316', badge:'#f97316', icon:'🟠' },
+  };
+
+  const THREAT_STYLE = {
+    '높음': { bg:'#fef2f2', color:'#dc2626', icon:'🔺' },
+    '보통': { bg:'#fffbeb', color:'#d97706', icon:'➡️' },
+    '낮음': { bg:'#f0fdf4', color:'#16a34a', icon:'🔻' },
+  };
+  function getThreatStyle(t) { return THREAT_STYLE[t] || THREAT_STYLE['보통']; }
+
+  const PAGE_SIZE = 10;
+  let brandData   = {};
+  let activeBrand = '';
+  let loaded      = false;
+  let articlePage = {};  // { 브랜드명: currentPage }
+
+  /* ── CSV 파싱 ─────────────────────────────── */
+  function parseCSV(text) {
+    const lines  = text.trim().split('\n');
+    const header = lines[0].split(',').map(h => h.replace(/^"|"$/g, '').trim());
+    const rows   = [];
+    for (let i = 1; i < lines.length; i++) {
+      const cols = [];
+      let cur = '', inQ = false;
+      for (let c = 0; c < lines[i].length; c++) {
+        const ch = lines[i][c];
+        if (ch === '"') { inQ = !inQ; }
+        else if (ch === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+        else { cur += ch; }
+      }
+      cols.push(cur.trim());
+      const obj = {};
+      header.forEach((h, idx) => { obj[h] = (cols[idx] || '').replace(/^"|"$/g, '').trim(); });
+      rows.push(obj);
+    }
+    return rows;
+  }
+
+  /* ── Jaccard 유사도 기반 중복 제거 ─────────── */
+  function tokenize(str) {
+    return new Set(str.replace(/[^\uAC00-\uD7A3a-zA-Z0-9\s]/g, ' ')
+      .split(/\s+/).filter(w => w.length > 1));
+  }
+  function jaccard(a, b) {
+    const sa = tokenize(a), sb = tokenize(b);
+    let inter = 0;
+    sa.forEach(t => { if (sb.has(t)) inter++; });
+    const union = sa.size + sb.size - inter;
+    return union === 0 ? 0 : inter / union;
+  }
+  function deduplicateArticles(items) {
+    // items: [{title, url}, ...]
+    const clusters = [];
+    items.forEach(item => {
+      let merged = false;
+      for (const cl of clusters) {
+        if (jaccard(item.title, cl.rep.title) >= 0.45) {
+          cl.count++;
+          merged = true;
+          break;
+        }
+      }
+      if (!merged) clusters.push({ rep: item, count: 1 });
+    });
+    return clusters; // [{rep:{title,url}, count}, ...]
+  }
+
+  /* ── CSV 로드 ─────────────────────────────── */
+  async function loadBrandNewsData(force) {
+    if (loaded && !force) { renderCompetitor(); return; }
+
+    document.getElementById('compLoading').style.display   = 'block';
+    document.getElementById('compError').style.display     = 'none';
+    document.getElementById('compCardGrid').style.display  = 'none';
+
+    let rows = null;
+    for (const proxy of PROXIES) {
+      try {
+        const ctrl  = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 8000);
+        const res   = await fetch(proxy, { signal: ctrl.signal });
+        clearTimeout(timer);
+        if (!res.ok) continue;
+        const text = await res.text();
+        if (text && text.length > 50 && (text.includes('날짜') || text.includes('브랜드') || text.includes('2026'))) {
+          rows = parseCSV(text);
+          if (rows && rows.length > 0) break;
+        }
+      } catch(e) {
+        console.log('프록시 실패:', proxy.substring(0,60), e.message);
+      }
+    }
+
+    document.getElementById('compLoading').style.display = 'none';
+
+    if (!rows || !rows.length) {
+      document.getElementById('compError').style.display = 'block';
+      document.getElementById('compErrorMsg').innerHTML =
+        '데이터를 불러오지 못했습니다.<br>' +
+        '<span style="font-size:0.85em;color:#94a3b8;">구글 시트 공개 설정 또는 네트워크를 확인해주세요.</span>';
+      return;
+    }
+
+    rows = rows.filter(r => (r['브랜드'] || '').trim());
+
+    // 브랜드별 최신 데이터 추출
+    brandData = {};
+    rows.forEach(r => {
+      const brand = r['브랜드'] || r['brand'] || '';
+      if (!brand) return;
+      if (!brandData[brand]) {
+        const titlesRaw = r['기사제목목록'] || r['titles']  || '';
+        const urlsRaw   = r['기사URL목록']  || r['기사url목록'] || r['urls'] || '';
+        const titleArr  = titlesRaw.split('|').map(t => t.trim()).filter(Boolean);
+        // URL은 || 이중 파이프 또는 | 단일 파이프 모두 지원
+        const urlArr    = urlsRaw
+          ? (urlsRaw.includes('||')
+              ? urlsRaw.split('||').map(u => u.trim())
+              : urlsRaw.split('|').map(u => u.trim()))
+          : [];
+        const items     = titleArr.map((t, i) => ({
+          title: t,
+          url  : (urlArr[i] || '').replace(/^"|"$/g, '').trim()
+        }));
+        brandData[brand] = {
+          summary  : r['뉴스요약']   || r['summary']  || '',
+          insight  : r['AI인사이트'] || r['insight']  || '',
+          threat   : r['위험도'] || r['위협도'] || r['threat'] || '보통',
+          date     : r['날짜']       || r['date']     || '',
+          time     : r['수집시각']   || r['time']     || '',
+          count    : r['기사수']     || r['count']    || '',
+          articles : items,
+          clusters : deduplicateArticles(items),
+        };
+        articlePage[brand] = 0;
+      }
+    });
+
+    loaded = true;
+    renderCompetitor();
+
+    // 마케팅 탭 AI 인사이트 뉴스 소스 상태 갱신
+    try {
+      const bd = brandData;
+      const newsCount = Object.keys(bd).length;
+      const srcNews = document.getElementById('aiSrcNews');
+      if (srcNews && newsCount > 0) {
+        srcNews.textContent = `📰 경쟁사 뉴스: ${newsCount}개 브랜드 ✅`;
+        srcNews.style.background = '#f0fdf4';
+        srcNews.style.color = '#16a34a';
+        srcNews.style.borderColor = '#bbf7d0';
+      }
+    } catch(e) {}
+  }
+
+  /* ── 전체 현황 렌더 ───────────────────────── */
+  function renderCompetitor() {
+    const allBrands = Object.keys(brandData);
+    if (!allBrands.length) return;
+
+    // 업데이트 시각
+    const anyD     = brandData[allBrands[0]];
+    const timeEl   = document.getElementById('compUpdateTime');
+    if (timeEl) timeEl.textContent = '최종 업데이트: ' + anyD.date + (anyD.time ? ' ' + anyD.time : '');
+
+    const orderedBrands = [
+      ...BRAND_ORDER.filter(b => brandData[b]),
+      ...allBrands.filter(b => !BRAND_ORDER.includes(b))
+    ];
+
+    // ── ① 전체 요약 카드 그리드 (상단) ──────────
+    const summaryEl = document.getElementById('compSummaryGrid');
+    summaryEl.innerHTML = '';
+    orderedBrands.forEach(brand => {
+      const d  = brandData[brand];
+      const bc = BRAND_COLOR[brand] || { bg:'#f8fafc', border:'#94a3b8', badge:'#94a3b8', icon:'⚪' };
+      const ts = getThreatStyle(d.threat);
+      const isRoborock = brand === '로보락';
+
+      const card = document.createElement('div');
+      card.style.cssText =
+        'background:#fff;border:1.5px solid ' + bc.border + ';border-radius:10px;' +
+        'padding:12px 14px;cursor:pointer;transition:all 0.2s;';
+      card.onmouseover = () => { card.style.boxShadow = '0 4px 14px rgba(0,0,0,0.12)'; card.style.transform='translateY(-1px)'; };
+      card.onmouseout  = () => { card.style.boxShadow = 'none'; card.style.transform='translateY(0)'; };
+      card.onclick     = () => selectBrand(brand);
+
+      const previewText = d.summary.split('.')[0] + (d.summary.includes('.') ? '.' : '');
+      const threatBadge = isRoborock ? '' :
+        '<span style="background:' + ts.bg + ';color:' + ts.color + ';font-size:0.7em;padding:2px 7px;border-radius:10px;font-weight:700;">' + ts.icon + ' ' + d.threat + '</span>';
+
+      card.innerHTML =
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
+          '<span style="font-size:0.85em;font-weight:700;color:#1e293b;">' + bc.icon + ' ' + brand + '</span>' +
+          threatBadge +
+        '</div>' +
+        '<div style="font-size:0.75em;color:#475569;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' +
+          previewText +
+        '</div>' +
+        '<div style="font-size:0.68em;color:#94a3b8;margin-top:6px;">기사 ' + (d.count || '-') + '건 분석</div>';
+      summaryEl.appendChild(card);
+    });
+
+    document.getElementById('compCardGrid').style.display = 'block';
+    selectBrand(activeBrand || orderedBrands[0]);
+  }
+
+  /* ── 기사 목록 렌더 (중복 제거 + 페이징 + 아웃링크) ── */
+  function renderArticles(brand) {
+    const d       = brandData[brand];
+    const bc      = BRAND_COLOR[brand] || { bg:'#f8fafc', border:'#94a3b8', badge:'#94a3b8', icon:'⚪' };
+    const clusters= d.clusters || [];
+    const page    = articlePage[brand] || 0;
+    const total   = clusters.length;
+    const start   = page * PAGE_SIZE;
+    const end     = Math.min(start + PAGE_SIZE, total);
+    const slice   = clusters.slice(start, end);
+    const totalPages = Math.ceil(total / PAGE_SIZE);
+
+    if (!total) return '<div style="color:#94a3b8;font-size:0.85em;padding:8px 0;">기사 목록 없음</div>';
+
+    let html =
+      '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:12px 16px;">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">' +
+        '<div style="font-size:0.78em;font-weight:700;color:#64748b;">📄 분석 기사 목록</div>' +
+        (total > PAGE_SIZE ?
+          '<div style="font-size:0.72em;color:#94a3b8;">' + (start+1) + '–' + end + ' / ' + total + '건 (중복 제거 후)</div>'
+        : '<div style="font-size:0.72em;color:#94a3b8;">' + total + '건 (중복 제거 후)</div>') +
+      '</div>';
+
+    slice.forEach((cl, i) => {
+      const num    = start + i + 1;
+      const rawUrl = (cl.rep.url || '').trim();
+      const validUrl = rawUrl && (rawUrl.startsWith('http://') || rawUrl.startsWith('https://')) ? rawUrl : '';
+      const link   = validUrl
+        ? '<a href="' + validUrl + '" target="_blank" rel="noopener noreferrer" ' +
+          'style="color:#334155;text-decoration:none;font-size:0.82em;line-height:1.6;flex:1;" ' +
+          'onmouseover="this.style.color=\'#6366f1\';this.style.textDecoration=\'underline\'" ' +
+          'onmouseout="this.style.color=\'#334155\';this.style.textDecoration=\'none\'">' +
+          cl.rep.title + ' <span style="font-size:0.7em;color:#94a3b8;">↗</span></a>'
+        : '<span style="font-size:0.82em;color:#334155;line-height:1.6;flex:1;">' + cl.rep.title + '</span>';
+      const dupBadge = cl.count > 1
+        ? '<span style="background:#f1f5f9;color:#64748b;font-size:0.7em;padding:1px 6px;border-radius:8px;margin-left:6px;white-space:nowrap;flex-shrink:0;">+' + (cl.count - 1) + '</span>'
+        : '';
+      html +=
+        '<div style="display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid #f1f5f9;">' +
+          '<span style="color:#94a3b8;font-size:0.75em;min-width:20px;padding-top:2px;">' + num + '</span>' +
+          link +
+          dupBadge +
+        '</div>';
+    });
+
+    // 페이징 버튼
+    if (totalPages > 1) {
+      const prevDis = page === 0           ? 'disabled' : '';
+      const nextDis = page >= totalPages-1 ? 'disabled' : '';
+      const prevOp  = page === 0           ? 'opacity:0.4;cursor:default;' : 'cursor:pointer;';
+      const nextOp  = page >= totalPages-1 ? 'opacity:0.4;cursor:default;' : 'cursor:pointer;';
+      html +=
+        '<div style="display:flex;justify-content:center;align-items:center;gap:10px;margin-top:12px;">' +
+          '<button ' + prevDis + ' onclick="window.__compPrevPage(\'' + brand + '\')" ' +
+            'style="padding:4px 14px;border:1px solid #e2e8f0;border-radius:6px;background:#f8fafc;color:#475569;font-size:0.78em;' + prevOp + '">◀ 이전</button>' +
+          '<span style="font-size:0.78em;color:#64748b;">' + (page + 1) + ' / ' + totalPages + '</span>' +
+          '<button ' + nextDis + ' onclick="window.__compNextPage(\'' + brand + '\')" ' +
+            'style="padding:4px 14px;border:1px solid #e2e8f0;border-radius:6px;background:#f8fafc;color:#475569;font-size:0.78em;' + nextOp + '">다음 ▶</button>' +
+        '</div>';
+    }
+
+    html += '</div>';
+    return html;
+  }
+
+  /* ── 페이지 이동 (전역) ───────────────────── */
+  window.__compPrevPage = function(brand) {
+    if (articlePage[brand] > 0) { articlePage[brand]--; refreshArticles(brand); }
+  };
+  window.__compNextPage = function(brand) {
+    const d = brandData[brand];
+    const max = Math.ceil((d.clusters||[]).length / PAGE_SIZE) - 1;
+    if (articlePage[brand] < max) { articlePage[brand]++; refreshArticles(brand); }
+  };
+  function refreshArticles(brand) {
+    const el = document.getElementById('compArticleArea');
+    if (el) el.innerHTML = renderArticles(brand);
+  }
+
+  /* ── 브랜드 선택 → 상세 패널 ─────────────── */
+  function selectBrand(brand) {
+    activeBrand = brand;
+    const d  = brandData[brand];
+    if (!d) return;
+    const bc = BRAND_COLOR[brand] || { bg:'#f8fafc', border:'#94a3b8', badge:'#94a3b8', icon:'⚪' };
+    const ts = getThreatStyle(d.threat);
+    const isRoborock = brand === '로보락';
+
+    // 요약 카드 하이라이트
+    const summaryEl = document.getElementById('compSummaryGrid');
+    if (summaryEl) {
+      Array.from(summaryEl.children).forEach((card, i) => {
+        const orderedBrands = [
+          ...BRAND_ORDER.filter(b => brandData[b]),
+          ...Object.keys(brandData).filter(b => !BRAND_ORDER.includes(b))
+        ];
+        const isActive = orderedBrands[i] === brand;
+        card.style.outline = isActive ? '2px solid ' + bc.border : 'none';
+        card.style.boxShadow = isActive ? '0 0 0 3px ' + bc.border + '33' : 'none';
+      });
+    }
+
+    const threatSection = isRoborock ? '' :
+      '<div style="display:inline-flex;align-items:center;gap:6px;background:' + ts.bg + ';border:1px solid ' + ts.color + '44;border-radius:10px;padding:3px 10px;font-size:0.78em;font-weight:700;color:' + ts.color + ';">' +
+        ts.icon + ' 위협도: ' + d.threat +
+      '</div>';
+
+    const detailEl = document.getElementById('compDetail');
+    detailEl.innerHTML =
+      // 헤더
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1.5px solid ' + bc.border + '33;">' +
+        '<span style="font-size:1.1em;font-weight:800;color:#1e293b;">' + bc.icon + ' ' + brand + '</span>' +
+        threatSection +
+        '<span style="font-size:0.72em;color:#94a3b8;margin-left:auto;">' + d.date + ' 기준 · 기사 ' + (d.count||'-') + '건 분석</span>' +
+      '</div>' +
+
+      // 뉴스 요약 + 팅크웨어 인사이트 (2컬럼)
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">' +
+        '<div style="background:#fff;border:1px solid #e2e8f0;border-left:4px solid ' + bc.border + ';border-radius:8px;padding:14px 16px;">' +
+          '<div style="font-size:0.78em;font-weight:700;color:#6366f1;margin-bottom:8px;">📰 뉴스 요약</div>' +
+          '<div style="font-size:0.82em;color:#334155;line-height:1.7;">' + (d.summary || '-') + '</div>' +
+        '</div>' +
+        '<div style="background:#fff;border:1px solid #e2e8f0;border-left:4px solid #6366f1;border-radius:8px;padding:14px 16px;">' +
+          '<div style="font-size:0.78em;font-weight:700;color:#6366f1;margin-bottom:8px;">💡 팅크웨어 인사이트</div>' +
+          '<div style="font-size:0.82em;color:#334155;line-height:1.7;">' + (d.insight || '-') + '</div>' +
+        '</div>' +
+      '</div>' +
+
+      // 기사 목록 (중복 제거 + 페이징 + 아웃링크)
+      '<div id="compArticleArea">' + renderArticles(brand) + '</div>' +
+
+      // 단서조항
+      '<div style="margin-top:14px;padding:10px 14px;background:#f8fafc;border-radius:8px;font-size:0.73em;color:#94a3b8;line-height:1.6;font-style:italic;">' +
+        (isRoborock ? '' : '※ 위협도 기준: 경쟁 브랜드 뉴스가 로보락 경쟁우위에 미치는 영향도 (높음: 직접 경쟁·점유율 위협 / 보통: 간접 영향 / 낮음: 시장 영향 미미)<br>') +
+        '※ 매일 낮 12시 기준 최근 7일간 뉴스를 네이버 API로 자동 수집하고 Gemini AI로 분석합니다. 중복 기사는 대표 기사 1건으로 통합하여 표시합니다.' +
+      '</div>';
+  }
+
+  // 전역 노출
+  window.loadBrandNews = loadBrandNewsData;
+
+})();
+
 function switchTab(tab){
   var panels = document.querySelectorAll('.main-tab-panel');
   var btns   = document.querySelectorAll('.main-tab-btn');
@@ -6445,6 +7284,14 @@ function switchTab(tab){
   var btn   = document.getElementById('tabBtn' + tab.charAt(0).toUpperCase() + tab.slice(1));
   if(panel) panel.classList.add('active');
   if(btn)   btn.classList.add('active');
+  /* 경쟁사 현황 탭 진입 시 데이터 로드 */
+  if(tab === 'competitor' && typeof window.loadBrandNews === 'function'){
+    window.loadBrandNews(false);
+  }
+  /* 마케팅 탭 진입 시 AI 인사이트 자동 로드 */
+  if(tab === 'mkt' && typeof window.loadMktInsight === 'function'){
+    window.loadMktInsight(false);
+  }
   /* 탭 전환 후 차트 리사이즈 트리거 */
   setTimeout(function(){ window.dispatchEvent(new Event('resize')); }, 80);
 }
@@ -6465,7 +7312,7 @@ function switchTab(tab){
 ══════════════════════════════════ */
 var POPUP = (function(){
   // 버전 날짜가 바뀌면 이전 dismiss 기록 무효화 → 새 업데이트 팝업 자동 노출
-  var LS_KEY = 'twm_popup_dismiss_20260319';
+  var LS_KEY = 'twm_popup_dismiss_20260324';
 
   function isDismissedToday(){
     try{
@@ -6518,7 +7365,7 @@ var _origHideOverlay = null;
       if(m.type==='attributes' && m.attributeName==='class'){
         if(!mc.classList.contains('hide')){
           /* 탭 초기화 - 기본 Marketing 탭 활성 */
-          switchTab('mkt');
+          switchTab('competitor');
         }
       }
     });
