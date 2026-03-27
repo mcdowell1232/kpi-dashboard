@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>로봇청소기 KPI 모니터링 대시보드</title>
+    <title>로봇청소기 KPI Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
@@ -14,23 +14,115 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
-            background: linear-gradient(135deg, #c0392b 0%, #922b21 100%);
-            padding: 20px;
+            background: #f0f2f5;
+            padding: 0;
             min-height: 100vh;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
         }
-        .container { max-width: 1600px; margin: 0 auto; width: 100%; }
+        /* ── 전체 레이아웃: 사이드바 + 메인 ── */
+        #appShell {
+            display: flex;
+            min-height: 100vh;
+        }
+        #sideBar {
+            width: 220px;
+            min-height: 100vh;
+            background: #1e2130;
+            color: #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            position: fixed;
+            top: 0; left: 0;
+            z-index: 200;
+            box-shadow: 2px 0 16px rgba(0,0,0,0.18);
+        }
+        #sideBar .sb-logo {
+            padding: 22px 20px 16px;
+            font-size: 1.05em;
+            font-weight: 800;
+            color: #fff;
+            border-bottom: 1px solid rgba(255,255,255,0.09);
+            letter-spacing: -0.3px;
+            line-height: 1.35;
+        }
+        #sideBar .sb-logo span {
+            display: block;
+            font-size: 0.72em;
+            font-weight: 400;
+            color: #94a3b8;
+            margin-top: 3px;
+        }
+        #sideBar .sb-nav {
+            padding: 16px 0;
+            flex: 1;
+        }
+        #sideBar .sb-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 22px;
+            font-size: 0.9em; font-weight: 600;
+            color: #94a3b8;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.15s;
+        }
+        #sideBar .sb-item:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        #sideBar .sb-item.active { color: #fff; background: rgba(255,255,255,0.1); border-left-color: #3b82f6; }
+        #sideBar .sb-footer {
+            padding: 16px 20px;
+            font-size: 0.75em;
+            color: #475569;
+            border-top: 1px solid rgba(255,255,255,0.07);
+        }
+        #mainArea {
+            margin-left: 220px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container { max-width: 1600px; margin: 0 auto; width: 100%; padding: 0 24px 32px; }
 
-        /* ── 헤더 ── */
+        /* ── 헤더: PC에서는 숨김, 모바일에서만 표시 ── */
         header {
-            background: white;
-            padding: 28px 30px 22px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 25px;
-            text-align: center;
+            background: #1e2130;
+            padding: 0 12px 0 16px;
+            height: 52px;
+            display: none;  /* PC: 사이드바가 대신함 */
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            position: sticky;
+            top: 0;
+            z-index: 150;
+            margin-bottom: 0;
+            border-radius: 0;
+            gap: 8px;
         }
-        h1 { color: #2d3748; font-size: 2.2em; font-weight: 700; letter-spacing: -0.5px; }
+        h1 { color: #fff; font-size: 0.92em; font-weight: 800; letter-spacing: -0.3px; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        /* 모바일 헤더 버튼 그룹 */
+        .header-btns {
+            display: flex; align-items: center; gap: 5px; flex-shrink: 0;
+        }
+        .header-btn {
+            padding: 0; width: 32px; height: 32px;
+            border-radius: 8px; cursor: pointer;
+            border: 1px solid; display: flex; align-items: center; justify-content: center;
+            font-size: 0.9em; font-weight: 700; transition: opacity 0.15s;
+        }
+        .header-btn:hover { opacity: 0.82; }
+        .header-btn-refresh {
+            background: rgba(16,185,129,0.18); color: #6ee7b7;
+            border-color: rgba(16,185,129,0.35);
+            font-size: 1.05em;
+        }
+        .header-btn-pdf {
+            background: rgba(59,130,246,0.18); color: #93c5fd;
+            border-color: rgba(59,130,246,0.35);
+            font-size: 0.72em;
+        }
 
         /* ── 날짜 필터 ── */
         .date-filter {
@@ -53,11 +145,11 @@
         .date-filter button:hover { opacity: 0.88; }
         .btn-refresh { background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important; }
         .btn-pdf {
-            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%) !important;
-            color: #fff !important; border: none; border-radius: 8px;
-            padding: 7px 16px; font-size: 0.88em; font-weight: 700;
+            background: #3b82f6 !important;
+            color: #fff !important; border: none; border-radius: 7px;
+            padding: 7px 16px; font-size: 0.85em; font-weight: 700;
             cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
-            box-shadow: 0 2px 8px rgba(192,57,43,.25);
+            box-shadow: 0 2px 8px rgba(59,130,246,.25);
             transition: opacity .15s;
         }
         .btn-pdf:hover { opacity: 0.88; }
@@ -85,20 +177,22 @@
         /* ── 차트 그리드 ── */
         .chart-grid {
             display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 28px; margin-bottom: 28px;
+            gap: 20px; margin-bottom: 20px;
         }
         .chart-container {
-            background: white; padding: 22px 20px 16px;
-            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: #fff; padding: 22px 20px 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            border: 1px solid #e8eaf0;
         }
         /* 판매량 복합 차트는 전체 폭 */
         .chart-container.full-width {
             grid-column: 1 / -1;
         }
         .chart-title {
-            font-size: 1.25em; font-weight: 600; color: #2d3748;
+            font-size: 1.05em; font-weight: 700; color: #1e2130;
             margin-bottom: 16px; text-align: center;
-            padding-bottom: 12px; border-bottom: 3px solid #667eea;
+            padding-bottom: 12px; border-bottom: 2px solid #e2e8f0;
         }
         canvas { max-height: 400px; }
         /* 판매량 차트 캔버스 높이 고정 */
@@ -128,7 +222,9 @@
             margin-bottom: 4px; letter-spacing: 0.03em;
         }
         .ratio-table-wrap {
-            overflow-x: hidden; margin-top: 14px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 14px;
             box-sizing: border-box;
         }
         .ratio-table {
@@ -272,10 +368,10 @@
 
         /* ── 모바일 ── */
         @media (max-width:768px) {
-            body { padding: 8px; }
-            .container { width:100%; max-width:100%; padding:0; }
-            h1 { font-size: 1.28em; }
-            header { padding: 14px 12px 12px; margin-bottom: 10px; border-radius: 12px; }
+            body { padding: 0; }
+            .container { width:100%; max-width:100%; padding:0 10px 20px; }
+            h1 { font-size: 1em; }
+            header { padding: 0 14px; height: 56px; border-radius: 0; margin-bottom: 0; }
             /* chart-grid: 1열, 동일 너비 강제 */
             .chart-grid {
                 display: flex !important;
@@ -977,28 +1073,34 @@
 
     
 /* ══════════ TAB STYLES ══════════ */
+/* PC: 탭바 숨김 (사이드바로 전환) */
 .main-tab-bar {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 18px;
-    border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 0;
+    display: none;
+    gap: 0;
+    margin-bottom: 0;
+    background: #fff;
+    border-bottom: 1.5px solid #e2e8f0;
+    padding: 0 24px;
+    position: sticky;
+    top: 56px;
+    z-index: 140;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 .main-tab-btn {
-    padding: 9px 26px;
-    font-size: 0.95em;
+    padding: 11px 20px;
+    font-size: 0.88em;
     font-weight: 700;
     border: none;
-    background: #1e293b;
-    color: #ffffff;
+    background: transparent;
+    color: #94a3b8;
     cursor: pointer;
     border-bottom: 3px solid transparent;
-    margin-bottom: -2px;
-    border-radius: 6px 6px 0 0;
-    transition: color .18s, border-color .18s, background .18s;
+    margin-bottom: -1.5px;
+    border-radius: 0;
+    transition: color .18s, border-color .18s;
 }
-.main-tab-btn:hover { color: #0ea5e9; background: #0f172a; }
-.main-tab-btn.active { color: #1e293b; border-bottom-color: #0ea5e9; background: #ffffff; }
+.main-tab-btn:hover { color: #1e2130; }
+.main-tab-btn.active { color: #1e2130; border-bottom-color: #3b82f6; }
 .main-tab-panel { display: none; }
 .main-tab-panel.active { display: block; }
 
@@ -1028,6 +1130,52 @@
 @keyframes newPulse {
     0%,100% { opacity:1; transform:scale(1); }
     50% { opacity:.7; transform:scale(1.12); }
+}
+
+/* ── 탭 패널 콘텐츠 상단 패딩 ── */
+.main-tab-panel.active {
+    padding-top: 24px;
+}
+
+/* ── 반응형: 모바일에서 사이드바 숨김 ── */
+@media (max-width: 900px) {
+    /* 모바일/태블릿: 사이드바 숨기고 header+탭바 표시 */
+    #sideBar { display: none !important; }
+    #mainArea { margin-left: 0; }
+    header { display: flex !important; }        /* 모바일 header 표시 */
+    .main-tab-bar { display: flex !important; padding: 0 8px; top: 52px; } /* 탭바 표시 */
+    .container { padding: 0 12px 24px; }
+}
+@media (max-width: 768px) {
+    .main-tab-bar { top: 52px; padding: 0 2px; }
+    .main-tab-btn { padding: 9px 10px; font-size: 0.78em; }
+    .main-tab-panel.active { padding-top: 10px; }
+    /* 모바일 헤더 버튼 크기 최적화 */
+    .header-btn { width: 30px; height: 30px; }
+    .header-btn-refresh { font-size: 1em; }
+    .header-btn-pdf { font-size: 0.68em; }
+}
+@media (max-width: 480px) {
+    .main-tab-btn { padding: 8px 8px; font-size: 0.74em; }
+    header { height: 48px; }
+    .main-tab-bar { top: 48px; }
+}
+
+/* ── authOverlay 배경색 업데이트 ── */
+#authOverlay { background: #f0f2f5 !important; }
+
+/* ═══════════════════════════════════════
+   라이트 테마 추가 오버라이드
+═══════════════════════════════════════ */
+/* 상태 메시지 */
+.status {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    color: #374151;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin: 12px 0;
+    font-size: 0.9em;
 }
 
 /* ══════════ POPUP STYLES ══════════ */
@@ -1580,17 +1728,46 @@
     </div>
 </div>
 
-<div class="container">
-    <header style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
-        <h1 style="margin:0;">🤖 로봇청소기 KPI 모니터링 대시보드</h1>
-        <div id="userInfo" style="display:none;"><span id="userInfoName"></span><span id="sessionTimer"></span><button id="logoutBtn" onclick="AUTH.logout()">로그아웃</button></div>
-        <button class="btn-pdf" onclick="exportPDF()">📄 PDF 출력</button>
+<div id="appShell">
+
+  <!-- ── 사이드바 ── -->
+  <nav id="sideBar">
+    <div class="sb-logo">
+      🤖 로봇청소기<br>KPI Dashboard
+      <span>Thinkware Mobile</span>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-item active" id="sbCompetitor" onclick="switchTab('competitor');setSbActive('sbCompetitor')">🔍 경쟁사 현황</div>
+      <div class="sb-item" id="sbMkt" onclick="switchTab('mkt');setSbActive('sbMkt')">📊 Marketing</div>
+      <div class="sb-item" id="sbSales" onclick="switchTab('sales');setSbActive('sbSales')">💼 Sales</div>
+    </div>
+    <div class="sb-footer" id="sbFooterInfo">
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+        <button onclick="loadGoogleSheetData()" style="width:100%;padding:8px 0;background:rgba(16,185,129,0.15);color:#6ee7b7;border:1px solid rgba(16,185,129,0.3);border-radius:7px;cursor:pointer;font-size:0.82em;font-weight:700;">↻ 데이터 새로고침</button>
+        <button onclick="exportPDF()" style="width:100%;padding:8px 0;background:rgba(59,130,246,0.15);color:#93c5fd;border:1px solid rgba(59,130,246,0.3);border-radius:7px;cursor:pointer;font-size:0.82em;font-weight:700;">📄 PDF 출력</button>
+      </div>
+      <div id="userInfo" style="display:none;font-size:0.82em;margin-bottom:8px;padding:8px;background:rgba(255,255,255,0.05);border-radius:6px;"><span id="userInfoName" style="color:#e2e8f0;font-weight:600;"></span><br><span id="sessionTimer" style="color:#64748b;font-size:0.9em;"></span></div>
+      <button id="logoutBtn" onclick="AUTH.logout()" style="display:none;width:100%;padding:7px 0;background:rgba(239,68,68,0.1);color:#fca5a5;border:1px solid rgba(239,68,68,0.2);border-radius:6px;cursor:pointer;font-size:0.82em;font-weight:700;">로그아웃</button>
+    </div>
+  </nav>
+
+  <!-- ── 메인 영역 ── -->
+  <div id="mainArea">
+
+    <!-- 상단 고정 헤더: 모바일에서만 표시 -->
+    <header>
+        <h1>🤖 로봇청소기 KPI Dashboard</h1>
+        <div class="header-btns">
+          <button onclick="loadGoogleSheetData()" title="데이터 새로고침" class="header-btn header-btn-refresh">↻</button>
+          <button onclick="exportPDF()" title="PDF 출력" class="header-btn header-btn-pdf">PDF</button>
+        </div>
     </header>
 
     <div id="statusMessage" class="status hide"></div>
 
     <div id="mainContent" class="hide">
-        <div class="date-filter">
+        <!-- 날짜 필터 숨김 (hidden) — JS에서 startDate/endDate 값은 계속 사용 -->
+        <div class="date-filter" style="display:none;">
             <label for="startDate">📅 시작일</label>
             <input type="date" id="startDate" value="2025-12-29">
             <label for="endDate">📅 종료일</label>
@@ -1598,18 +1775,14 @@
             <button onclick="updateCharts()">🔄 기간 적용</button>
             <button class="btn-refresh" onclick="loadGoogleSheetData()">↻ 데이터 새로고침</button>
         </div>
-
-        <div class="date-range" id="dateRange">
-            <span class="date-info">2025-12-29</span> ~ <span class="date-info">2026-04-08</span>
-            <span style="margin-left:10px;">총 <strong>101</strong>일</span>
-        </div>
+        <div class="date-range" id="dateRange" style="display:none;"></div>
 
         
         <!-- ══════ TAB BAR ══════ -->
         <div class="main-tab-bar">
-          <button class="main-tab-btn active" id="tabBtnCompetitor" onclick="switchTab('competitor')">🔍 경쟁사 현황</button>
-          <button class="main-tab-btn" id="tabBtnMkt" onclick="switchTab('mkt')">📊 Marketing</button>
-          <button class="main-tab-btn" id="tabBtnSales" onclick="switchTab('sales')">💼 Sales</button>
+          <button class="main-tab-btn active" id="tabBtnCompetitor" onclick="switchTab('competitor');setSbActive('sbCompetitor')">🔍 경쟁사 현황</button>
+          <button class="main-tab-btn" id="tabBtnMkt" onclick="switchTab('mkt');setSbActive('sbMkt')">📊 Marketing</button>
+          <button class="main-tab-btn" id="tabBtnSales" onclick="switchTab('sales');setSbActive('sbSales')">💼 Sales</button>
         </div>
 
         <!-- ══════ COMPETITOR TAB ══════ -->
@@ -2071,8 +2244,11 @@
       </div>
 
     </div>
-  </div>
-</div>
+  </div><!-- /mainContent -->
+
+    <!-- container 닫기 -->
+  </div><!-- /mainArea -->
+</div><!-- /appShell -->
 
 <script>
 (function(){
@@ -3091,11 +3267,8 @@ function renderCmpChart() {
               ];
             },
             label: item => {
-              if (item.dataset.label.startsWith('__')) return null;
-              if ((item.raw || 0) === 0) return null;
-              const series = item.dataset.label.endsWith('(S10)') ? '🔵 S10' : '🟢 S9';
-              const ch = item.dataset.label.replace(' (S10)','').replace(' (S9)','');
-              return `  ${series} ${ch}: ${(item.raw||0).toLocaleString()}대`;
+              // 채널별 세부 항목 숨김 — beforeBody 합계만 표시
+              return null;
             },
             filter: item => !item.dataset.label.startsWith('__') && (item.raw || 0) > 0
           }
@@ -4198,18 +4371,16 @@ window.loadSo=loadSo;
                                 return wkDisplayLabels[i].replace('\n', ' ');
                             },
                             label(c) {
-                                if (isNaN(c.parsed.y) || c.parsed.y === null) return null;
-                                const v   = c.parsed.y;
-                                const fmt = v >= 1000 ? (v/1000).toFixed(1)+'k' : Math.round(v);
-                                return `${c.dataset.label}: ${fmt}`;
+                                // PC/모바일 모두: 채널별 세부 항목 숨김 (총합만 afterBody에서 표시)
+                                return null;
                             },
                             afterBody(items) {
                                 const i = items[0]?.dataIndex;
                                 if (i == null) return [];
-                                const lines = ['─────────────────'];
-                                if (totalSales[i])  lines.push(`주차 총 판매: ${totalSales[i].toLocaleString()}대`);
-                                if (searchVals[i])  lines.push(`검색량 합산: ${Math.round(searchVals[i]).toLocaleString()}`);
-                                if (ratios[i])      lines.push(`판매/검색 비율: ${ratios[i]}%`);
+                                const lines = [];
+                                if (totalSales[i])  lines.push(`📦 총 판매: ${totalSales[i].toLocaleString()}대`);
+                                if (searchVals[i])  lines.push(`🔍 검색량: ${Math.round(searchVals[i]).toLocaleString()}`);
+                                if (ratios[i])      lines.push(`📊 판매/검색 비율: ${ratios[i]}%`);
                                 return lines;
                             }
                         }
@@ -4885,11 +5056,11 @@ window.loadSo=loadSo;
     /* 토글 클릭 핸들러 */
     function toggleLaunchAlign() {
         if (!allData.length) {
-            // 데이터 미로드 시 안내
             showStatus('⚠️ 데이터 로딩 중입니다. 잠시 후 다시 시도해주세요.', 'error');
             return;
         }
         launchAligned = !launchAligned;
+        console.log('[toggleLaunchAlign] launchAligned =', launchAligned);
         // 버튼 상태 동기화
         ['alignBtn1','alignBtn2','alignBtn3'].forEach(id => {
             const btn = document.getElementById(id);
@@ -5286,18 +5457,24 @@ window.loadSo=loadSo;
     /* ─────────────────────────────────────────
        차트 업데이트
     ───────────────────────────────────────── */
+    // ★ 차트 X축 범위: 시작 2025-12-29 고정, 종료 현재날짜+1달 자동
+    function getChartDateRange() {
+        const CHART_START = '2025-12-29';
+        const now = new Date();
+        const endDate = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
+        const endStr = endDate.toISOString().slice(0, 10);
+        // hidden input도 업데이트해서 filterData 등 기존 로직과 연동
+        document.getElementById('startDate').value = CHART_START;
+        document.getElementById('endDate').value   = endStr;
+        return { start: CHART_START, end: endStr };
+    }
+
     function updateCharts() {
         if (!allData.length) return;
-        const start = document.getElementById('startDate').value;
-        const end   = document.getElementById('endDate').value;
-        if (!start || !end) { alert('시작일과 종료일을 선택해주세요.'); return; }
+        const { start, end } = getChartDateRange();
 
         const fd = filterData(allData, start, end);
-        if (!fd.length) { alert('선택 기간에 데이터가 없습니다.'); return; }
-
-        document.getElementById('dateRange').innerHTML =
-            `<span class="date-info">${start}</span> ~ <span class="date-info">${end}</span>` +
-            `<span style="margin-left:10px;">총 <strong>${fd.length}</strong>일</span>`;
+        if (!fd.length) { console.warn('선택 기간에 데이터가 없습니다.'); return; }
 
         const pt = (d, k) => ({ x: d['날짜'], y: d[k] });
 
@@ -6802,6 +6979,11 @@ window.loadSo=loadSo;
         setTimeout(updateInsights, 500);
     };
 
+    // ★ 전역 노출 — onclick="..." 에서 접근 가능하도록
+    window.toggleLaunchAlign = toggleLaunchAlign;
+    window.updateCharts      = updateCharts;
+    window.exportPDF         = exportPDF;
+
 </script>
 
 <script id="authScript">
@@ -7026,14 +7208,16 @@ var AUTH=(function(){
 
   /* ── 헤더 계정 바 ── */
   function updateUserBar(userId){
-    var bar=$('userInfo'), nm=$('userInfoName');
+    var bar=$('userInfo'), nm=$('userInfoName'), logoutBtn=$('logoutBtn');
     if(!bar)return;
     if(userId){
       if(nm)nm.innerHTML='👤 <b>'+userId+'</b>';
-      bar.style.display='flex';
+      bar.style.display='block';
+      if(logoutBtn)logoutBtn.style.display='block';
     }else{
       bar.style.display='none';
       if(nm)nm.innerHTML='';
+      if(logoutBtn)logoutBtn.style.display='none';
       stopSessionCd();
     }
   }
@@ -7593,6 +7777,14 @@ var AUTH=(function(){
   window.loadBrandNews = loadBrandNewsData;
 
 })();
+
+/* 사이드바 활성 아이템 동기화 */
+function setSbActive(id){
+  document.querySelectorAll('#sideBar .sb-item').forEach(function(el){ el.classList.remove('active'); });
+  var el = document.getElementById(id);
+  if(el) el.classList.add('active');
+}
+window.setSbActive = setSbActive;
 
 function switchTab(tab){
   var panels = document.querySelectorAll('.main-tab-panel');
