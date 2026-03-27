@@ -1727,34 +1727,27 @@
                 <p class="legend-info" style="margin-top:4px;margin-bottom:0;">로보락 S10 Max V Ultra &nbsp;·&nbsp; 삼성로봇청소기 &nbsp;·&nbsp; 드리미X60 &nbsp;·&nbsp; DJI 로봇청소기 &nbsp;·&nbsp; 다이슨 로봇청소기 &nbsp;·&nbsp; 에코백스T90</p>
             </div>
 
-            <!-- ══════ 경쟁사 AI 분석 인사이트 ══════ -->
+            <!-- ══════ 경쟁사 AI 종합 인사이트 (InsightV2) ══════ -->
             <div class="chart-container full-width" id="competitorInsightWrapper" style="margin-top:0; background:linear-gradient(135deg,#f8faff 0%,#eef2ff 100%); border:1.5px solid #c7d2fe;">
 
               <!-- 헤더 -->
               <div class="chart-title" style="border-bottom-color:#6366f1; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; padding-bottom:14px;">
                 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                  <span>📈 경쟁사 검색트렌드 인사이트</span>
+                  <span>🤖 경쟁사 검색트렌드 종합 인사이트</span>
                   <span style="font-size:0.7em;font-weight:500;background:#e0e7ff;color:#4338ca;padding:2px 8px;border-radius:8px;">Gemini AI · 매일 12시 자동</span>
-                  <span style="font-size:0.68em;font-weight:400;color:#94a3b8;">네이버 데이터랩 검색량 트렌드 분석</span>
+                  <span style="font-size:0.68em;font-weight:400;color:#94a3b8;">검색량 트렌드 + 경쟁사 뉴스 교차 분석</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                   <span id="insightCutoffBadge" style="font-size:0.72em;font-weight:600;background:#e0e7ff;color:#4338ca;padding:3px 10px;border-radius:12px;white-space:nowrap;">로딩 중...</span>
                   <button onclick="loadMktInsight(true)" style="font-size:0.72em;font-weight:600;padding:5px 12px;background:#fff;color:#6366f1;border:1.5px solid #c7d2fe;border-radius:8px;cursor:pointer;">🔄 새로고침</button>
-                  <button onclick="debugMktInsightCSV()" style="font-size:0.72em;font-weight:600;padding:5px 12px;background:#fff;color:#94a3b8;border:1.5px solid #e2e8f0;border-radius:8px;cursor:pointer;" title="CSV 연결 상태 진단">🔍 진단</button>
                 </div>
-              </div>
-
-              <!-- 데이터 소스 현황 -->
-              <div id="aiDataSourceStatus" style="display:none;margin-bottom:12px;gap:8px;flex-wrap:wrap;">
-                <div id="aiSrcDate"   style="font-size:0.72em;padding:4px 10px;border-radius:8px;background:#e0e7ff;color:#4338ca;border:1px solid #c7d2fe;">📅 분석 기준일: -</div>
-                <div id="aiSrcUpdate" style="font-size:0.72em;padding:4px 10px;border-radius:8px;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;">🕐 업데이트: -</div>
               </div>
 
               <!-- 로딩 -->
               <div id="aiInsightLoading" style="display:none;text-align:center;padding:40px 20px;">
                 <div style="font-size:2em;margin-bottom:12px;animation:spin 2s linear infinite;display:inline-block;">🤖</div>
                 <div style="font-size:0.9em;color:#6366f1;font-weight:700;">AI 분석 결과 불러오는 중...</div>
-                <div style="font-size:0.76em;color:#94a3b8;margin-top:6px;">Google Apps Script에서 자동 생성된 분석 결과를 가져옵니다</div>
+                <div style="font-size:0.76em;color:#94a3b8;margin-top:6px;">검색량 트렌드 + 경쟁사 뉴스 교차분석 결과를 가져옵니다</div>
                 <div style="margin-top:16px;height:5px;background:#e0e7ff;border-radius:4px;overflow:hidden;max-width:320px;margin-left:auto;margin-right:auto;">
                   <div id="aiInsightProgressBar" style="height:100%;width:60%;background:linear-gradient(90deg,#6366f1,#a5b4fc);border-radius:4px;animation:progressPulse 1.5s ease-in-out infinite;"></div>
                 </div>
@@ -1763,19 +1756,19 @@
               <!-- 에러 -->
               <div id="aiInsightError" style="display:none;padding:16px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;margin:12px 0;font-size:0.84em;color:#dc2626;"></div>
 
-              <!-- 결과 카드 영역 -->
+              <!-- 결과 영역 (1개 박스) -->
               <div id="competitorInsights" style="padding:4px 0;">
                 <div style="text-align:center;padding:40px 20px;color:#94a3b8;font-size:0.85em;">
                   <div style="font-size:2em;margin-bottom:12px;">🤖</div>
                   AI 분석 결과를 불러오는 중입니다...<br>
-                  <span style="font-size:0.85em;color:#b0b8c8;">매일 낮 12시 Google Apps Script가 자동으로 분석을 실행합니다.</span>
+                  <span style="font-size:0.85em;color:#b0b8c8;">잠시만 기다려 주세요.</span>
                 </div>
               </div>
 
               <!-- 단서조항 -->
               <div id="aiInsightFooter" style="display:none;margin-top:10px;padding:10px 14px;background:#f5f3ff;border-radius:8px;font-size:0.71em;color:#6366f1;line-height:1.65;">
-                ※ 네이버 데이터랩 검색량 수치 데이터만을 근거로 Google Apps Script의 Gemini AI가 매일 낮 12시 자동 분석합니다.<br>
-                ※ 외부 뉴스나 다른 정보 없이, 순수하게 검색량 변화만으로 분석한 결과입니다. 최종 판단은 담당자가 직접 확인하세요.
+                ※ 네이버 데이터랩 검색량 + 경쟁사 뉴스(BrandNews)를 Gemini AI가 교차 분석합니다. 매일 낮 12시 자동 생성.<br>
+                ※ AI가 생성한 인사이트이므로 최종 판단은 담당자가 직접 확인하세요.
               </div>
 
             </div>
@@ -5874,12 +5867,16 @@ window.loadSo=loadSo;
     }
 
     /* ══════════════════════════════════════════════════
-       경쟁사 AI 통합 분석 인사이트 – MarketingInsight CSV 읽기
+       경쟁사 AI 종합 인사이트 – InsightV2 CSV 읽기 (v3.0)
        (Google Apps Script가 매일 12시 자동 생성한 결과를 표시)
+       ★ Apps Script → testInsightV2() 실행 후
+         구글시트 → 파일 → 웹에 게시 → InsightV2 탭 → CSV 게시
+         → getInsightV2CsvUrl() 로그에서 URL 복사 → 아래 INSIGHTV2_CSV에 붙여넣기
     ══════════════════════════════════════════════════ */
 
-    // ★ Apps Script 배포 후 MarketingInsight 시트의 CSV URL로 교체하세요
-    //   (Google Sheet → 파일 > 웹에 게시 > MarketingInsight 시트 > CSV)
+    // ★ testInsightV2() 실행 후 getInsightV2CsvUrl() 로그에서 URL 복사해서 여기에 붙여넣으세요
+    const INSIGHTV2_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTsdNtfJjOHVcqMfdnA6gwQRfRgOt1HsG4QxNvK5VBGCTd195LzXgdH3s2RkiRn0Na2z75MX_dGluWa/pub?gid=530972263&single=true&output=csv';
+    // 구버전 URL (하위 호환 fallback)
     const MKTINSIGHT_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTsdNtfJjOHVcqMfdnA6gwQRfRgOt1HsG4QxNvK5VBGCTd195LzXgdH3s2RkiRn0Na2z75MX_dGluWa/pub?gid=872009421&single=true&output=csv';
 
     const MI_PROXY_BASES = [
@@ -5926,120 +5923,90 @@ window.loadSo=loadSo;
 
     let _mktInsightLoaded = false;
 
-    // 마케팅 탭 진입 or 새로고침 시 호출
+    // 마케팅 탭 진입 or 새로고침 시 호출 (InsightV2 우선, fallback → 구버전)
     async function loadMktInsight(force) {
         if (_mktInsightLoaded && !force) return;
-        if (force) _mktInsightLoaded = false;  // 강제 시 캐시 무효화
+        if (force) _mktInsightLoaded = false;
 
-        const loadingEl  = document.getElementById('aiInsightLoading');
-        const errorEl    = document.getElementById('aiInsightError');
-        const container  = document.getElementById('competitorInsights');
-        const footerEl   = document.getElementById('aiInsightFooter');
-        const badgeEl    = document.getElementById('insightCutoffBadge');
-        const dataStatus = document.getElementById('aiDataSourceStatus');
+        const loadingEl = document.getElementById('aiInsightLoading');
+        const errorEl   = document.getElementById('aiInsightError');
+        const container = document.getElementById('competitorInsights');
+        const footerEl  = document.getElementById('aiInsightFooter');
+        const badgeEl   = document.getElementById('insightCutoffBadge');
 
-        if (loadingEl)  loadingEl.style.display  = 'block';
-        if (errorEl)    errorEl.style.display    = 'none';
-        if (container)  container.innerHTML      = '';
-        if (footerEl)   footerEl.style.display   = 'none';
-        if (badgeEl)    badgeEl.textContent       = '📡 데이터 로딩 중...';
+        if (loadingEl) loadingEl.style.display = 'block';
+        if (errorEl)   errorEl.style.display   = 'none';
+        if (container) container.innerHTML      = '';
+        if (footerEl)  footerEl.style.display  = 'none';
+        if (badgeEl)   badgeEl.textContent      = '📡 데이터 로딩 중...';
 
-        console.log('MI CSV 로드 시작:', MKTINSIGHT_CSV.substring(0,80));
-        const text = await _fetchWithProxies(MKTINSIGHT_CSV, MI_PROXY_BASES);
+        // InsightV2 CSV 우선 시도 (URL 미설정 시 안내)
+        const useV2 = INSIGHTV2_CSV && !INSIGHTV2_CSV.includes('REPLACE_WITH');
+
+        if (!useV2) {
+            // CSV URL 미설정 상태 → 설정 안내 표시
+            if (loadingEl) loadingEl.style.display = 'none';
+            if (badgeEl) badgeEl.textContent = '⚙️ 설정 필요';
+            if (container) container.innerHTML = `
+              <div style="padding:28px 20px;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;margin:4px 0;">
+                <div style="font-size:1.1em;font-weight:700;color:#92400e;margin-bottom:12px;">⚙️ InsightV2 CSV URL 설정이 필요합니다</div>
+                <div style="font-size:0.85em;color:#78350f;line-height:2;">
+                  <strong>📋 설정 순서:</strong><br>
+                  1. Apps Script에서 <code style="background:#fef3c7;padding:1px 6px;border-radius:4px;">testInsightV2()</code> 함수 실행<br>
+                  2. 구글시트 → <strong>파일 → 웹에 게시</strong> → <strong>InsightV2</strong> 탭 → <strong>CSV</strong> → <strong>게시</strong><br>
+                  3. Apps Script에서 <code style="background:#fef3c7;padding:1px 6px;border-radius:4px;">getInsightV2CsvUrl()</code> 실행 → 로그에서 URL 복사<br>
+                  4. <code style="background:#fef3c7;padding:1px 6px;border-radius:4px;">index.html</code> 의 <code style="background:#fef3c7;padding:1px 6px;border-radius:4px;">INSIGHTV2_CSV</code> 상수에 URL 붙여넣기
+                </div>
+                <div style="margin-top:14px;padding:10px 14px;background:#fff;border-radius:8px;font-size:0.8em;color:#6b7280;">
+                  💡 Apps Script 코드가 궁금하다면 <a href="download_appscript.html" target="_blank" style="color:#6366f1;font-weight:600;">Apps Script 다운로드 페이지</a>를 확인하세요.
+                </div>
+              </div>`;
+            if (footerEl) footerEl.style.display = 'none';
+            return;
+        }
+
+        const csvUrl = INSIGHTV2_CSV;
+        console.log('InsightV2 CSV 로드 시작 (V2):', csvUrl.substring(0, 80));
+
+        const text = await _fetchWithProxies(csvUrl, MI_PROXY_BASES);
         if (loadingEl) loadingEl.style.display = 'none';
 
         let rows = null;
         if (text) {
-            console.log('MI CSV 수신 길이:', text.length, '| 앞150자:', text.substring(0,150));
+            console.log('CSV 수신 길이:', text.length, '| 앞100자:', text.substring(0, 100));
             rows = _parseMktInsightCSV(text);
-            console.log('MI CSV 파싱 결과 행 수:', rows ? rows.length : 0);
-            if (rows && rows.length > 0) {
-                const lastRow = rows[rows.length - 1];
-                console.log('MI 최신 행 키:', Object.keys(lastRow).join(', '));
-                console.log('MI 카드1제목:', lastRow['카드1제목'], '| 날짜:', lastRow['날짜']);
-            }
+            console.log('CSV 파싱 행 수:', rows ? rows.length : 0);
         } else {
-            console.log('MI CSV fetch 실패 - text is null');
+            console.log('CSV fetch 실패');
         }
 
         if (!rows || !rows.length) {
-            // CSV 미설정 또는 로드 실패 → 안내 메시지
-            const fetchFailed = !text;
             if (errorEl) {
                 errorEl.style.display = 'block';
-                errorEl.innerHTML = fetchFailed
-                    ? '🌐 CSV 네트워크 로드 실패<br><span style="font-size:0.85em;color:#6b7280;line-height:1.8;">• MarketingInsight 시트가 <b>웹에 게시</b>되어 있는지 확인하세요.<br>• 구글시트 → 파일 → 공유 → 웹에 게시 → MarketingInsight 탭 → CSV → 게시</span>'
-                    : '📋 CSV 파싱 실패: 데이터 형식이 맞지 않습니다.<br><span style="font-size:0.85em;color:#6b7280;line-height:1.8;">• Apps Script → <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;">testMarketingInsight()</code> 재실행 후 새로고침<br>• 브라우저 콘솔(F12)에서 MI CSV 관련 로그를 확인하세요.</span>';
+                errorEl.innerHTML = !text
+                    ? '🌐 CSV 로드 실패<br><span style="font-size:0.85em;color:#6b7280;line-height:1.8;">• 구글시트 → 파일 → 웹에 게시 → InsightV2 탭 → CSV 게시 여부 확인<br>• Apps Script → <code>testInsightV2()</code> 재실행 후 새로고침</span>'
+                    : '📋 CSV 파싱 실패<br><span style="font-size:0.85em;color:#6b7280;">• Apps Script → <code>testInsightV2()</code> 재실행 후 새로고침</span>';
             }
-            if (badgeEl) badgeEl.textContent = fetchFailed ? '📡 로드 실패' : '⚠️ 파싱 오류';
+            if (badgeEl) badgeEl.textContent = !text ? '📡 로드 실패' : '⚠️ 파싱 오류';
             return;
         }
 
-        // 최신 행 사용
         const latest = rows[rows.length - 1];
         _mktInsightLoaded = true;
 
         // 배지 업데이트
-        const analysisDate = latest['분석기준일'] || latest['날짜'] || '';
-        const updateTime   = latest['수집시각'] || '';
-        const dateShortBadge = analysisDate ? analysisDate.trim().replace(/\./g,'-').slice(2) : '';
-        if (badgeEl)    badgeEl.textContent = dateShortBadge ? `📅 데이터 기준: ${dateShortBadge}` : '📅 분석 완료';
-        if (dataStatus) {
-            dataStatus.style.display = 'flex';
-            const srcDate   = document.getElementById('aiSrcDate');
-            const srcUpdate = document.getElementById('aiSrcUpdate');
-            if (srcDate)   srcDate.textContent   = `📅 데이터 기준: ${dateShortBadge || analysisDate}`;
-            if (srcUpdate) srcUpdate.textContent = `🕐 업데이트: ${dateShortBadge} ${updateTime}`;
-        }
+        const analysisDate   = latest['날짜'] || '';
+        const updateTime     = latest['수집시각'] || '';
+        const dateShort      = analysisDate ? analysisDate.trim().slice(2) : '';
+        if (badgeEl) badgeEl.textContent = dateShort ? `📅 ${dateShort} ${updateTime}` : '📅 분석 완료';
 
-        // 카드 렌더링
-        const cards = _buildCardsFromCSV(latest);
-        if (container) {
-            container.innerHTML = `<div id="aiCardsGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;padding:16px 4px 4px;">${cards}</div>`;
-        }
-        if (footerEl) footerEl.style.display = 'block';
+        // InsightV2 단일 박스 렌더링
+        const html = _renderInsightV2Box(latest);
+
+        if (container) container.innerHTML = html;
+        if (footerEl)  footerEl.style.display = 'block';
     }
     window.loadMktInsight = loadMktInsight;
-
-    // CSV 진단 함수 - 브라우저 콘솔 + alert로 결과 출력
-    async function debugMktInsightCSV() {
-        const url = MKTINSIGHT_CSV;
-        const results = [];
-        results.push('🔍 MI CSV 진단 시작');
-        results.push('URL: ' + url.substring(0, 80) + '...');
-
-        const proxies = [
-            { label: 'direct', url: url + '&_nc=' + Date.now() },
-            { label: 'corsproxy.io', url: 'https://corsproxy.io/?url=' + encodeURIComponent(url) },
-            { label: 'allorigins', url: 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url) },
-        ];
-
-        for (const p of proxies) {
-            try {
-                const ctrl = new AbortController();
-                setTimeout(() => ctrl.abort(), 10000);
-                const res = await fetch(p.url, { signal: ctrl.signal, cache: 'no-store' });
-                if (res.ok) {
-                    const text = await res.text();
-                    const firstLine = text.split('\n')[0].substring(0, 120);
-                    results.push(`✅ [${p.label}] 성공! 길이:${text.length} | 헤더:${firstLine}`);
-                    // 성공 시 파싱도 테스트
-                    const rows = _parseMktInsightCSV(text);
-                    results.push(`   파싱: ${rows.length}행 | 카드1제목: "${rows[rows.length-1]?.['카드1제목']?.substring(0,30) || '없음'}"`);
-                    break; // 첫 성공에서 중단
-                } else {
-                    results.push(`❌ [${p.label}] HTTP ${res.status}`);
-                }
-            } catch(e) {
-                results.push(`❌ [${p.label}] 오류: ${e.message}`);
-            }
-        }
-
-        const msg = results.join('\n');
-        console.log(msg);
-        alert(msg);
-    }
-    window.debugMktInsightCSV = debugMktInsightCSV;
 
     // CSV 파싱 - \r\n 정규화 + 인용부호 내 줄바꿈 처리
     function _parseMktInsightCSV(text) {
@@ -6101,8 +6068,8 @@ window.loadSo=loadSo;
             header.forEach((h, idx) => {
                 obj[h] = (cols[idx] || '').replace(/\r/g, '').trim();
             });
-            // 날짜 컬럼이 있고 비어있지 않은 행만 포함
-            if (obj['날짜'] || obj['카드1제목']) {
+            // 날짜 또는 인사이트/카드1제목이 있는 행만 포함 (InsightV2 + 구버전 공통 처리)
+            if (obj['날짜'] || obj['인사이트'] || obj['카드1제목']) {
                 rows.push(obj);
             }
         }
@@ -6199,6 +6166,79 @@ window.loadSo=loadSo;
               </div>
             </div>`;
         }).join('');
+    }
+
+    /* ── InsightV2 1개 박스 렌더링 ──
+       InsightV2 시트 컬럼: 날짜 | 수집시각 | 인사이트 | 트렌드요약 | Gemini원문
+    ── */
+    function _renderInsightV2Box(row) {
+        const insight      = (row['인사이트'] || row['Gemini원문'] || '').trim();
+        const trendSummary = (row['트렌드요약'] || '').trim();
+        const dateStr      = (row['날짜'] || '').trim();
+        const timeStr      = (row['수집시각'] || '').trim();
+        const dateShort    = dateStr ? dateStr.slice(2) : '';
+
+        if (!insight) {
+            return `<div style="padding:30px;text-align:center;color:#94a3b8;">
+                <div style="font-size:2em;margin-bottom:10px;">🤖</div>
+                InsightV2 데이터가 없습니다.<br>
+                <span style="font-size:0.85em;">Apps Script → testInsightV2() 를 실행하세요.</span>
+            </div>`;
+        }
+
+        // 수치 하이라이트 (숫자 + % 볼드 강조)
+        const highlight = (str) => (str || '')
+            .replace(/(\d[\d,]*\.?\d*%?)/g, '<strong style="color:#4338ca">$1</strong>')
+            .replace(/\n/g, '<br>');
+
+        // 이모지 라인별 색상 구분
+        const coloredInsight = insight
+            .split('\n')
+            .map(line => {
+                const l = line.trim();
+                if (!l) return '<br>';
+                let color = '#1e293b';
+                if (l.startsWith('🚨'))      color = '#dc2626';
+                else if (l.startsWith('⚠️')) color = '#d97706';
+                else if (l.startsWith('✅')) color = '#16a34a';
+                else if (l.startsWith('🎯') || l.startsWith('📌')) color = '#4338ca';
+                const isFirstLine = insight.split('\n').filter(s=>s.trim())[0] === line.trim();
+                const style = isFirstLine
+                    ? `font-size:0.95em;font-weight:700;color:${color};margin-bottom:4px;`
+                    : `font-size:0.85em;color:${color};line-height:1.9;`;
+                return `<div style="${style}">${highlight(l)}</div>`;
+            })
+            .join('');
+
+        return `
+        <div style="padding:6px 0;">
+          <!-- 인사이트 본문 박스 -->
+          <div style="background:#fff;border:1.5px solid #c7d2fe;border-radius:14px;padding:22px 24px;position:relative;overflow:hidden;box-shadow:0 2px 12px rgba(99,102,241,0.07);">
+            <!-- 배경 장식 -->
+            <div style="position:absolute;top:-10px;right:-10px;font-size:6em;opacity:0.04;pointer-events:none;line-height:1;">🤖</div>
+
+            <!-- 소스 뱃지 -->
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;">
+              <span style="font-size:0.7em;font-weight:700;background:#e0e7ff;color:#4338ca;padding:3px 10px;border-radius:10px;">📊 검색량 트렌드</span>
+              <span style="font-size:0.7em;font-weight:700;background:#f0fdf4;color:#16a34a;padding:3px 10px;border-radius:10px;">📰 경쟁사 뉴스</span>
+              <span style="font-size:0.7em;font-weight:700;background:#fef3c7;color:#d97706;padding:3px 10px;border-radius:10px;">🤖 Gemini AI 교차분석</span>
+              <span style="margin-left:auto;font-size:0.7em;color:#94a3b8;">📅 ${dateShort} ${timeStr}</span>
+            </div>
+
+            <!-- 인사이트 본문 -->
+            <div style="line-height:1.9;word-break:keep-all;">
+              ${coloredInsight}
+            </div>
+
+            ${trendSummary ? `
+            <!-- 트렌드 요약 (접을 수 있는 원본 데이터) -->
+            <details style="margin-top:16px;">
+              <summary style="font-size:0.75em;color:#6366f1;cursor:pointer;font-weight:600;user-select:none;">📋 원본 검색량 데이터 보기</summary>
+              <div style="margin-top:10px;padding:12px 14px;background:#f8faff;border-radius:8px;font-size:0.74em;color:#475569;white-space:pre-wrap;line-height:1.7;font-family:monospace;">${trendSummary}</div>
+            </details>` : ''}
+
+          </div>
+        </div>`;
     }
 
     // 차트 데이터 로드 시 호출되는 훅 (하위 호환 유지, 실제 분석은 CSV에서)
