@@ -1889,6 +1889,10 @@
                     <div class="ml-item"><span class="ml-box ml-box-red"></span>26년 사전마케팅 (02.15–02.26)</div>
                     <div class="ml-item"><span class="ml-dash ml-dash-red"></span>26년 S10 런칭 (02.27)</div>
                 </div>
+                <!-- S10 예측라인 단서조항: JS가 채움 -->
+                <div id="chart3Disclaimer" style="font-size:0.72em;color:#475569;margin-top:10px;margin-bottom:0;line-height:1.75;padding:10px 14px;background:#f8fafc;border-radius:8px;border-left:3px solid #94a3b8;">
+                  <span style="color:#94a3b8;">※ S10 예측 라인: 출시 후 S9 패턴 비율 기반으로 미래 검색량을 추정합니다. 데이터 로드 후 상세 정보가 표시됩니다.</span>
+                </div>
             </div>
 
             <!-- Chart 4: 경쟁사 분석 ★ X축 하단 타임라인 -->
@@ -1898,6 +1902,21 @@
                     <canvas id="chart4"></canvas>
                 </div>
                 <p class="legend-info" style="margin-top:4px;margin-bottom:0;">로보락 S10 Max V Ultra &nbsp;·&nbsp; 삼성로봇청소기 &nbsp;·&nbsp; 드리미X60 &nbsp;·&nbsp; DJI 로봇청소기 &nbsp;·&nbsp; 다이슨 로봇청소기 &nbsp;·&nbsp; 에코백스T90</p>
+                <!-- S10 예측라인 단서조항: JS가 채움 -->
+                <div id="chart4Disclaimer" style="font-size:0.72em;color:#475569;margin-top:10px;margin-bottom:0;line-height:1.75;padding:10px 14px;background:#f8fafc;border-radius:8px;border-left:3px solid #94a3b8;">
+                  <span style="color:#94a3b8;">※ S10 예측 라인: 출시 후 S9 패턴 비율 기반으로 미래 검색량을 추정합니다. 데이터 로드 후 상세 정보가 표시됩니다.</span>
+                </div>
+            </div>
+
+            <!-- ══════ 검색량 데이터 진단 패널 ══════ -->
+            <div class="chart-container full-width" id="diagPanel" style="background:#fffbeb;border:2px solid #fbbf24;border-radius:12px;padding:16px 20px;margin-top:0;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <div style="font-size:0.9em;font-weight:700;color:#92400e;">🔬 검색량 데이터 진단 패널 <span style="font-weight:400;font-size:0.85em;">(수치 확인 후 삭제 예정)</span></div>
+                <button onclick="runDiag()" style="background:#f59e0b;color:#fff;border:none;border-radius:6px;padding:5px 14px;font-size:0.82em;cursor:pointer;font-weight:600;">🔄 진단 실행</button>
+              </div>
+              <div id="diagResult" style="font-size:0.82em;color:#78350f;line-height:1.9;font-family:monospace;white-space:pre-wrap;background:#fff;border-radius:8px;padding:12px 14px;min-height:60px;">
+                ▶ 위 [진단 실행] 버튼을 누르면 Chart 4의 실제 데이터를 여기에 표시합니다.
+              </div>
             </div>
 
             <!-- ══════ 경쟁사 AI 종합 인사이트 (InsightV2) ══════ -->
@@ -2068,7 +2087,7 @@
 
               <!-- 카드 타이틀 -->
               <div class="cmp-title-row">
-                <span class="cmp-title">📊 주차별 판매량 비교_S10 vs S9 <span style="font-size:0.72em;font-weight:500;color:#94a3b8;">(Sell Out 기준)</span></span>
+                <span class="cmp-title">📊 주차별 판매량 비교_S10 Max V Ultra vs S9 Max V Ultra <span style="font-size:0.72em;font-weight:500;color:#94a3b8;">(Sell Out 기준)</span></span>
                 <div class="cmp-badge-row">
                   <span class="cmp-badge cmp-badge-s10">🔵 S10: WK61~WK68</span>
                   <span class="cmp-badge cmp-badge-s9">🟢 S9: WK08~WK15</span>
@@ -2079,13 +2098,13 @@
               <div class="cmp-accum-banner" id="cmpAccumBanner">
                 <div class="cmp-accum-stats">
                   <div class="cmp-accum-card cmp-accum-s10">
-                    <span class="cmp-accum-label">🔵 S10 시리즈</span>
+                    <span class="cmp-accum-label">🔵 S10 MaxV Ultra 시리즈</span>
                     <span class="cmp-accum-val" id="cmpS10Total">—</span>
                     <span class="cmp-accum-sub" id="cmpS10Sub">데이터 로딩 중...</span>
                   </div>
                   <span class="cmp-accum-vs">vs</span>
                   <div class="cmp-accum-card cmp-accum-s9">
-                    <span class="cmp-accum-label">🟢 S9 시리즈</span>
+                    <span class="cmp-accum-label">🟢 S9 MaxV Ultra 시리즈</span>
                     <span class="cmp-accum-val" id="cmpS9Total">—</span>
                     <span class="cmp-accum-sub" id="cmpS9Sub">데이터 로딩 중...</span>
                   </div>
@@ -3020,7 +3039,9 @@ function renderCmpChart() {
   if (!soData) return;
 
   const S10_SKU = s => SO_SKU_GROUPS['S10'](s);
-  const S9_SKU  = s => SO_SKU_GROUPS['S9'](s);
+  // ★ S9: Slim 2종 제외 (대소문자 무관 처리 — CSV명 변형 방지)
+  const S9_SKU  = s => SO_SKU_GROUPS['S9'](s) &&
+    !s.toLowerCase().includes('slim');
 
   // W1(출시)~W8 : 라벨은 W1~W8, 실제 데이터는 WK61~WK68 / WK08~WK15 그대로
   const S10_WKS = [61,62,63,64,65,66,67,68];
@@ -3923,8 +3944,8 @@ function renderCmpTables(S10_WKS, S9_WKS, S10_SKU, S9_SKU, currentW_s10, lastWkN
   }
 
   wrap.innerHTML = `
-    <div>${buildSeriesTableHTML(S10_WKS, S10_SKU, '🔵 S10 시리즈', true)}</div>
-    <div>${buildSeriesTableHTML(S9_WKS,  S9_SKU,  '🟢 S9 시리즈',  false)}</div>
+    <div>${buildSeriesTableHTML(S10_WKS, S10_SKU, '🔵 S10 MaxV Ultra 시리즈', true)}</div>
+    <div>${buildSeriesTableHTML(S9_WKS,  S9_SKU,  '🟢 S9 MaxV Ultra 시리즈',  false)}</div>
   `;
 }
 
@@ -4534,9 +4555,31 @@ window.loadSo=loadSo;
 
     /* ── S10 예측 공용 함수 (chart3 / chart4 공유) ── */
     function buildS10PredictionForChart(fd) {
-        const S9_KEY  = 'S9 Max V Ultra';
-        const S10_KEY = 'S10 Max V Ultra';
-        const LAUNCH_OFFSET_DAYS = 6; // S10 출시(02-27) - S9 차트기준(02-21) = 6일
+        /* ═══════════════════════════════════════════════════════════════
+         *  S10 예측 로직 (출시 후 경과일 기준 패턴 매핑)
+         *
+         *  핵심 개념:
+         *  - S9 실제 출시일 : 2025-02-21 (구글시트 S9 Max V Ultra 데이터 시작)
+         *  - S10 실제 출시일: 2026-02-27
+         *  - S9 데이터      : allData 전체에서 가져옴 (2025-02-21 ~ 2025-12-31)
+         *
+         *  비율 계산:
+         *  - cutoffDate 기준 S10 최근 7일 합계
+         *  - cutoffDate 기준 S10의 "출시 후 N일째"를 구해,
+         *    S9의 동일한 "출시 후 N일째" 7일 합계로 나눔
+         *  - ratio = S10_7일합 / S9_동기간7일합
+         *
+         *  예측 포인트 생성:
+         *  - cutoffDate 이후 각 날짜에 대해
+         *    → S10 출시 후 경과일 계산
+         *    → S9의 같은 경과일 날짜(2025-02-21 + 경과일) 검색량 조회
+         *    → 해당 S9값 × ratio = 예측값
+         *  - S9 데이터가 2025-12-31까지만 있으므로 그 범위 내에서만 예측
+         * ═══════════════════════════════════════════════════════════════ */
+        const S9_KEY       = 'S9 Max V Ultra';
+        const S10_KEY      = 'S10 Max V Ultra';
+        const S9_LAUNCH    = '2025-02-21';  // S9 실제 출시일
+        const S10_LAUNCH   = '2026-02-27';  // S10 실제 출시일
 
         const { dateStr: cutoffDate } = getDataCutoff();
 
@@ -4545,45 +4588,73 @@ window.loadSo=loadSo;
             d.setUTCDate(d.getUTCDate() + n);
             return d.toISOString().slice(0,10);
         };
+        // 두 날짜 사이의 일수 차이 (b - a)
+        const dayDiff = (a, b) => {
+            return Math.round((new Date(b + 'T00:00:00Z') - new Date(a + 'T00:00:00Z')) / 86400000);
+        };
 
-        // S9/S10 맵
-        const s9Map = {}, s10Map = {};
-        fd.forEach(d => {
+        // ── S9 맵: allData 전체에서 2025년 S9 데이터 수집 ──
+        const s9Map = {};  // key: '2025-xx-xx' 날짜, value: 검색량
+        allData.forEach(d => {
             const v9 = parseFloat(d[S9_KEY]);
-            if (v9 > 0) s9Map[d['날짜']] = v9;
-            const v10 = parseFloat(d[S10_KEY]);
-            if (d['날짜'] <= cutoffDate && v10 > 0) s10Map[d['날짜']] = v10;
+            if (!isNaN(v9) && v9 > 0) s9Map[d['날짜']] = v9;
         });
 
-        const s10D    = cutoffDate;
-        const s9D     = addDays(s10D, -LAUNCH_OFFSET_DAYS);
-        const s10Start = addDays(s10D, -6);
-        const s9Start  = addDays(s9D,  -6);
+        // ── S10 맵: cutoffDate 이하 실측 데이터 ──
+        const s10Map = {};
+        allData.forEach(d => {
+            if (d['날짜'] > cutoffDate) return;
+            const v10 = parseFloat(d[S10_KEY]);
+            if (!isNaN(v10) && v10 > 0) s10Map[d['날짜']] = v10;
+        });
 
-        // 7일 합산
-        const s10Sum7 = fd.reduce((t, d) => {
-            if (d['날짜'] >= s10Start && d['날짜'] <= s10D) { t += (s10Map[d['날짜']] || 0); } return t;
-        }, 0);
-        const s9Sum7 = fd.reduce((t, d) => {
-            if (d['날짜'] >= s9Start && d['날짜'] <= s9D) { t += (parseFloat(d[S9_KEY]) > 0 ? parseFloat(d[S9_KEY]) : 0); } return t;
-        }, 0);
+        // ── cutoffDate 기준 S10의 "출시 후 경과일" ──
+        const s10ElapsedAtCutoff = dayDiff(S10_LAUNCH, cutoffDate); // 출시일로부터 cutoff까지 경과일
+
+        // ── 비율 계산용 7일 범위 ──
+        // S10: cutoff 기준 최근 7일
+        const s10RangeEnd   = cutoffDate;
+        const s10RangeStart = addDays(s10RangeEnd, -6);
+
+        // S9: S10의 동기간(출시 후 동일 경과일 구간) → 2025년 날짜로 변환
+        const s9ElapsedEnd   = s10ElapsedAtCutoff;
+        const s9ElapsedStart = s9ElapsedEnd - 6;
+        const s9RangeEnd     = addDays(S9_LAUNCH, s9ElapsedEnd);
+        const s9RangeStart   = addDays(S9_LAUNCH, s9ElapsedStart);
+
+        // ── 7일 합산 ──
+        let s10Sum7 = 0, s9Sum7 = 0;
+        for (let i = 0; i <= 6; i++) {
+            const s10d = addDays(s10RangeStart, i);
+            const s9d  = addDays(s9RangeStart,  i);
+            s10Sum7 += (s10Map[s10d] || 0);
+            s9Sum7  += (s9Map[s9d]   || 0);
+        }
 
         const predRatio = s9Sum7 > 0 ? (s10Sum7 / s9Sum7) : null;
-        const anchorS10 = s10Map[s10D] || null;
+        const anchorS10 = s10Map[cutoffDate] || null;
 
         if (predRatio === null || anchorS10 === null) {
             return { predDataset: null, disclaimer: null };
         }
 
-        const futureDates = fd.filter(d => d['날짜'] > cutoffDate).map(d => d['날짜']);
-        if (!futureDates.length) return { predDataset: null, disclaimer: null };
+        // ── 예측 포인트 생성: cutoffDate 이후 차트 끝까지 ──
+        // fd의 미래 날짜를 순회하며, S9의 동일 경과일 데이터로 예측
+        const chartEnd = document.getElementById('endDate')?.value || addDays(cutoffDate, 60);
+        const pts = [{ x: cutoffDate, y: anchorS10 }];
 
-        const pts = [{ x: s10D, y: anchorS10 }];
-        futureDates.forEach(date => {
-            const s9DateForPred = addDays(date, -LAUNCH_OFFSET_DAYS);
+        // cutoffDate 이후 날짜 생성 (fd에 없어도 차트 끝까지)
+        let cursor = addDays(cutoffDate, 1);
+        while (cursor <= chartEnd) {
+            const s10Elapsed = dayDiff(S10_LAUNCH, cursor);  // S10 출시 후 경과일
+            const s9DateForPred = addDays(S9_LAUNCH, s10Elapsed);  // S9에서 동일 경과일 날짜
             const s9v = s9Map[s9DateForPred];
-            if (s9v && s9v > 0) pts.push({ x: date, y: Math.round(s9v * predRatio) });
-        });
+            if (s9v && s9v > 0) {
+                pts.push({ x: cursor, y: Math.round(s9v * predRatio) });
+            }
+            // S9 데이터 없는 날은 점 추가 안 함 (spanGaps:false로 선 끊김)
+            cursor = addDays(cursor, 1);
+        }
 
         const predDataset = pts.length > 1 ? {
             label: '📈 S10 예측 (S9패턴 기반)',
@@ -4602,8 +4673,12 @@ window.loadSo=loadSo;
 
         const disclaimer = {
             s9Sum7, s10Sum7, predRatio,
-            s9Start, s9End: s9D, s10Start, s10D,
-            LAUNCH_OFFSET_DAYS, anchorS10
+            s9RangeStart, s9RangeEnd,
+            s10RangeStart, s10RangeEnd: s10RangeEnd,
+            s10ElapsedAtCutoff,
+            S9_LAUNCH, S10_LAUNCH,
+            anchorS10,
+            predPointCount: pts.length
         };
 
         return { predDataset, disclaimer };
@@ -4611,27 +4686,45 @@ window.loadSo=loadSo;
 
     /* ── chart3 단서조항 ── */
     function updateChart3Disclaimer(disclaimer) {
-        let el = document.getElementById('chart3Disclaimer');
-        if (!el) {
-            el = document.createElement('p');
-            el.id = 'chart3Disclaimer';
-            el.style.cssText = 'font-size:0.72em;color:#64748b;margin-top:6px;margin-bottom:0;line-height:1.6;padding:8px 10px;background:#f8fafc;border-radius:6px;border-left:3px solid #cbd5e1;';
-            const c3canvas = document.getElementById('chart3');
-            if (c3canvas) c3canvas.parentNode.insertBefore(el, c3canvas.nextSibling);
-        }
+        const el = document.getElementById('chart3Disclaimer');
+        if (!el) return;
         if (disclaimer) {
-            const { s9Sum7, s10Sum7, predRatio, s9Start, s9End, s10Start, s10D, LAUNCH_OFFSET_DAYS } = disclaimer;
+            const { s9Sum7, s10Sum7, predRatio,
+                    s9RangeStart, s9RangeEnd,
+                    s10RangeStart, s10RangeEnd,
+                    s10ElapsedAtCutoff,
+                    S9_LAUNCH, S10_LAUNCH,
+                    predPointCount } = disclaimer;
+
+            const ratioStr   = (predRatio * 100).toFixed(1);
+            const s9Elapsed  = s10ElapsedAtCutoff; // S9도 동일 경과일 기준
+
             el.innerHTML =
-                `<strong>※ 예측 라인 설명 (S10 Max V Ultra 점선)</strong><br>` +
-                `・ <strong>예측 방식:</strong> S9(2025년) 패턴에 현재 S10/S9 검색량 비율을 적용하여 미래 검색량을 추정합니다.<br>` +
-                `・ <strong>기준일(D):</strong> ${s10D} / <strong>출시일 오프셋:</strong> ${LAUNCH_OFFSET_DAYS}일 (S10 02-27 기준, S9 차트상 02-21)<br>` +
-                `・ <strong>S10 7일 합계 (${s10Start}~${s10D}):</strong> ${Math.round(s10Sum7).toLocaleString()} &nbsp;|&nbsp; ` +
-                `<strong>S9 7일 합계 (${s9Start}~${s9End}):</strong> ${Math.round(s9Sum7).toLocaleString()}<br>` +
-                `・ <strong>비율(ratio):</strong> ${s10Sum7.toFixed(0)} ÷ ${s9Sum7.toFixed(0)} = <span style="color:#dc2626;font-weight:700;">${(predRatio*100).toFixed(1)}%</span><br>` +
-                `・ <strong>예측 산식:</strong> <em>S10_예측(t) = S9(t − ${LAUNCH_OFFSET_DAYS}일) × <span style="color:#dc2626;font-weight:700;">${(predRatio*100).toFixed(1)}%</span></em><br>` +
-                `・ 실제 검색량은 마케팅 집행·경쟁사 동향·소비자 반응에 따라 달라질 수 있습니다.`;
+                `<strong style="font-size:1.05em;color:#1e293b;">※ 📈 S10 예측 라인 (점선) 계산 방식</strong>` +
+                `<hr style="border:none;border-top:1px solid #e2e8f0;margin:5px 0 6px;">` +
+                `<span style="color:#475569;font-weight:600;">▸ 예측 기본 개념</span><br>` +
+                `&nbsp;&nbsp;S9(2025년) 출시 후 검색량 패턴이 S10(2026년)에도 유사하게 나타날 것이라는 가정 하에,<br>` +
+                `&nbsp;&nbsp;현재 S10/S9 검색량 비율을 곱하여 미래 검색량을 추정합니다.<br>` +
+                `<br>` +
+                `<span style="color:#475569;font-weight:600;">▸ 출시일 기준</span><br>` +
+                `&nbsp;&nbsp;S9 출시일: <strong>${S9_LAUNCH}</strong> &nbsp;|&nbsp; S10 출시일: <strong>${S10_LAUNCH}</strong><br>` +
+                `&nbsp;&nbsp;데이터 기준일 현재 S10은 출시 후 <strong>${s10ElapsedAtCutoff}일째</strong>, S9의 동기간(출시+${s9Elapsed}일) 데이터와 비교<br>` +
+                `<br>` +
+                `<span style="color:#475569;font-weight:600;">▸ 비율 산출 (최근 7일 기준)</span><br>` +
+                `&nbsp;&nbsp;S10 검색량 합계 (${s10RangeStart} ~ ${s10RangeEnd}): <strong>${Math.round(s10Sum7).toLocaleString()}</strong><br>` +
+                `&nbsp;&nbsp;S9 동기간 합계 (${s9RangeStart} ~ ${s9RangeEnd}): <strong>${Math.round(s9Sum7).toLocaleString()}</strong><br>` +
+                `&nbsp;&nbsp;비율(ratio) = ${Math.round(s10Sum7).toLocaleString()} ÷ ${Math.round(s9Sum7).toLocaleString()} = <strong style="color:#dc2626;">${ratioStr}%</strong><br>` +
+                `<br>` +
+                `<span style="color:#475569;font-weight:600;">▸ 예측 산식</span><br>` +
+                `&nbsp;&nbsp;<em>S10_예측(출시후 N일) = S9(출시후 N일 검색량) × <strong style="color:#dc2626;">${ratioStr}%</strong></em><br>` +
+                `&nbsp;&nbsp;(예측 포인트 수: ${predPointCount}개 · S9 데이터 범위: ${S9_LAUNCH} ~ 2025-12-31)<br>` +
+                `<br>` +
+                `<span style="color:#94a3b8;font-size:0.93em;">※ 실제 검색량은 마케팅 집행·경쟁사 동향·소비자 반응에 따라 달라질 수 있습니다.</span>`;
+
+            el.style.display = '';
         } else {
-            el.textContent = '※ S10 예측 라인: 데이터 기준일 이후 미기록 구간에 S9 패턴 비율을 적용합니다. 데이터 축적 후 표시됩니다.';
+            el.innerHTML = `<span style="color:#94a3b8;">※ S10 예측 라인: 출시 후 S9 패턴 비율 기반으로 미래 검색량을 추정합니다. 데이터 로드 후 상세 정보가 표시됩니다.</span>`;
+            el.style.display = '';
         }
     }
 
@@ -4657,6 +4750,16 @@ window.loadSo=loadSo;
             borderWidth: 2.5, tension: 0.4, fill: false,
             pointRadius: 0, pointHoverRadius: 4, spanGaps: false
         });
+        // ★ [진단] cutoffDate 및 최신 데이터 포인트 확인
+        const latestValidRow = [...fd].reverse().find(d => d['날짜'] <= cutoffDate);
+        if (latestValidRow) {
+            const diagLines = ch4Keys.map(c => c.label + '=' + (latestValidRow[c.key] ?? 'null')).join(' | ');
+            console.log('[Chart4 진단] cutoffDate=' + cutoffDate + ' | 최신날짜=' + latestValidRow['날짜']);
+            console.log('[Chart4 진단] 최신값: ' + diagLines);
+        } else {
+            console.log('[Chart4 진단] cutoffDate=' + cutoffDate + ' | 유효 데이터 없음');
+        }
+
         // cutoffDate 이후 경쟁사 데이터 → null 마스킹 (미래 날짜 툴팁 방지)
         const datasets = ch4Keys.map(c =>
             ds4(c.label, fd.map(d => {
@@ -4666,102 +4769,68 @@ window.loadSo=loadSo;
             }), c.color)
         );
 
-        /* ── S10 예측 라인 생성 (비율 기반 새 방식) ──────────────────
-         * LAUNCH_OFFSET_DAYS = 6
-         *   S9 출시일(차트 기준): 2026-02-21
-         *   S10 출시일          : 2026-02-27  → 차이 = 6일
-         *
-         * D(S10) = cutoffDate (데이터 기준일)
-         * D(S9)  = cutoffDate - 6일 (차트상 S9의 동등 시점)
-         *
-         * S10_sum7 = Σ S10 검색량 [ D(S10)-6 ~ D(S10) ] (7일)
-         * S9_sum7  = Σ S9  검색량 [ D(S9)-6  ~ D(S9)  ] (7일)
-         *          = Σ S9  검색량 [ D(S10)-12 ~ D(S10)-6 ]
-         *
-         * ratio = S10_sum7 / S9_sum7
-         * 예측:  S10_pred(t) = S9(t - 6일) × ratio   (t > D(S10))
-         ─────────────────────────────────────────────────────────── */
-        const S9_KEY  = 'S9 Max V Ultra';
-        const S10_KEY = 'S10 Max V Ultra';
-        const LAUNCH_OFFSET_DAYS = 6; // S10 출시일(02-27) - S9 차트 출시일(02-21)
+        /* ── S10 예측 라인 (출시 후 경과일 기준, allData 전체 S9 패턴 활용) ── */
+        const S9_KEY_C4   = 'S9 Max V Ultra';
+        const S10_KEY_C4  = 'S10 Max V Ultra';
+        const S9_LAUNCH_C4  = '2025-02-21';
+        const S10_LAUNCH_C4 = '2026-02-27';
 
-        // 날짜 오프셋 헬퍼
-        const addDays = (dateStr, n) => {
+        const addDaysC4 = (dateStr, n) => {
             const d = new Date(dateStr + 'T00:00:00Z');
             d.setUTCDate(d.getUTCDate() + n);
             return d.toISOString().slice(0,10);
         };
+        const dayDiffC4 = (a, b) =>
+            Math.round((new Date(b + 'T00:00:00Z') - new Date(a + 'T00:00:00Z')) / 86400000);
 
-        // S9 날짜별 검색량 맵
-        const s9Map = {};
-        fd.forEach(d => {
-            const v = parseFloat(d[S9_KEY]);
-            if (v > 0) s9Map[d['날짜']] = v;
+        // allData 전체에서 S9 2025년 데이터 수집
+        const s9MapC4 = {};
+        allData.forEach(d => {
+            const v = parseFloat(d[S9_KEY_C4]);
+            if (!isNaN(v) && v > 0) s9MapC4[d['날짜']] = v;
         });
 
-        // S10 날짜별 검색량 맵
-        const s10Map = {};
-        fd.forEach(d => {
-            const v = parseFloat(d[S10_KEY]);
-            if (d['날짜'] <= cutoffDate && v > 0) s10Map[d['날짜']] = v;
+        // S10 실측 맵 (cutoffDate 이하)
+        const s10MapC4 = {};
+        allData.forEach(d => {
+            if (d['날짜'] > cutoffDate) return;
+            const v = parseFloat(d[S10_KEY_C4]);
+            if (!isNaN(v) && v > 0) s10MapC4[d['날짜']] = v;
         });
 
-        // D(S10) = cutoffDate, D(S9) = cutoffDate - 6일
-        const s10D = cutoffDate;
-        const s9D  = addDays(cutoffDate, -LAUNCH_OFFSET_DAYS);
+        // cutoffDate 기준 S10 경과일
+        const s10ElapsedC4 = dayDiffC4(S10_LAUNCH_C4, cutoffDate);
 
-        // 7일 합산
-        const sumRange = (map, startDate, endDate) => {
-            let total = 0, cnt = 0;
-            fd.forEach(d => {
-                if (d['날짜'] >= startDate && d['날짜'] <= endDate) {
-                    const v = map[d['날짜']] || (parseFloat(d[S9_KEY]) > 0 && map === s9Map ? parseFloat(d[S9_KEY]) : 0);
-                    if (v > 0) { total += v; cnt++; }
-                }
-            });
-            return { total, cnt };
-        };
-        const s10Start = addDays(s10D, -6);
-        const s9Start  = addDays(s9D,  -6);  // = cutoffDate - 12일
-        const s9End    = s9D;                 // = cutoffDate - 6일
+        // 비율 계산용 7일 범위
+        const s10RangeEndC4   = cutoffDate;
+        const s10RangeStartC4 = addDaysC4(s10RangeEndC4, -6);
+        const s9RangeEndC4    = addDaysC4(S9_LAUNCH_C4, s10ElapsedC4);
+        const s9RangeStartC4  = addDaysC4(S9_LAUNCH_C4, s10ElapsedC4 - 6);
 
-        const s10Sum7 = (() => {
-            let t = 0;
-            fd.forEach(d => { if (d['날짜'] >= s10Start && d['날짜'] <= s10D) { const v = s10Map[d['날짜']] || 0; t += v; } });
-            return t;
-        })();
-        const s9Sum7 = (() => {
-            let t = 0;
-            fd.forEach(d => { if (d['날짜'] >= s9Start && d['날짜'] <= s9End) { const v = parseFloat(d[S9_KEY]) || 0; if (v > 0) t += v; } });
-            return t;
-        })();
-
-        const predRatio = (s9Sum7 > 0) ? (s10Sum7 / s9Sum7) : null;
-
-        // 예측 포인트 생성 (cutoffDate 이후)
-        let predData = null;
-        let anchorDate = s10D;
-        let anchorS10  = s10Map[s10D] || null;
-
-        if (predRatio !== null && anchorS10 !== null) {
-            const futureDates = fd
-                .filter(d => d['날짜'] > cutoffDate)
-                .map(d => d['날짜']);
-
-            if (futureDates.length > 0) {
-                const pts = [{ x: anchorDate, y: anchorS10 }];
-                futureDates.forEach(date => {
-                    const s9DateForPred = addDays(date, -LAUNCH_OFFSET_DAYS);
-                    const s9v = s9Map[s9DateForPred];
-                    if (s9v && s9v > 0) {
-                        pts.push({ x: date, y: Math.round(s9v * predRatio) });
-                    }
-                });
-                if (pts.length > 1) predData = pts;
-            }
+        let s10Sum7C4 = 0, s9Sum7C4 = 0;
+        for (let i = 0; i <= 6; i++) {
+            s10Sum7C4 += (s10MapC4[addDaysC4(s10RangeStartC4, i)] || 0);
+            s9Sum7C4  += (s9MapC4[addDaysC4(s9RangeStartC4,  i)] || 0);
         }
 
-        // 예측 데이터셋 추가
+        const predRatioC4 = s9Sum7C4 > 0 ? (s10Sum7C4 / s9Sum7C4) : null;
+        const anchorS10C4 = s10MapC4[cutoffDate] || null;
+
+        let predData = null;
+        if (predRatioC4 !== null && anchorS10C4 !== null) {
+            const chartEnd = document.getElementById('endDate')?.value || addDaysC4(cutoffDate, 60);
+            const pts = [{ x: cutoffDate, y: anchorS10C4 }];
+            let cur = addDaysC4(cutoffDate, 1);
+            while (cur <= chartEnd) {
+                const elapsed  = dayDiffC4(S10_LAUNCH_C4, cur);
+                const s9Date   = addDaysC4(S9_LAUNCH_C4, elapsed);
+                const s9v      = s9MapC4[s9Date];
+                if (s9v && s9v > 0) pts.push({ x: cur, y: Math.round(s9v * predRatioC4) });
+                cur = addDaysC4(cur, 1);
+            }
+            if (pts.length > 1) predData = pts;
+        }
+
         if (predData) {
             datasets.push({
                 label: '📈 S10 예측 (S9패턴 기반)',
@@ -4782,40 +4851,53 @@ window.loadSo=loadSo;
         createChart('chart4', datasets, buildCompetitorAnnotations());
 
         /* ── 단서조항 업데이트 ── */
-        const chart4ExtraInfo = (predRatio !== null && anchorS10 !== null) ? {
-            s9Sum7, s10Sum7, predRatio,
-            s9Start, s9End: s9D, s10Start, s10D,
-            LAUNCH_OFFSET_DAYS
-        } : null;
-        updateChart4Disclaimer(anchorDate, anchorS10, predData, chart4ExtraInfo);
+        updateChart4Disclaimer(predData, predRatioC4, {
+            s9Sum7: s9Sum7C4, s10Sum7: s10Sum7C4,
+            s9RangeStart: s9RangeStartC4, s9RangeEnd: s9RangeEndC4,
+            s10RangeStart: s10RangeStartC4, s10RangeEnd: s10RangeEndC4,
+            s10Elapsed: s10ElapsedC4,
+            S9_LAUNCH: S9_LAUNCH_C4, S10_LAUNCH: S10_LAUNCH_C4,
+            predPointCount: predData ? predData.length : 0
+        });
 
         /* ── 경쟁사 인사이트 갱신 ── */
         setTimeout(() => updateCompetitorInsights(fd, ch4Keys), 200);
     }
 
-    /* ── chart4 단서조항 (비율 기반 새 방식) ── */
-    function updateChart4Disclaimer(anchorDate, anchorS10, predData, extraInfo) {
-        let el = document.getElementById('chart4Disclaimer');
-        if (!el) {
-            el = document.createElement('p');
-            el.id = 'chart4Disclaimer';
-            el.style.cssText = 'font-size:0.72em;color:#64748b;margin-top:6px;margin-bottom:0;line-height:1.6;padding:8px 10px;background:#f8fafc;border-radius:6px;border-left:3px solid #cbd5e1;';
-            const wrap = document.getElementById('chart4Wrap') || document.getElementById('chart4').parentNode;
-            wrap.parentNode.insertBefore(el, wrap.nextSibling);
-        }
-        if (predData && anchorDate && extraInfo) {
-            const { s9Sum7, s10Sum7, predRatio, s9Start, s9End, s10Start, s10D, LAUNCH_OFFSET_DAYS } = extraInfo;
+    /* ── chart4 단서조항 ── */
+    function updateChart4Disclaimer(predData, predRatio, info) {
+        const el = document.getElementById('chart4Disclaimer');
+        if (!el) return;
+        if (predData && predRatio !== null && info) {
+            const { s9Sum7, s10Sum7, s9RangeStart, s9RangeEnd,
+                    s10RangeStart, s10RangeEnd, s10Elapsed,
+                    S9_LAUNCH, S10_LAUNCH, predPointCount } = info;
+            const ratioStr = (predRatio * 100).toFixed(1);
             el.innerHTML =
-                `<strong>※ 예측 라인 설명 (S10 Max V Ultra 점선)</strong><br>` +
-                `・ <strong>예측 방식:</strong> S9(2025) 검색량 패턴에 현재 S10 대비 비율을 적용하여 미래 검색량을 추정합니다.<br>` +
-                `・ <strong>기준일(D):</strong> ${s10D} / <strong>출시일 오프셋:</strong> ${LAUNCH_OFFSET_DAYS}일 (S10 출시 02-27, S9 차트 기준 02-21)<br>` +
-                `・ <strong>S10 7일 합계 (${s10Start}~${s10D}):</strong> ${Math.round(s10Sum7).toLocaleString()} &nbsp;|&nbsp; ` +
-                `<strong>S9 7일 합계 (${s9Start}~${s9End}):</strong> ${Math.round(s9Sum7).toLocaleString()}<br>` +
-                `・ <strong>비율(ratio):</strong> ${s10Sum7.toFixed(0)} ÷ ${s9Sum7.toFixed(0)} = <span style="color:#dc2626;font-weight:700;">${(predRatio*100).toFixed(1)}%</span><br>` +
-                `・ <strong>예측 산식:</strong> <em>S10_예측(t) = S9(t − ${LAUNCH_OFFSET_DAYS}일) × <span style="color:#dc2626;font-weight:700;">${(predRatio*100).toFixed(1)}%</span></em><br>` +
-                `・ 실제 검색량은 마케팅 집행·경쟁사 동향·소비자 반응에 따라 달라질 수 있습니다.`;
+                `<strong style="font-size:1.05em;color:#1e293b;">※ 📈 S10 예측 라인 (점선) 계산 방식</strong>` +
+                `<hr style="border:none;border-top:1px solid #e2e8f0;margin:5px 0 6px;">` +
+                `<span style="color:#475569;font-weight:600;">▸ 예측 기본 개념</span><br>` +
+                `&nbsp;&nbsp;S9(2025년) 출시 후 검색량 패턴이 S10(2026년)에도 유사하게 나타날 것이라는 가정 하에,<br>` +
+                `&nbsp;&nbsp;현재 S10/S9 검색량 비율을 곱하여 미래 검색량을 추정합니다.<br>` +
+                `<br>` +
+                `<span style="color:#475569;font-weight:600;">▸ 출시일 기준</span><br>` +
+                `&nbsp;&nbsp;S9 출시일: <strong>${S9_LAUNCH}</strong> &nbsp;|&nbsp; S10 출시일: <strong>${S10_LAUNCH}</strong><br>` +
+                `&nbsp;&nbsp;데이터 기준일 현재 S10은 출시 후 <strong>${s10Elapsed}일째</strong>, S9의 동기간 데이터와 비교<br>` +
+                `<br>` +
+                `<span style="color:#475569;font-weight:600;">▸ 비율 산출 (최근 7일 기준)</span><br>` +
+                `&nbsp;&nbsp;S10 검색량 합계 (${s10RangeStart} ~ ${s10RangeEnd}): <strong>${Math.round(s10Sum7).toLocaleString()}</strong><br>` +
+                `&nbsp;&nbsp;S9 동기간 합계 (${s9RangeStart} ~ ${s9RangeEnd}): <strong>${Math.round(s9Sum7).toLocaleString()}</strong><br>` +
+                `&nbsp;&nbsp;비율(ratio) = <strong style="color:#dc2626;">${ratioStr}%</strong><br>` +
+                `<br>` +
+                `<span style="color:#475569;font-weight:600;">▸ 예측 산식</span><br>` +
+                `&nbsp;&nbsp;<em>S10_예측(출시후 N일) = S9(출시후 N일) × <strong style="color:#dc2626;">${ratioStr}%</strong></em><br>` +
+                `&nbsp;&nbsp;(예측 포인트 수: ${predPointCount}개 · S9 데이터 범위: ${S9_LAUNCH} ~ 2025-12-31)<br>` +
+                `<br>` +
+                `<span style="color:#94a3b8;font-size:0.93em;">※ 실제 검색량은 마케팅 집행·경쟁사 동향·소비자 반응에 따라 달라질 수 있습니다.</span>`;
+            el.style.display = '';
         } else {
-            el.textContent = '※ S10 예측 라인: 데이터 기준일 이후 미기록 구간에 S9 패턴 비율을 적용합니다. 데이터 축적 후 표시됩니다.';
+            el.innerHTML = `<span style="color:#94a3b8;">※ S10 예측 라인: 출시 후 S9 패턴 비율 기반으로 미래 검색량을 추정합니다. 데이터 로드 후 상세 정보가 표시됩니다.</span>`;
+            el.style.display = '';
         }
     }
 
@@ -5060,7 +5142,7 @@ window.loadSo=loadSo;
             return;
         }
         launchAligned = !launchAligned;
-        console.log('[toggleLaunchAlign] launchAligned =', launchAligned);
+        console.log('[toggleLaunchAlign] launchAligned =', launchAligned, '| allData.length =', allData.length);
         // 버튼 상태 동기화
         ['alignBtn1','alignBtn2','alignBtn3'].forEach(id => {
             const btn = document.getElementById(id);
@@ -5076,7 +5158,12 @@ window.loadSo=loadSo;
         // 범례 날짜 표기 업데이트
         updateLegendDates();
         // 차트 재렌더
-        updateCharts();
+        try {
+            updateCharts();
+            setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
+        } catch(e) {
+            console.error('[toggleLaunchAlign] updateCharts 오류:', e);
+        }
     }
 
     /* 범례 날짜 텍스트 업데이트 */
@@ -6013,25 +6100,47 @@ window.loadSo=loadSo;
 
     /* ══════════════════════════════════════════════════
        KST 기준 데이터 컷오프 날짜 계산
-       - KST 10:00 이후 → 어제(D-1)까지 데이터 유효
-       - KST 10:00 이전 → 그제(D-2)까지 데이터 유효
-       (오전 10시 이전에는 전날 데이터가 아직 미기록)
+       ★ v2: allData에 실제로 값이 있는 마지막 날짜를 우선 사용
+             (구글 시트 업데이트 지연으로 시간 기반 cutoff와 불일치 발생 방지)
+       - allData 없을 때 fallback: KST 10:00 이후 → D-1, 이전 → D-2
     ══════════════════════════════════════════════════ */
     function getDataCutoff() {
         const now = new Date();
-        // UTC → KST (UTC+9) 변환
         const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
         const kstNow = new Date(utcMs + 9 * 60 * 60000);
-
         const kstHour = kstNow.getHours();
         const kstMin  = kstNow.getMinutes();
 
-        // 오전 10시 이후면 어제까지, 이전이면 그제까지
-        const daysBack = (kstHour > 10 || (kstHour === 10 && kstMin >= 0)) ? 1 : 2;
+        // ★ allData에서 실제로 경쟁사 데이터가 있는 마지막 날짜 탐색
+        // (S10 Max V Ultra, 삼성로봇청소기 중 하나라도 값이 있는 행)
+        const COMP_KEYS = ['S10 Max V Ultra', '삼성로봇청소기', '드리미x60', 'dji로봇청소기', '다이슨로봇청소기', '에코백스T90'];
+        if (allData && allData.length) {
+            // 오늘 KST 날짜 문자열
+            const todayStr = kstNow.getFullYear() + '-' +
+                String(kstNow.getMonth()+1).padStart(2,'0') + '-' +
+                String(kstNow.getDate()).padStart(2,'0');
 
+            // 오늘 이전 행들 중 경쟁사 컬럼에 실제 값이 있는 마지막 행
+            const lastValidRow = [...allData]
+                .filter(d => d['날짜'] && d['날짜'] < todayStr)   // 오늘 제외
+                .reverse()
+                .find(d => COMP_KEYS.some(k => d[k] != null && d[k] > 0));
+
+            if (lastValidRow) {
+                const daysBack = (kstHour > 10 || (kstHour === 10 && kstMin >= 0)) ? 1 : 2;
+                return {
+                    dateStr: lastValidRow['날짜'],   // ← 실제 데이터가 있는 날짜
+                    daysBack,
+                    kstHour,
+                    kstNow
+                };
+            }
+        }
+
+        // fallback: 시간 기반 계산 (allData 없을 때)
+        const daysBack = (kstHour > 10 || (kstHour === 10 && kstMin >= 0)) ? 1 : 2;
         const cutoff = new Date(kstNow);
         cutoff.setDate(kstNow.getDate() - daysBack);
-
         const y = cutoff.getFullYear();
         const m = String(cutoff.getMonth() + 1).padStart(2, '0');
         const d = String(cutoff.getDate()).padStart(2, '0');
@@ -6184,6 +6293,59 @@ window.loadSo=loadSo;
         if (footerEl)  footerEl.style.display = 'block';
     }
     window.loadMktInsight = loadMktInsight;
+
+    /* ══════════════════════════════════════
+       검색량 데이터 진단 함수
+    ══════════════════════════════════════ */
+    window.runDiag = function() {
+        const el = document.getElementById('diagResult');
+        if (!el) return;
+
+        if (!allData || !allData.length) {
+            el.textContent = '❌ allData 없음 — 먼저 데이터를 로드하세요 (로그인 필요).';
+            return;
+        }
+
+        const { dateStr: cutoffDate, daysBack, kstHour } = getDataCutoff();
+        const ch4Keys = [
+            { key: 'S10 Max V Ultra',  label: '로보락 S10' },
+            { key: '삼성로봇청소기',    label: '삼성' },
+            { key: '드리미x60',         label: '드리미' },
+            { key: 'dji로봇청소기',      label: 'DJI' },
+            { key: '다이슨로봇청소기',   label: '다이슨' },
+            { key: '에코백스T90',        label: '에코백스' },
+        ];
+
+        // cutoffDate 기준 최신 유효 행
+        const latestRow = [...allData].reverse().find(d => d['날짜'] && d['날짜'] <= cutoffDate);
+
+        let lines = [];
+        lines.push('■ KST 현재시각: ' + kstHour + '시 | daysBack=' + daysBack);
+        lines.push('■ cutoffDate (수정 후): ' + cutoffDate + '  ← 실제 데이터 있는 마지막 날짜');
+        lines.push('■ allData 전체 행 수: ' + allData.length);
+        lines.push('■ allData 날짜 범위: ' + allData[0]?.['날짜'] + ' ~ ' + allData[allData.length-1]?.['날짜']);
+        lines.push('');
+
+        if (latestRow) {
+            const match3028 = latestRow['날짜'] === '2026-03-28';
+            lines.push('─── cutoff 기준 최신 데이터 행: ' + latestRow['날짜'] + (match3028 ? ' ✅ 3/28 일치' : ' ← 확인 필요') + ' ───');
+            ch4Keys.forEach(c => {
+                const v = latestRow[c.key];
+                const display = (v == null || v === '') ? 'null(컬럼없음)' : Number(v).toFixed(0);
+                lines.push('  ' + c.label.padEnd(10) + ': ' + display);
+            });
+        } else {
+            lines.push('❌ cutoffDate 이하 데이터 없음');
+        }
+
+        lines.push('');
+        lines.push('─── allData 컬럼 목록 ───');
+        const cols = Object.keys(allData[0] || {});
+        lines.push(cols.join(' | '));
+
+        el.textContent = lines.join('\n');
+    };
+
 
     // CSV 파싱 - \r\n 정규화 + 인용부호 내 줄바꿈 처리
     function _parseMktInsightCSV(text) {
@@ -7531,10 +7693,17 @@ var AUTH=(function(){
             : rawUrls.split('|').map(u => u.trim()))
         : [];
       // 기사 객체 생성 (최대 100건)
-      const items = titleArr.slice(0, 100).map((t, i) => ({
-        title: t.replace(/[\r\n"]/g,'').trim(),
-        url  : (urlArr[i] || '').replace(/["|\r\n]/g,'').trim()
-      })).filter(item => item.title);
+      // ★ 제목에 발행일 포함된 경우 분리: "제목::YYYY-MM-DD" 형식
+      const items = titleArr.slice(0, 100).map((t, i) => {
+        const raw = t.replace(/[\r\n"]/g,'').trim();
+        const sepIdx = raw.lastIndexOf('::');
+        const hasDate = sepIdx > 0 && /^\d{4}-\d{2}-\d{2}$/.test(raw.slice(sepIdx + 2).trim());
+        return {
+          title  : (hasDate ? raw.slice(0, sepIdx) : raw).trim(),
+          pubDate: hasDate ? raw.slice(sepIdx + 2).trim() : '',
+          url    : (urlArr[i] || '').replace(/["|\r\n]/g,'').trim()
+        };
+      }).filter(item => item.title);
       brandData[brand] = {
         summary  : r['뉴스요약']   || r['summary']  || '',
         insight  : r['AI인사이트'] || r['insight']  || '',
@@ -7640,7 +7809,6 @@ var AUTH=(function(){
     const end     = Math.min(start + PAGE_SIZE, total);
     const slice   = clusters.slice(start, end);
     const totalPages = Math.ceil(total / PAGE_SIZE);
-    // 수집 날짜 (브랜드 전체 날짜, 개별 기사 날짜 없으므로 수집일 기준)
     const collectDate = _fmtDate(d.date);
 
     if (!total) return '<div style="color:#94a3b8;font-size:0.85em;padding:8px 0;">기사 목록 없음</div>';
@@ -7667,10 +7835,11 @@ var AUTH=(function(){
       const dupBadge = cl.count > 1
         ? '<span style="background:#f1f5f9;color:#64748b;font-size:0.7em;padding:1px 6px;border-radius:8px;margin-left:6px;white-space:nowrap;flex-shrink:0;">+' + (cl.count - 1) + '건</span>'
         : '';
-      // 날짜 배지: 수집일 기준 표시
-      const dateBadge = collectDate
-        ? '<span style="color:#cbd5e1;font-size:0.68em;white-space:nowrap;flex-shrink:0;margin-left:4px;">' + collectDate + '</span>'
-        : '';
+      // 날짜 배지: 기사 발행일 우선, 없으면 수집일 표시
+      const articleDate = cl.rep.pubDate ? _fmtDate(cl.rep.pubDate) : '';
+      const dateBadge = articleDate
+        ? '<span style="color:#94a3b8;font-size:0.68em;white-space:nowrap;flex-shrink:0;margin-left:4px;background:#f1f5f9;padding:1px 5px;border-radius:4px;">' + articleDate + '</span>'
+        : (collectDate ? '<span style="color:#cbd5e1;font-size:0.68em;white-space:nowrap;flex-shrink:0;margin-left:4px;">' + collectDate + '</span>' : '');
       html +=
         '<div style="display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid #f1f5f9;">' +
           '<span style="color:#94a3b8;font-size:0.75em;min-width:22px;padding-top:2px;flex-shrink:0;">' + num + '</span>' +
@@ -7802,6 +7971,15 @@ function switchTab(tab){
   /* 마케팅 탭 진입 시 AI 인사이트 자동 로드 (항상 강제 실행) */
   if(tab === 'mkt' && typeof window.loadMktInsight === 'function'){
     window.loadMktInsight(true);  // force=true: 탭 진입마다 항상 최신 데이터 표시
+  }
+  /* 마케팅 탭 진입 시 검색량 차트도 강제 재렌더
+     - 처음 탭 진입 시 canvas가 숨겨있다가 표시되면서 차트가 0×0으로 그려지는 문제 해결
+     - resize 이벤트로 Chart.js가 캔버스 크기를 재계산하도록 유도 */
+  if(tab === 'mkt' && typeof window.updateCharts === 'function'){
+    setTimeout(function(){
+      window.updateCharts();
+      setTimeout(function(){ window.dispatchEvent(new Event('resize')); }, 100);
+    }, 150);
   }
   /* 탭 전환 후 차트 리사이즈 트리거 */
   setTimeout(function(){ window.dispatchEvent(new Event('resize')); }, 80);
