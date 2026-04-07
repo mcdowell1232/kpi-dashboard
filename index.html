@@ -1615,6 +1615,166 @@
     .cmp-accum-banner { padding: 10px 12px; }
 }
 
+/* ══════════════════════════════════════
+   물류 탭 전용 스타일
+══════════════════════════════════════ */
+
+/* 뷰 토글 버튼 */
+.lg-view-btn {
+  font-size: 0.73em; font-weight: 700;
+  padding: 5px 12px; border-radius: 7px;
+  border: 1.5px solid #e2e8f0;
+  background: #f8fafc; color: #64748b;
+  cursor: pointer; transition: all 0.15s;
+  white-space: nowrap;
+}
+.lg-view-btn:hover { background: #e0f2fe; border-color: #7dd3fc; color: #0369a1; }
+.lg-view-btn.active { background: #0891b2; border-color: #0891b2; color: #fff; }
+
+/* KPI 카드 */
+.lg-kpi-card {
+  background: #fff; border-radius: 14px;
+  border: 1.5px solid #e2e8f0;
+  padding: 14px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.15s;
+}
+.lg-kpi-card:hover { transform: translateY(-2px); }
+.lg-kpi-sku  { font-size: 0.72em; font-weight: 700; color: #0891b2; margin-bottom: 2px; }
+.lg-kpi-name { font-size: 0.7em; color: #94a3b8; margin-bottom: 8px; line-height: 1.3; }
+.lg-kpi-stock{ font-size: 1.4em; font-weight: 900; color: #0f172a; line-height: 1; }
+.lg-kpi-unit { font-size: 0.7em; color: #64748b; margin-left: 3px; }
+.lg-kpi-row  { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.lg-kpi-sub  { font-size: 0.68em; padding: 2px 8px; border-radius: 10px; font-weight: 700; }
+.lg-kpi-in   { background: #d1fae5; color: #065f46; }
+.lg-kpi-out  { background: #fee2e2; color: #991b1b; }
+
+/* 가동일 배지 */
+.lg-days-badge {
+  display: inline-block; font-size: 0.72em; font-weight: 700;
+  padding: 3px 10px; border-radius: 12px; white-space: nowrap;
+}
+.lg-days-red    { background: #fee2e2; color: #b91c1c; }
+.lg-days-orange { background: #ffedd5; color: #c2410c; }
+.lg-days-yellow { background: #fef9c3; color: #a16207; }
+.lg-days-green  { background: #d1fae5; color: #065f46; }
+.lg-days-gray   { background: #f1f5f9; color: #64748b; }
+
+/* 가동일 테이블 */
+.lg-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 0.78em; min-width: 700px;
+}
+.lg-table th {
+  background: #f8fafc; color: #374151;
+  font-weight: 700; padding: 8px 12px;
+  text-align: left; border-bottom: 2px solid #e2e8f0;
+  white-space: nowrap;
+}
+.lg-table td {
+  padding: 8px 12px; border-bottom: 1px solid #f1f5f9;
+  color: #374151; vertical-align: middle;
+}
+.lg-table tr:hover td { background: #f8fafc; }
+.lg-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* 알림 배너 */
+.lg-alert-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 14px; border-radius: 10px; margin-bottom: 6px;
+}
+.lg-alert-item:last-child { margin-bottom: 0; }
+.lg-alert-red    { background: #fef2f2; border: 1px solid #fca5a5; }
+.lg-alert-orange { background: #fff7ed; border: 1px solid #fdba74; }
+.lg-alert-yellow { background: #fefce8; border: 1px solid #fde047; }
+
+/* 검증 리포트 */
+.lg-verify-ok   { color: #059669; font-weight: 700; }
+.lg-verify-err  { color: #dc2626; font-weight: 700; }
+.lg-verify-warn { color: #d97706; font-weight: 700; }
+.lg-verify-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 0.76em; margin-top: 10px; min-width: 600px;
+}
+.lg-verify-table th {
+  background: #eef2ff; color: #3730a3;
+  font-weight: 700; padding: 7px 10px;
+  text-align: left; border-bottom: 2px solid #c7d2fe;
+}
+.lg-verify-table td {
+  padding: 7px 10px; border-bottom: 1px solid #e0e7ff;
+}
+.lg-verify-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.lg-verify-table .ok-row td  { color: #059669; }
+.lg-verify-table .err-row td { background: #fef2f2; color: #dc2626; }
+
+@media (max-width: 768px) {
+  .lg-kpi-group-grid { grid-template-columns: repeat(2,1fr); }
+  .lg-table, .lg-verify-table { font-size: 0.7em; }
+}
+
+/* 품목 그룹 탭 */
+.lg-cat-tab {
+  font-size: 0.73em; font-weight: 700;
+  padding: 5px 14px; border-radius: 20px;
+  border: 1.5px solid #e2e8f0;
+  background: #f8fafc; color: #64748b;
+  cursor: pointer; transition: all 0.15s;
+  white-space: nowrap;
+}
+.lg-cat-tab:hover { background: #e0f2fe; border-color: #7dd3fc; color: #0369a1; }
+.lg-cat-tab.active { background: #0f172a; border-color: #0f172a; color: #fff; }
+
+/* KPI 품목 그룹 헤더 */
+.lg-kpi-group {
+  margin-bottom: 18px;
+}
+.lg-kpi-group-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 10px; padding: 6px 12px;
+  background: linear-gradient(90deg,#f0f9ff,#f8fafc);
+  border-left: 4px solid #0891b2; border-radius: 0 8px 8px 0;
+}
+.lg-kpi-group-title {
+  font-size: 0.82em; font-weight: 800; color: #0f172a; letter-spacing: 0.02em;
+}
+.lg-kpi-group-total {
+  font-size: 0.72em; color: #64748b;
+  background: #e0f2fe; color: #0369a1;
+  padding: 2px 10px; border-radius: 10px; font-weight: 700;
+}
+.lg-kpi-group-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  gap: 12px;
+}
+
+/* 차트 범례 클릭 가능 스타일 */
+.lg-legend-item {
+  display: flex; align-items: center; gap: 5px;
+  padding: 3px 8px; border-radius: 6px;
+  cursor: pointer; transition: all 0.15s;
+  border: 1.5px solid transparent;
+  font-size: 0.72em;
+}
+.lg-legend-item:hover { background: #f0f9ff; border-color: #bae6fd; }
+.lg-legend-item.focused { background: #0f172a; color: #fff !important; border-color: #0f172a; }
+.lg-legend-item.focused .lg-legend-dot { outline: 2px solid #fff; }
+.lg-legend-item.dimmed { opacity: 0.35; }
+.lg-legend-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+
+/* 검증 리포트 접기 */
+.lg-verify-toggle {
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer; user-select: none;
+}
+.lg-verify-toggle-icon {
+  font-size: 0.85em; transition: transform 0.2s;
+}
+.lg-verify-toggle-icon.open { transform: rotate(90deg); }
+
 </style>
 </head>
 <body>
@@ -1740,6 +1900,7 @@
       <div class="sb-item active" id="sbCompetitor" onclick="switchTab('competitor');setSbActive('sbCompetitor')">🔍 경쟁사 현황</div>
       <div class="sb-item" id="sbMkt" onclick="switchTab('mkt');setSbActive('sbMkt')">📊 Marketing</div>
       <div class="sb-item" id="sbSales" onclick="switchTab('sales');setSbActive('sbSales')">💼 Sales</div>
+      <div class="sb-item" id="sbLogistics" onclick="switchTab('logistics');setSbActive('sbLogistics')">📦 물류</div>
     </div>
     <div class="sb-footer" id="sbFooterInfo">
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
@@ -1783,6 +1944,7 @@
           <button class="main-tab-btn active" id="tabBtnCompetitor" onclick="switchTab('competitor');setSbActive('sbCompetitor')">🔍 경쟁사 현황</button>
           <button class="main-tab-btn" id="tabBtnMkt" onclick="switchTab('mkt');setSbActive('sbMkt')">📊 Marketing</button>
           <button class="main-tab-btn" id="tabBtnSales" onclick="switchTab('sales');setSbActive('sbSales')">💼 Sales</button>
+          <button class="main-tab-btn" id="tabBtnLogistics" onclick="switchTab('logistics');setSbActive('sbLogistics')">📦 물류</button>
         </div>
 
         <!-- ══════ COMPETITOR TAB ══════ -->
@@ -3986,7 +4148,128 @@ window.loadSo=loadSo;
 })();
 </script>
         </div><!-- /tabSales -->
+
+        <!-- ══════ LOGISTICS TAB ══════ -->
+        <div class="main-tab-panel" id="tabLogistics">
+          <div class="container" style="margin-top:24px;">
+
+            <!-- ① 헤더 & 로딩 상태 -->
+            <div class="chart-container full-width" style="padding:20px 24px 24px;margin-bottom:18px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+                <div>
+                  <div class="chart-title" style="border-bottom-color:#0891b2;margin-bottom:6px;">
+                    📦 물류 재고 현황 대시보드
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                    <span style="font-size:0.75em;color:#64748b;">창고 통합 실시간 재고 · B2C 출고 기반 가동일 분석 · 월말재고 검증 포함</span>
+                    <span id="lgTodayLabel" style="font-size:0.75em;font-weight:700;color:#0891b2;background:#e0f2fe;padding:2px 10px;border-radius:12px;"></span>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <span id="lgStatusBadge" style="font-size:0.72em;font-weight:700;padding:4px 12px;border-radius:20px;background:#f1f5f9;color:#64748b;">⏳ 데이터 로딩 중...</span>
+                  <button onclick="loadLogistics(true)" style="font-size:0.78em;font-weight:700;padding:6px 14px;border-radius:9px;border:1.5px solid #e2e8f0;background:#f8fafc;color:#475569;cursor:pointer;">🔄 새로고침</button>
+                  <button onclick="toggleLgDebug()" style="font-size:0.72em;padding:5px 10px;border-radius:7px;border:1.5px solid #e2e8f0;background:#f8fafc;color:#94a3b8;cursor:pointer;">🔧 디버그</button>
+                </div>
+              </div>
+
+              <!-- 알림 배너 -->
+              <div id="lgAlertBanner" style="display:none;margin-top:14px;"></div>
+
+              <!-- 디버그 패널 -->
+              <div id="lgDebugPanel" style="display:none;margin-top:10px;background:#1e293b;color:#94a3b8;border-radius:8px;padding:12px 16px;font-size:0.72em;font-family:monospace;white-space:pre-wrap;max-height:200px;overflow-y:auto;"></div>
+            </div>
+
+            <!-- ② 필터 바 -->
+            <div class="chart-container full-width" style="padding:14px 20px;margin-bottom:18px;">
+              <!-- 품목 그룹 탭 -->
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+                <span style="font-size:0.75em;font-weight:700;color:#374151;margin-right:2px;">📦 품목</span>
+                <div id="lgCatTabs" style="display:flex;gap:6px;flex-wrap:wrap;">
+                  <button class="lg-cat-tab active" data-cat="ALL" onclick="setLgCat('ALL')">전체</button>
+                </div>
+              </div>
+              <!-- 상세 필터 -->
+              <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+                <div style="font-size:0.8em;font-weight:700;color:#374151;">🔍 필터</div>
+
+                <!-- SKU 필터 -->
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <label style="font-size:0.75em;color:#64748b;font-weight:600;">SKU</label>
+                  <select id="lgModelFilter" onchange="renderLogistics()" style="font-size:0.78em;padding:5px 10px;border-radius:7px;border:1.5px solid #e2e8f0;color:#1e293b;background:#fff;min-width:180px;">
+                    <option value="ALL">전체 SKU</option>
+                  </select>
+                </div>
+
+                <!-- 표시 유형 -->
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <label style="font-size:0.75em;color:#64748b;font-weight:600;">표시</label>
+                  <div id="lgViewToggle" style="display:flex;gap:4px;">
+                    <button class="lg-view-btn active" data-view="stock" onclick="setLgView('stock')">📊 재고</button>
+                    <button class="lg-view-btn" data-view="in" onclick="setLgView('in')">📥 입고</button>
+                    <button class="lg-view-btn" data-view="out" onclick="setLgView('out')">📤 출고</button>
+                    <button class="lg-view-btn" data-view="all" onclick="setLgView('all')">📋 전체</button>
+                  </div>
+                </div>
+
+                <!-- 기간 필터 -->
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <label style="font-size:0.75em;color:#64748b;font-weight:600;">기간</label>
+                  <select id="lgPeriodFilter" onchange="renderLogistics()" style="font-size:0.78em;padding:5px 10px;border-radius:7px;border:1.5px solid #e2e8f0;color:#1e293b;background:#fff;">
+                    <option value="30">최근 30일</option>
+                    <option value="60">최근 60일</option>
+                    <option value="90" selected>최근 90일</option>
+                    <option value="0">전체</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- ③ KPI 요약 카드 (품목별 그룹) -->
+            <div id="lgKpiSection" style="margin-bottom:18px;"></div>
+
+            <!-- ④ 메인 재고 차트 -->
+            <div class="chart-container full-width" style="padding:20px 24px;margin-bottom:18px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+                <div class="chart-title" style="border-bottom-color:#0891b2;font-size:0.95em;">📈 SKU별 재고 추이 (창고 통합)</div>
+                <div id="lgChartLegend" style="display:flex;gap:10px;flex-wrap:wrap;font-size:0.72em;"></div>
+              </div>
+              <div style="position:relative;height:380px;">
+                <canvas id="lgStockChart"></canvas>
+              </div>
+              <div style="font-size:0.7em;color:#94a3b8;margin-top:8px;">
+                ※ 기존 제품: 12/31 월말재고를 기준점으로 이후 입출고 누적 · 신제품(S10 등): 최초 입고부터 누적 · 창고이동은 전체 합산에서 자동 상쇄
+              </div>
+            </div>
+
+            <!-- ⑤ D+X 가동일 분석 테이블 -->
+            <div class="chart-container full-width" style="padding:20px 24px;margin-bottom:18px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+                <div class="chart-title" style="border-bottom-color:#f59e0b;font-size:0.95em;">⏳ SKU별 가동일 분석 (B2C 출고 기반)</div>
+                <div style="font-size:0.72em;color:#64748b;">최근 14일 B2C 일평균 출고량 기준</div>
+              </div>
+              <div id="lgDaysTable" style="overflow-x:auto;"></div>
+            </div>
+
+            <!-- ⑥ 검증 리포트 -->
+            <div class="chart-container full-width" style="padding:20px 24px;margin-bottom:18px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0;flex-wrap:wrap;gap:8px;">
+                <div class="lg-verify-toggle" onclick="toggleLgVerify()" id="lgVerifyToggleBtn">
+                  <span class="lg-verify-toggle-icon" id="lgVerifyIcon">▶</span>
+                  <div class="chart-title" style="border-bottom-color:#6366f1;font-size:0.95em;margin-bottom:0;border-bottom:none;padding-bottom:0;">🔬 월말재고 검증 리포트</div>
+                  <span id="lgVerifySummaryBadge" style="font-size:0.72em;padding:2px 10px;border-radius:10px;background:#eef2ff;color:#4338ca;font-weight:700;"></span>
+                </div>
+                <div style="font-size:0.72em;color:#94a3b8;">계산값 vs 시트 실제값 비교 · 오차 감지</div>
+              </div>
+              <div id="lgVerifyBody" style="display:none;margin-top:14px;">
+                <div id="lgVerifyReport" style="font-size:0.8em;color:#475569;">검증 데이터 로딩 중...</div>
+              </div>
+            </div>
+
+          </div><!-- /container -->
+        </div><!-- /tabLogistics -->
+
     </div><!-- /mainContent -->
+
 </div><!-- /container -->
 
 <script>
@@ -7981,6 +8264,10 @@ function switchTab(tab){
       setTimeout(function(){ window.dispatchEvent(new Event('resize')); }, 100);
     }, 150);
   }
+  /* 물류 탭: 항상 최신 데이터 로드 (매 탭 전환 시 재로드) */
+  if(tab === 'logistics' && typeof window.loadLogistics === 'function'){
+    window.loadLogistics(true);
+  }
   /* 탭 전환 후 차트 리사이즈 트리거 */
   setTimeout(function(){ window.dispatchEvent(new Event('resize')); }, 80);
 }
@@ -8062,5 +8349,1077 @@ var _origHideOverlay = null;
   observer.observe(mc, { attributes: true });
 })();
 </script>
-<script src="https://www.genspark.ai/sandbox_inspect.js"></script></body>
+
+<!-- ══════════════════════════════════════════════════════
+     📦 물류 탭 스크립트
+     데이터 구조:
+       B열=일자  J열=수량  K열=입출고구분(재고/입고/출고)
+       L열=유형(월말재고/제품입고/B2C/B2B/기증AS/창고이동...)
+       M열=창고(TM창고/UBUS/ECL/하이마트)
+       R열=모델명  S열=모델명2
+     재고 계산 원칙:
+       1) 기준점: K='재고', L='월말재고' 행의 수량 (창고+SKU별)
+       2) 기준점 이후 같은 창고+SKU에서
+            K='입고' → +qty  (창고이동 포함)
+            K='출고' → -qty  (창고이동 포함)
+       ★ 창고이동: 동일 모델 기준 입고창고+qty, 출고창고-qty → 전체 합산 시 상쇄되어 0
+       3) 통합재고 = 모든 창고 합산
+══════════════════════════════════════════════════════ -->
+<script>
+(function(){
+'use strict';
+
+/* ── 상수 ── */
+const LG_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR4lojuQGqVMgojbjuTnQrIXo9P4Yhg4ynT0EV4FfUF0VlJE85crt_CZZlJth1taw/pub?gid=47580710&single=true&output=csv';
+
+/* 알림 임계값 (가동일) */
+const ALERT_RED    =  7;   // 즉시 위험
+const ALERT_ORANGE = 14;   // 주의
+const ALERT_YELLOW = 30;   // 관찰
+
+/* ── 상태 ── */
+let lgRaw        = [];   // 파싱된 전체 행
+let lgView       = 'stock';
+let lgCatFilter  = 'ALL'; // 품목 그룹 필터 (ALL, 로봇청소기, 세탁건조기, 무선청소기 등)
+let lgFocusSku   = null;  // 차트 집중 SKU (null=전체)
+let lgChartInst  = null;
+let lgLoaded     = false;
+let lgModelCatMap = {};   // model → category 매핑
+
+/* ══════════════════════
+   1. CSV 파싱 유틸
+══════════════════════ */
+function lgParseNum(v) {
+  if (v === null || v === undefined) return 0;
+  const s = String(v).replace(/[",\s]/g, '');
+  const n = parseFloat(s);
+  return isNaN(n) ? 0 : n;
+}
+
+function lgSplitCSV(line) {
+  const res = []; let cur = ''; let inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') {
+      // 연속 따옴표 "" → 리터럴 따옴표 (RFC4180)
+      if (inQ && line[i+1] === '"') { cur += '"'; i++; continue; }
+      inQ = !inQ;
+      continue;
+    }
+    if (c === ',' && !inQ) { res.push(cur.trim()); cur = ''; continue; }
+    cur += c;
+  }
+  res.push(cur.trim());
+  return res;
+}
+
+function lgParseCSV(text) {
+  /* ── Step 1: 줄 분리 (RFC4180 준수, 따옴표 안 줄바꿈 → 공백 처리) ─────────
+     핵심: 따옴표를 cur에 추가하지 말고 inQ 상태만 관리.
+     lgSplitCSV가 따옴표를 자체적으로 처리하므로 raw 문자 그대로 전달. */
+  const lines = [];
+  let cur = ''; let inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (c === '"') {
+      inQ = !inQ;
+      cur += c;   // lgSplitCSV가 따옴표를 처리하므로 그대로 전달
+      continue;
+    }
+    if (inQ) {
+      // 따옴표 안쪽: 줄바꿈 → 공백, 나머지 그대로
+      if (c === '\r' || c === '\n') { cur += ' '; continue; }
+      cur += c;
+      continue;
+    }
+    // 따옴표 밖
+    if (c === '\r') continue;
+    if (c === '\n') { lines.push(cur); cur = ''; continue; }
+    cur += c;
+  }
+  if (cur) lines.push(cur);
+
+  /* ── Step 2: 헤더 행 찾기 ────────────────────────────────────────────── */
+  let headerIdx = -1;
+  for (let i = 0; i < Math.min(10, lines.length); i++) {
+    if (lines[i].includes('일자')) { headerIdx = i; break; }
+  }
+  if (headerIdx < 0) {
+    console.warn('[lgParseCSV] 헤더를 찾을 수 없습니다.');
+    return [];
+  }
+
+  const headers = lgSplitCSV(lines[headerIdx]);
+  console.log('[lgParseCSV] 헤더 컬럼수:', headers.length, '| 샘플:', headers.slice(0,6).join(' | '));
+
+  /* ── Step 3: 컬럼 인덱스 결정 ────────────────────────────────────────── */
+  // 기본값: 실제 CSV 구조(B=1, J=9, K=10, L=11, M=12, P=15, Q=16, R=17) 기반
+  const ci = { date:1, year:2, month:3, day:4, qty:9, inout:10, type:11, wh:12, category:15, model:16, model2:17 };
+  headers.forEach((h, idx) => {
+    const t = h.replace(/["\u00A0\uFEFF\u200B]/g, '').trim();
+    if (t === '일자')    ci.date     = idx;
+    if (t === '년도')    ci.year     = idx;
+    if (t === '월')      ci.month    = idx;
+    if (t === '일')      ci.day      = idx;
+    if (t === '수량')    ci.qty      = idx;
+    if (t === '입출고')  ci.inout    = idx;
+    if (t === '유형')    ci.type     = idx;
+    if (t === '창고')    ci.wh       = idx;
+    if (t === '품목')    ci.category = idx;  // P열: 로봇청소기, 세탁건조기, 무선청소기 등
+    if (t === '모델명')  ci.model    = idx;
+    if (t === '모델명2') ci.model2   = idx;
+  });
+  console.log('[lgParseCSV] 컬럼 인덱스:', JSON.stringify(ci));
+
+  /* ── Step 4: 데이터 파싱 ─────────────────────────────────────────────── */
+  const rows = [];
+  for (let i = headerIdx + 1; i < lines.length; i++) {
+    const ln = lines[i].trim();
+    if (!ln) continue;
+    const cols = lgSplitCSV(ln);
+
+    /* 날짜 결정 (우선순위):
+       ① 년도/월/일 컬럼 조합 (가장 신뢰) → 예: "2026년"+"4월"+"3" → 2026-04-03
+       ② ci.date 컬럼(B열) YYYY-MM-DD
+       ③ 행 전체에서 YYYY-MM-DD 패턴 검색
+    */
+    let date = '';
+
+    // 방법①: 년도/월/일 컬럼 조합 (구글 시트 날짜 형식에 무관하게 안전)
+    const yearRaw  = (cols[ci.year]  || '').replace(/[^\d]/g, '');
+    const monthRaw = (cols[ci.month] || '').replace(/[^\d]/g, '');
+    const dayRaw   = (cols[ci.day]   || '').replace(/[^\d]/g, '');
+    if (yearRaw && monthRaw && dayRaw) {
+      const yy = yearRaw.slice(-4);
+      const mm = monthRaw.padStart(2, '0');
+      const dd = dayRaw.padStart(2, '0');
+      const candidate = `${yy}-${mm}-${dd}`;
+      if (candidate.match(/^\d{4}-\d{2}-\d{2}$/)) date = candidate;
+    }
+
+    // 방법②: B열(ci.date) 컬럼에서 YYYY-MM-DD 추출
+    if (!date) {
+      let raw = (cols[ci.date] || '').trim();
+      raw = raw.replace(/^(\d{4})\/(\d{2})\/(\d{2})$/, '$1-$2-$3'); // YYYY/MM/DD 정규화
+      if (raw.match(/^\d{4}-\d{2}-\d{2}$/)) date = raw;
+    }
+
+    // 방법③: 행 전체에서 정규식 검색
+    if (!date) {
+      const m = ln.match(/(\d{4}-\d{2}-\d{2})/);
+      date = m ? m[1] : '';
+    }
+    if (!date) continue;
+
+    const m2 = (cols[ci.model2] || '').trim();
+    const m1 = (cols[ci.model]  || '').trim();
+    const modelKey = m2 || m1;
+
+    rows.push({
+      date    : date.trim(),
+      qty     : lgParseNum(cols[ci.qty]),
+      inout   : (cols[ci.inout]    || '').trim(),
+      type    : (cols[ci.type]     || '').trim(),
+      wh      : (cols[ci.wh]       || '').trim(),
+      category: (cols[ci.category] || '').trim(), // P열: 품목 (로봇청소기, 세탁건조기 등)
+      model   : modelKey,
+      model2  : m2,
+    });
+  }
+
+  const allDts = rows.map(r => r.date).filter(Boolean);
+  const maxDt  = allDts.length ? allDts.reduce((a,b) => a > b ? a : b) : '?';
+  const minDt  = allDts.length ? allDts.reduce((a,b) => a < b ? a : b) : '?';
+  const afterApr2 = allDts.filter(d => d >= '2026-04-03').length;
+  console.log('[lgParseCSV] 파싱 완료:', rows.length, '행 | 날짜범위:', minDt, '~', maxDt, '| 4/3 이후 행수:', afterApr2);
+  return rows;
+}
+
+/* ══════════════════════
+   2. 재고 계산 엔진 v5
+══════════════════════ */
+function calcInventory(rows) {
+  /*
+   * ■ 알고리즘 v5 - "12/31 재고 시작, 이후 입출고 누적"
+   *
+   * [데이터 구조 이해]
+   * - K열 '재고' (inout=재고, type=월말재고) = 해당 날짜 마감 기준 확정 재고
+   *   → 그 날짜의 입출고가 모두 반영된 결과값
+   * - 따라서: 전월말재고 + 당월 입출고(당일 포함) = 당월말재고
+   *
+   * [알고리즘]
+   * 1. 시작점 = 모델별 '가장 이른' K열 재고 날짜 (보통 12/31)
+   *    - 신제품(S10 등): 12/31 재고 없음 → 최초 입고일부터 0 누적
+   * 2. 시작점 날짜 다음날(+1)부터 모든 입출고 누적
+   *    - 당일 입출고 포함: 월말 당일에 입출고가 있어도 전부 포함
+   *    - 창고이동 포함: 입고+출고 쌍이므로 전체 합산에서 자동 상쇄
+   * 3. 중간 월말재고(1/31, 2/28, 3/31, 4/3 등) = 검증용만, 계산에 미사용
+   */
+
+  // ── 전체 날짜 범위 산출 ──
+  // date 값을 반드시 trim() + 정규식 검증 후 사용
+  // 또한 슬래시 형식(YYYY/MM/DD) 등도 정규화
+  rows.forEach(r => {
+    if (!r.date) return;
+    let d = r.date.toString().trim();
+    // YYYY/MM/DD → YYYY-MM-DD
+    d = d.replace(/^(\d{4})\/(\d{2})\/(\d{2})$/, '$1-$2-$3');
+    // 숫자만 있는 경우(YYYYMMDD) → YYYY-MM-DD
+    d = d.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3');
+    r.date = d;
+  });
+
+  const allRawDates = rows
+    .map(r => (r.date || '').toString().trim())
+    .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d));
+  if (!allRawDates.length) return { byModel: {}, dateRange: [] };
+  const globalStart = allRawDates.reduce((a, b) => a < b ? a : b);
+  const globalEnd   = allRawDates.reduce((a, b) => a > b ? a : b);
+
+  // ★ 입출고 전용 최대 날짜 (월말재고 행 제외)
+  // → 4/3에 월말재고(재고)만 있고 입출고가 없으면 txEnd = '2026-04-02'
+  // → 4/3에 입출고도 있으면 txEnd = '2026-04-03'  ← 이게 맞는 상태
+  const txOnlyDates = rows
+    .filter(r => { const io = (r.inout||'').trim(); return io === '입고' || io === '출고'; })
+    .map(r => (r.date||'').toString().trim())
+    .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d));
+  const txEnd = txOnlyDates.length ? txOnlyDates.reduce((a,b) => a>b?a:b) : globalEnd;
+
+  // 상세 디버그: 날짜별 inout 분포 확인
+  const debug_apr3_all  = rows.filter(r => r.date >= '2026-04-03');
+  const debug_apr3_tx   = rows.filter(r => r.date >= '2026-04-03' && (r.inout==='입고'||r.inout==='출고'));
+  const debug_apr3_snap = rows.filter(r => r.date >= '2026-04-03' && r.inout==='재고');
+  console.log('[calcInventory] rows 총', rows.length, '행 | globalStart:', globalStart,
+    '| globalEnd(전체):', globalEnd, '| txEnd(입출고만):', txEnd,
+    '\n  4/3이후 전체행:', debug_apr3_all.length,
+    '| 입출고:', debug_apr3_tx.length,
+    '| 월말재고:', debug_apr3_snap.length,
+    debug_apr3_tx.length > 0
+      ? '\n  4/3입출고샘플: ' + debug_apr3_tx.slice(0,3).map(r=>`[${r.inout}]${r.model} ${r.qty}개 날짜:${r.date}`).join(' / ')
+      : '\n  ⚠ 4/3 입출고 행 없음 → txEnd가 4/2가 되는 원인!');
+
+  const models  = [...new Set(rows.map(r => r.model))].filter(Boolean);
+  const byModel = {};
+
+  models.forEach(model => {
+    const mRows = rows.filter(r => r.model === model);
+
+    // ── 시작점: 가장 이른 K열 재고 날짜 + 창고 합산 수량 ──
+    const snapRows  = mRows.filter(r => (r.inout||'').trim() === '재고' && (r.type||'').trim() === '월말재고');
+    const snapDates = [...new Set(snapRows.map(r => r.date))].sort();
+
+    let startDate = null;  // 가장 이른 월말재고 날짜 (보통 12/31)
+    let startQty  = 0;
+    if (snapDates.length > 0) {
+      startDate = snapDates[0]; // ★ 가장 이른 날짜 (12/31)
+      startQty  = snapRows
+        .filter(r => r.date === startDate)
+        .reduce((s, r) => s + r.qty, 0);
+    }
+
+    // ── 입출고 행 수집 ──
+    // [핵심 규칙]
+    // - K열 '재고'(월말재고)는 해당일 마감 확정값 → 그 날짜의 입출고가 이미 반영됨
+    // - 따라서 시작점(startDate) 날짜 이전의 입출고는 제외
+    // - 단, startDate 당일의 입출고는 이미 startQty에 포함되어 있으므로 제외
+    //
+    // ★ 예외 케이스: 4/3처럼 동일 날짜에 월말재고+입출고가 섞인 경우
+    //   - snapDates[0](가장 이른 월말재고 날짜)를 startDate로 사용
+    //   - 4/3 월말재고는 검증용이므로 startDate가 되지 않음 (이미 더 이른 날짜가 있으면)
+    //   - 단, 신제품처럼 startDate 자체가 4/3인 경우:
+    //     → 4/3 월말재고가 해당일 입출고를 이미 반영한 확정값이므로 4/3 입출고는 제외가 맞음
+    //     → 4/4 이후 입출고만 포함
+    const txRows = mRows.filter(r => {
+      const io = (r.inout || '').trim();
+      if (io !== '입고' && io !== '출고') return false;
+      // startDate 당일 포함 이전은 모두 제외 (월말재고에 이미 반영됨)
+      if (startDate && r.date <= startDate) return false;
+      return true;
+    });
+
+    // ── 날짜별 delta / 집계 계산 ──
+    const deltaByDate  = {};
+    const inQtyByDate  = {};
+    const outQtyByDate = {};
+    const b2cByDate    = {};
+
+    txRows.forEach(r => {
+      const d     = r.date;
+      const io    = (r.inout || '').trim();
+      const delta = io === '입고' ? +r.qty : -r.qty;
+      const t     = (r.type || '').trim();
+      deltaByDate[d] = (deltaByDate[d] || 0) + delta;
+      if (t !== '창고이동') {
+        if (io === '입고') inQtyByDate[d]  = (inQtyByDate[d]  || 0) + r.qty;
+        if (io === '출고') outQtyByDate[d] = (outQtyByDate[d] || 0) + r.qty;
+      }
+      if (io === '출고' && t === 'B2C') b2cByDate[d] = (b2cByDate[d] || 0) + r.qty;
+    });
+
+    byModel[model] = {};
+
+    // 시작점 날짜 기록: K열 재고값 그대로 (확정 마감 재고)
+    if (startDate) {
+      byModel[model][startDate] = {
+        stock  : startQty, // ★ K열 재고값 그대로
+        inQty  : 0,
+        outQty : 0,
+        b2cOut : 0,
+      };
+    }
+
+    // 시작점 다음날 ~ 데이터 마지막 날까지 누적
+    let stock = startDate ? startQty : 0;
+
+    // 신제품(startDate 없음): 최초 입고일부터 시작
+    const firstTxDate = txRows.length > 0
+      ? txRows.map(r => r.date).reduce((a, b) => a < b ? a : b)
+      : null;
+
+    const loopStartStr = startDate
+      ? (() => { const d = new Date(startDate + 'T00:00:00'); d.setDate(d.getDate() + 1); return d.toISOString().slice(0,10); })()
+      : (firstTxDate || globalEnd);
+
+    let cur = new Date(loopStartStr + 'T00:00:00');
+    const endD = new Date(globalEnd + 'T00:00:00');
+
+    while (cur <= endD) {
+      const d = cur.toISOString().slice(0, 10);
+      if (deltaByDate[d] !== undefined) stock += deltaByDate[d];
+      byModel[model][d] = {
+        stock  : stock,
+        inQty  : inQtyByDate[d]  || 0,
+        outQty : outQtyByDate[d] || 0,
+        b2cOut : b2cByDate[d]    || 0,
+      };
+      cur.setDate(cur.getDate() + 1);
+    }
+  });
+
+  // ── 전체 연속 dateRange (globalStart ~ globalEnd) ──
+  const dateRange = [];
+  {
+    let cur = new Date(globalStart + 'T00:00:00');
+    const endD = new Date(globalEnd + 'T00:00:00');
+    while (cur <= endD) {
+      dateRange.push(cur.toISOString().slice(0, 10));
+      cur.setDate(cur.getDate() + 1);
+    }
+  }
+
+  // ── carry-forward: 거래 없는 날 = 직전 재고 유지 ──
+  Object.keys(byModel).forEach(model => {
+    let lastStock = null;
+    dateRange.forEach(d => {
+      if (byModel[model][d] !== undefined) {
+        lastStock = byModel[model][d].stock;
+      } else if (lastStock !== null) {
+        byModel[model][d] = { stock: lastStock, inQty: 0, outQty: 0, b2cOut: 0 };
+      }
+    });
+  });
+
+  return { byModel, dateRange };
+}
+
+/* ══════════════════════
+   3. 검증 엔진
+      계산된 재고 vs 시트 월말재고 비교
+══════════════════════ */
+function runVerification(rows, byModel) {
+  // 모든 월말재고 행 수집
+  const monthEndRows = rows.filter(r => r.inout === '재고' && r.type.trim() === '월말재고');
+
+  // (모델+날짜) → 창고별 합산 실제값
+  const actualByModelDate = {};
+  monthEndRows.forEach(r => {
+    const k = r.model + '||' + r.date;
+    if (!actualByModelDate[k]) actualByModelDate[k] = { model: r.model, date: r.date, actualTotal: 0, byWh: {} };
+    actualByModelDate[k].actualTotal     += r.qty;
+    actualByModelDate[k].byWh[r.wh]      = (actualByModelDate[k].byWh[r.wh] || 0) + r.qty;
+  });
+
+  const results = [];
+  Object.values(actualByModelDate).forEach(({ model, date, actualTotal, byWh }) => {
+    const calcEntry  = byModel[model] && byModel[model][date];
+    const calcTotal  = calcEntry ? Math.round(calcEntry.stock) : null;
+
+    if (calcTotal === null) {
+      results.push({ model, date, actual: actualTotal, calc: '—', diff: '—', ok: false,
+                     msg: '계산값 없음', byWh });
+      return;
+    }
+    const diff = calcTotal - actualTotal;
+    const ok   = Math.abs(diff) <= 1; // 반올림 오차 ±1 허용
+    results.push({ model, date, actual: actualTotal, calc: calcTotal, diff, ok,
+                   msg: ok ? '✅ 일치' : `❌ 오차 ${diff > 0 ? '+' : ''}${diff}`,
+                   byWh });
+  });
+
+  results.sort((a, b) => {
+    if (a.date !== b.date) return a.date > b.date ? 1 : -1;
+    return a.model > b.model ? 1 : -1;
+  });
+  return results;
+}
+
+/* ══════════════════════
+   4. D+X 가동일 계산
+      최근 14일 B2C 일평균 출고 기준
+══════════════════════ */
+function calcDaysLeft(byModel, dateRange, model) {
+  if (!byModel[model] || !dateRange.length) return null;
+
+  const today = dateRange[dateRange.length - 1]; // 마지막 데이터 날짜
+  const cutDate = new Date(today + 'T00:00:00');
+  const start14 = new Date(cutDate); start14.setDate(start14.getDate() - 13);
+  const start14Str = start14.toISOString().slice(0,10);
+
+  let totalB2C = 0; let dayCount = 0;
+  dateRange.forEach(d => {
+    if (d >= start14Str && d <= today) {
+      const e = byModel[model][d];
+      if (e) { totalB2C += e.b2cOut; dayCount++; }
+    }
+  });
+
+  const avgB2C = dayCount > 0 ? totalB2C / dayCount : 0;
+  const latestStock = byModel[model][today] ? byModel[model][today].stock : 0;
+  const daysLeft = avgB2C > 0 ? Math.floor(latestStock / avgB2C) : null;
+
+  return { avgB2C: Math.round(avgB2C * 10) / 10, latestStock, daysLeft, today };
+}
+
+/* ══════════════════════
+   5. UI 렌더링
+══════════════════════ */
+function setLgView(v) {
+  lgView = v;
+  lgFocusSku = null; // 뷰 변경 시 집중 모드 해제
+  document.querySelectorAll('.lg-view-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === v);
+  });
+  renderLogistics();
+}
+
+function setLgCat(cat) {
+  lgCatFilter = cat;
+  lgFocusSku  = null; // 카테고리 변경 시 집중 모드 해제
+  // SKU 필터도 전체로 리셋
+  const sel = document.getElementById('lgModelFilter');
+  if (sel) sel.value = 'ALL';
+  // 탭 active 상태 업데이트
+  document.querySelectorAll('.lg-cat-tab').forEach(b => {
+    b.classList.toggle('active', b.dataset.cat === cat);
+  });
+  // SKU 드롭다운을 해당 품목에 맞게 재구성
+  if (lgRaw.length > 0) {
+    // byModel이 없으면 calcInventory 실행
+    const { byModel } = calcInventory(lgRaw);
+    populateLgModelFilter(byModel);
+  }
+  renderLogistics();
+}
+
+function focusLgSku(sku) {
+  // 이미 집중 중이면 해제, 아니면 해당 SKU 집중
+  lgFocusSku = (lgFocusSku === sku) ? null : sku;
+  renderLogistics();
+}
+
+function fmtN(n) {
+  if (n === null || n === undefined) return '—';
+  return Math.round(n).toLocaleString();
+}
+
+/* KPI 카드 렌더 - 품목별 그룹핑 */
+function renderLgKpiCards(byModel, dateRange) {
+  const section = document.getElementById('lgKpiSection');
+  if (!section) return;
+  const today = dateRange[dateRange.length - 1] || '';
+
+  // 기준일 표시
+  const dateLabel = document.getElementById('lgTodayLabel');
+  if (dateLabel) dateLabel.textContent = today ? `기준: ${today}` : '';
+
+  // 현재 선택된 SKU 필터
+  const skuFilter   = document.getElementById('lgModelFilter').value;
+  // 활성 모델 목록: 품목 필터 + SKU 필터 교차 적용
+  let activeModels = Object.keys(byModel).filter(m => {
+    if (lgCatFilter !== 'ALL' && lgModelCatMap[m] !== lgCatFilter) return false;
+    if (skuFilter !== 'ALL' && m !== skuFilter) return false;
+    return true;
+  });
+
+  // 품목별로 묶기
+  const catGroups = {}; // { 카테고리명: [model, ...] }
+  activeModels.sort().forEach(m => {
+    const cat = lgModelCatMap[m] || '기타';
+    if (!catGroups[cat]) catGroups[cat] = [];
+    catGroups[cat].push(m);
+  });
+
+  // 그룹 색상
+  const catColors = {
+    '로봇청소기': '#0891b2',
+    '세탁건조기': '#7c3aed',
+    '무선청소기': '#059669',
+    '기타':       '#64748b',
+  };
+
+  let html = '';
+  Object.keys(catGroups).sort().forEach(cat => {
+    const models = catGroups[cat];
+    const color  = catColors[cat] || '#0891b2';
+
+    // 그룹 합계 재고
+    const totalStock = models.reduce((sum, m) => {
+      const e = byModel[m] && byModel[m][today];
+      return sum + (e ? Math.round(e.stock) : 0);
+    }, 0);
+
+    html += `<div class="lg-kpi-group">
+      <div class="lg-kpi-group-header" style="border-left-color:${color};">
+        <span class="lg-kpi-group-title" style="color:${color};">${cat}</span>
+        <span class="lg-kpi-group-total">합계 ${totalStock.toLocaleString()}개</span>
+        <span style="font-size:0.68em;color:#94a3b8;margin-left:auto;">${models.length}개 SKU</span>
+      </div>
+      <div class="lg-kpi-group-grid">`;
+
+    models.forEach(model => {
+      const e  = byModel[model] && byModel[model][today];
+      if (!e) return;
+      const di = calcDaysLeft(byModel, dateRange, model);
+      let badgeCls = 'lg-days-gray', badgeTxt = '—';
+      if (di && di.daysLeft !== null) {
+        badgeTxt = `D+${di.daysLeft}`;
+        if      (di.daysLeft <= ALERT_RED)    badgeCls = 'lg-days-red';
+        else if (di.daysLeft <= ALERT_ORANGE) badgeCls = 'lg-days-orange';
+        else if (di.daysLeft <= ALERT_YELLOW) badgeCls = 'lg-days-yellow';
+        else                                  badgeCls = 'lg-days-green';
+      }
+      // 집중 SKU이면 테두리 강조
+      const isFocused = lgFocusSku === model;
+      const cardStyle = isFocused
+        ? `border-color:${color};box-shadow:0 0 0 2px ${color}44;`
+        : '';
+      html += `
+        <div class="lg-kpi-card" style="${cardStyle}" onclick="focusLgSku('${model.replace(/'/g,"\\'")}')">
+          <div class="lg-kpi-sku" style="color:${color};">${model}</div>
+          <div class="lg-kpi-stock">${fmtN(e.stock)}<span class="lg-kpi-unit">개</span></div>
+          <div class="lg-kpi-row">
+            <span class="lg-kpi-sub lg-kpi-in">↑${fmtN(e.inQty)}</span>
+            <span class="lg-kpi-sub lg-kpi-out">↓${fmtN(e.outQty)}</span>
+            <span class="lg-days-badge ${badgeCls}">${badgeTxt}</span>
+          </div>
+        </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  section.innerHTML = html || '<div style="color:#94a3b8;font-size:0.85em;padding:12px;">표시할 데이터 없음</div>';
+}
+
+/* 차트 렌더 - 집중 SKU 모드 포함 */
+function renderLgChart(byModel, dateRange) {
+  const ctx = document.getElementById('lgStockChart');
+  if (!ctx) return;
+
+  // 기간 필터
+  const period = parseInt(document.getElementById('lgPeriodFilter').value);
+  let filteredDates = dateRange;
+  if (period > 0) {
+    const cutoff = new Date(dateRange[dateRange.length-1] + 'T00:00:00');
+    cutoff.setDate(cutoff.getDate() - period + 1);
+    const cutStr = cutoff.toISOString().slice(0,10);
+    filteredDates = dateRange.filter(d => d >= cutStr);
+  }
+
+  // 모델 목록: 품목 필터 + SKU 필터 교차 적용
+  const skuFilter = document.getElementById('lgModelFilter').value;
+  let models = Object.keys(byModel).filter(m => {
+    if (lgCatFilter !== 'ALL' && lgModelCatMap[m] !== lgCatFilter) return false;
+    if (skuFilter !== 'ALL' && m !== skuFilter) return false;
+    return true;
+  }).sort();
+
+  // 색상 팔레트
+  const palette = [
+    '#0891b2','#dc2626','#059669','#d97706','#7c3aed',
+    '#0284c7','#be185d','#047857','#b45309','#6d28d9',
+    '#0369a1','#9f1239','#065f46','#92400e','#4c1d95'
+  ];
+
+  const buildDatasets = (modelList, viewMode) => {
+    const ds = [];
+    modelList.forEach((model, idx) => {
+      const col = palette[idx % palette.length];
+      const isFocused = lgFocusSku === null || lgFocusSku === model;
+      const alpha = isFocused ? '' : '22';
+      const width = lgFocusSku === model ? 3.5 : (lgFocusSku === null ? 2.5 : 1);
+
+      if (viewMode === 'all') {
+        ['inQty','outQty'].forEach((field, fi) => {
+          ds.push({
+            label: model + (fi===0?' (입고)':' (출고)'),
+            data: filteredDates.map(d => {
+              const e = byModel[model]?.[d]; return e ? (e[field]||0) : null;
+            }),
+            borderColor: fi===0 ? col+(alpha?alpha:'') : col+'88',
+            borderWidth: 1.5, borderDash: fi===1?[5,3]:[],
+            pointRadius:0, pointHoverRadius:4,
+            tension:0.3, fill:false, spanGaps:true,
+          });
+        });
+      } else {
+        const field = viewMode==='in' ? 'inQty' : viewMode==='out' ? 'outQty' : 'stock';
+        ds.push({
+          label: model,
+          data: filteredDates.map(d => {
+            const e = byModel[model]?.[d]; return e ? (e[field]||0) : null;
+          }),
+          borderColor: col + alpha,
+          backgroundColor: (col+'22') + (isFocused?'':' '),
+          borderWidth: width,
+          pointRadius: filteredDates.length > 60 ? 0 : (lgFocusSku===model ? 4 : 2),
+          pointHoverRadius: 6,
+          tension: 0.3,
+          fill: viewMode==='stock' && isFocused,
+          spanGaps: true,
+        });
+      }
+    });
+    return ds;
+  };
+
+  const datasets = buildDatasets(models, lgView);
+
+  if (lgChartInst) lgChartInst.destroy();
+
+  const yLabel = lgView==='stock'?'재고 (개)':lgView==='in'?'입고 (개)':lgView==='out'?'출고 (개)':'수량 (개)';
+
+  lgChartInst = new Chart(ctx, {
+    type: 'line',
+    data: { labels: filteredDates.map(d => d.slice(5)), datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode:'index', intersect:false },
+      plugins: {
+        legend: { display: false }, // 커스텀 범례 사용
+        tooltip: {
+          callbacks: {
+            label: c => ` ${c.dataset.label}: ${(c.parsed.y??0).toLocaleString()}개`
+          }
+        }
+      },
+      scales: {
+        x: { grid:{display:false}, ticks:{maxTicksLimit:12,font:{size:10}} },
+        y: { title:{display:true,text:yLabel,font:{size:11}},
+             ticks:{callback:v=>v.toLocaleString()} }
+      }
+    }
+  });
+
+  // 커스텀 범례 업데이트 (클릭 시 집중보기)
+  const legendEl = document.getElementById('lgChartLegend');
+  if (legendEl) {
+    legendEl.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;';
+    legendEl.innerHTML = models.map((m, i) => {
+      const col   = palette[i % palette.length];
+      const isFoc = lgFocusSku === m;
+      const isDim = lgFocusSku !== null && lgFocusSku !== m;
+      return `<span class="lg-legend-item${isFoc?' focused':isDim?' dimmed':''}"
+        onclick="focusLgSku('${m.replace(/'/g,"\\'")}')"
+        title="${isFoc?'클릭하면 전체 보기':'클릭하면 이 SKU만 집중 보기'}">
+        <span class="lg-legend-dot" style="background:${col};"></span>
+        <span>${m}</span>
+        ${isFoc ? '<span style="font-size:0.9em;margin-left:2px;">✦</span>' : ''}
+      </span>`;
+    }).join('') + (models.length===0?'<span style="color:#94a3b8;font-size:0.72em;">모델 없음</span>':'');
+  }
+}
+
+/* D+X 테이블 렌더 */
+function renderLgDaysTable(byModel, dateRange) {
+  const el = document.getElementById('lgDaysTable');
+  if (!el) return;
+
+  const skuFilter = document.getElementById('lgModelFilter').value;
+  let models = Object.keys(byModel).filter(m => {
+    if (lgCatFilter !== 'ALL' && lgModelCatMap[m] !== lgCatFilter) return false;
+    if (skuFilter !== 'ALL' && m !== skuFilter) return false;
+    return true;
+  }).sort();
+
+  const rows = models.sort().map(model => {
+    const di = calcDaysLeft(byModel, dateRange, model);
+    if (!di) return null;
+    return { model, ...di };
+  }).filter(Boolean);
+
+  if (!rows.length) { el.innerHTML = '<p style="color:#94a3b8;font-size:0.85em;">데이터 없음</p>'; return; }
+
+  let html = `<div style="overflow-x:auto;"><table class="lg-table">
+    <thead><tr>
+      <th>품목</th>
+      <th>SKU (모델명2)</th>
+      <th class="num">현재 재고</th>
+      <th class="num">14일 B2C 일평균</th>
+      <th class="num">가동 가능일</th>
+      <th>상태</th>
+      <th>기준 날짜</th>
+    </tr></thead><tbody>`;
+
+  rows.forEach(r => {
+    let badgeCls = 'lg-days-gray', icon = '—';
+    if (r.daysLeft !== null) {
+      icon = `D+${r.daysLeft}`;
+      if      (r.daysLeft <= ALERT_RED)    badgeCls = 'lg-days-red';
+      else if (r.daysLeft <= ALERT_ORANGE) badgeCls = 'lg-days-orange';
+      else if (r.daysLeft <= ALERT_YELLOW) badgeCls = 'lg-days-yellow';
+      else                                  badgeCls = 'lg-days-green';
+    }
+    const msg = r.daysLeft === null ? '출고 없음' :
+                r.daysLeft <= ALERT_RED    ? '🚨 즉시 발주 필요' :
+                r.daysLeft <= ALERT_ORANGE ? '⚠️ 발주 검토 필요' :
+                r.daysLeft <= ALERT_YELLOW ? '🟡 관찰 필요' : '✅ 정상';
+    html += `<tr>
+      <td style="color:#64748b;font-size:0.9em;">${lgModelCatMap[r.model]||'—'}</td>
+      <td><strong>${r.model}</strong></td>
+      <td class="num">${fmtN(r.latestStock)}</td>
+      <td class="num">${r.avgB2C.toFixed(1)}</td>
+      <td class="num"><span class="lg-days-badge ${badgeCls}">${icon}</span></td>
+      <td>${msg}</td>
+      <td style="font-size:0.85em;color:#94a3b8;">${r.today}</td>
+    </tr>`;
+  });
+
+  html += '</tbody></table></div>';
+  el.innerHTML = html;
+}
+
+/* 알림 배너 렌더 */
+function renderLgAlerts(byModel, dateRange) {
+  const banner = document.getElementById('lgAlertBanner');
+  if (!banner) return;
+
+  const models = Object.keys(byModel);
+  const alerts = [];
+
+  models.forEach(model => {
+    const di = calcDaysLeft(byModel, dateRange, model);
+    if (!di || di.daysLeft === null) return;
+    if (di.daysLeft <= ALERT_ORANGE) {
+      alerts.push({ model, daysLeft: di.daysLeft, stock: di.latestStock, avgB2C: di.avgB2C });
+    }
+  });
+
+  if (!alerts.length) { banner.style.display = 'none'; return; }
+
+  alerts.sort((a,b) => a.daysLeft - b.daysLeft);
+  banner.style.display = 'block';
+
+  banner.innerHTML = alerts.map(a => {
+    const cls = a.daysLeft <= ALERT_RED ? 'lg-alert-red' : 'lg-alert-orange';
+    const icon = a.daysLeft <= ALERT_RED ? '🚨' : '⚠️';
+    return `<div class="lg-alert-item ${cls}">
+      <span style="font-size:1.2em;">${icon}</span>
+      <div>
+        <strong>${a.model}</strong>
+        &nbsp;현재재고 <strong>${fmtN(a.stock)}개</strong>
+        · B2C 일평균 <strong>${a.avgB2C.toFixed(1)}개</strong>
+        · <strong style="font-size:1.05em;">D+${a.daysLeft} 이내 소진 예상</strong>
+        ${a.daysLeft <= ALERT_RED ? ' → <span style="color:#b91c1c;font-weight:700;">즉시 발주 필요</span>' : ' → 발주 검토 필요'}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* 검증 리포트 렌더 */
+function renderLgVerify(verifyResults) {
+  const el = document.getElementById('lgVerifyReport');
+  if (!el) return;
+
+  // 접기 배지 업데이트
+  const badge = document.getElementById('lgVerifySummaryBadge');
+  if (badge) {
+    if (!verifyResults.length) {
+      badge.textContent = '';
+    } else {
+      const errCnt = verifyResults.filter(r => !r.ok).length;
+      badge.textContent = errCnt === 0
+        ? `✅ ${verifyResults.length}건 전체 일치`
+        : `❌ ${errCnt}건 오차`;
+      badge.style.background = errCnt===0 ? '#d1fae5' : '#fee2e2';
+      badge.style.color       = errCnt===0 ? '#065f46' : '#b91c1c';
+    }
+  }
+
+  if (!verifyResults.length) {
+    el.innerHTML = '<p style="color:#94a3b8;">검증 데이터 없음</p>'; return;
+  }
+
+  const errRows  = verifyResults.filter(r => !r.ok);
+  const okRows   = verifyResults.filter(r => r.ok);
+  const errCount = errRows.length;
+  const total    = verifyResults.length;
+
+  let summary = `<div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;">
+    <span>전체 검증: <strong>${total}건</strong></span>
+    <span class="lg-verify-ok">✅ 일치: ${okRows.length}건</span>
+    ${errCount ? `<span class="lg-verify-err">❌ 오차: ${errCount}건</span>` : ''}
+  </div>`;
+
+  if (errCount === 0) {
+    summary += `<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 14px;color:#166534;font-weight:700;">
+      ✅ 모든 월말재고가 정확히 일치합니다.
+    </div>`;
+  } else {
+    summary += `<div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:10px 14px;color:#991b1b;font-weight:700;margin-bottom:10px;">
+      ❌ ${errCount}건 오차 발생 — 아래 상세 내용을 확인하세요.
+    </div>`;
+  }
+
+  // 오차 행 우선 표시
+  const displayRows = [...errRows, ...okRows];
+
+  let tableHtml = `<div style="overflow-x:auto;"><table class="lg-verify-table">
+    <thead><tr>
+      <th>모델명</th><th>날짜</th>
+      <th class="num">시트 실제값</th>
+      <th class="num">계산값</th>
+      <th class="num">차이</th>
+      <th>결과</th>
+    </tr></thead><tbody>`;
+
+  displayRows.forEach(r => {
+    const rowCls = r.ok ? 'ok-row' : 'err-row';
+    tableHtml += `<tr class="${rowCls}">
+      <td>${r.model}</td>
+      <td>${r.date}</td>
+      <td class="num">${fmtN(r.actual)}</td>
+      <td class="num">${r.calc === '—' ? '—' : fmtN(r.calc)}</td>
+      <td class="num">${r.diff === '—' ? '—' : (r.diff >= 0 ? '+' : '') + fmtN(r.diff)}</td>
+      <td>${r.msg}</td>
+    </tr>`;
+  });
+
+  tableHtml += '</tbody></table></div>';
+  el.innerHTML = summary + tableHtml;
+}
+
+/* ══════════════════════
+   6. 필터 채우기
+══════════════════════ */
+function populateLgModelFilter(byModel) {
+  // ── model → category 맵 구축 ──
+  lgModelCatMap = {};
+  lgRaw.forEach(r => {
+    if (r.model && r.category) lgModelCatMap[r.model] = r.category;
+  });
+
+  // ── 품목 카테고리 탭 채우기 ──
+  const catTabs = document.getElementById('lgCatTabs');
+  if (catTabs) {
+    const cats = [...new Set(Object.values(lgModelCatMap))].filter(Boolean).sort();
+    // 기존 탭(ALL 제외) 제거 후 재구성
+    catTabs.innerHTML = `<button class="lg-cat-tab${lgCatFilter==='ALL'?' active':''}" data-cat="ALL" onclick="setLgCat('ALL')">전체</button>`;
+    cats.forEach(cat => {
+      catTabs.innerHTML += `<button class="lg-cat-tab${lgCatFilter===cat?' active':''}" data-cat="${cat}" onclick="setLgCat('${cat}')">${cat}</button>`;
+    });
+  }
+
+  // ── SKU 드롭다운 채우기 (현재 품목 필터에 맞는 SKU만) ──
+  const sel = document.getElementById('lgModelFilter');
+  if (!sel) return;
+  const prevVal = sel.value;
+  sel.innerHTML = '<option value="ALL">전체 SKU</option>';
+
+  const filteredModels = Object.keys(byModel)
+    .filter(m => lgCatFilter === 'ALL' || lgModelCatMap[m] === lgCatFilter)
+    .sort();
+
+  filteredModels.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m; opt.textContent = m;
+    sel.appendChild(opt);
+  });
+
+  // 이전 선택값 유지 (가능한 경우)
+  if (prevVal && [...sel.options].some(o => o.value === prevVal)) sel.value = prevVal;
+}
+
+/* ══════════════════════
+   7. 전체 렌더 진입점
+══════════════════════ */
+function renderLogistics() {
+  if (!lgRaw.length) return;
+
+  // ── lgRaw에서 실제 최대 날짜를 먼저 확인 ──
+  // lgParseCSV가 이미 날짜를 YYYY-MM-DD로 정규화하므로 그대로 비교
+  const rawAllDates = lgRaw
+    .map(r => (r.date || '').toString().trim())
+    .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d));
+  const rawMaxDate = rawAllDates.length ? rawAllDates.reduce((a,b) => a>b?a:b) : '';
+  console.log('[renderLogistics] lgRaw 최대날짜:', rawMaxDate, '| 총행수:', lgRaw.length);
+
+  const { byModel, dateRange } = calcInventory(lgRaw);
+  const drMax = dateRange.length ? dateRange[dateRange.length - 1] : '';
+
+  // calcInventory가 올바르게 최대 날짜까지 계산했는지 확인
+  if (rawMaxDate && drMax && rawMaxDate > drMax) {
+    // calcInventory 결과가 실제 데이터보다 짧음 → 날짜 정규화 재시도 후 재계산
+    console.warn('[renderLogistics] calcInventory globalEnd(' + drMax + ') < rawMaxDate(' + rawMaxDate + ')');
+    console.warn('[renderLogistics] lgRaw 날짜 재정규화 후 재계산 시도...');
+    lgRaw.forEach(r => {
+      if (!r.date) return;
+      let d = r.date.toString().trim();
+      d = d.replace(/^(\d{4})\/(\d{2})\/(\d{2})$/, '$1-$2-$3');
+      d = d.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3');
+      r.date = d;
+    });
+    // 재계산은 calcInventory 내부에서 다시 처리됨
+    const result2 = calcInventory(lgRaw);
+    const { byModel: bm2, dateRange: dr2 } = result2;
+    console.log('[renderLogistics] 재계산 결과 마지막:', dr2[dr2.length-1]);
+    populateLgModelFilter(bm2);
+    renderLgKpiCards(bm2, dr2);
+    renderLgChart(bm2, dr2);
+    renderLgDaysTable(bm2, dr2);
+    renderLgAlerts(bm2, dr2);
+    const vr = runVerification(lgRaw, bm2);
+    renderLgVerify(vr);
+    return;
+  }
+
+  console.log('[renderLogistics] dateRange 마지막:', drMax);
+
+  populateLgModelFilter(byModel);
+  renderLgKpiCards(byModel, dateRange);
+  renderLgChart(byModel, dateRange);
+  renderLgDaysTable(byModel, dateRange);
+  renderLgAlerts(byModel, dateRange);
+
+  const vr = runVerification(lgRaw, byModel);
+  renderLgVerify(vr);
+}
+
+/* ══════════════════════
+   8. 데이터 로드
+══════════════════════ */
+const LG_PROXIES = [
+  '',
+  'https://corsproxy.io/?',
+  'https://api.allorigins.win/raw?url=',
+];
+
+async function loadLogistics(force = false) {
+  // lgRaw가 비어있거나 force이면 항상 재로드
+  if (lgLoaded && !force && lgRaw.length > 0) return;
+
+  const badge = document.getElementById('lgStatusBadge');
+  if (badge) { badge.style.background = '#f1f5f9'; badge.style.color = '#64748b'; badge.textContent = '⏳ 로딩 중...'; }
+
+  let csvText = null;
+  for (const proxy of LG_PROXIES) {
+    try {
+      const url = proxy ? proxy + encodeURIComponent(LG_CSV_URL) : LG_CSV_URL;
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 15000);
+      const res = await fetch(url, { signal: ctrl.signal, cache: 'no-store' });
+      clearTimeout(timer);
+      if (!res.ok) continue;
+      const txt = await res.text();
+      if (txt && txt.length > 100) { csvText = txt; break; }
+    } catch(e) { /* 다음 프록시 시도 */ }
+  }
+
+  if (!csvText) {
+    if (badge) { badge.style.background = '#fee2e2'; badge.style.color = '#b91c1c'; badge.textContent = '❌ 로드 실패'; }
+    const vEl = document.getElementById('lgVerifyReport');
+    if (vEl) vEl.innerHTML = '<p style="color:#ef4444;">CSV 로드 실패. 네트워크를 확인하세요.</p>';
+    return;
+  }
+
+  lgRaw = lgParseCSV(csvText);
+  lgLoaded = true;
+
+  // 최신 날짜 계산
+  const allDts = lgRaw.map(r => r.date).filter(Boolean);
+  const latestDt = allDts.length ? allDts.reduce((a,b) => a > b ? a : b) : '?';
+
+  if (badge) {
+    badge.style.background = '#d1fae5'; badge.style.color = '#065f46';
+    badge.textContent = `✅ ${lgRaw.length.toLocaleString()}행 | 최신: ${latestDt}`;
+  }
+
+  // 디버그 패널 업데이트
+  updateLgDebugPanel(lgRaw, latestDt);
+
+  // renderLogistics 호출 (내부에서 calcInventory 실행 + 모델필터 채우기 포함)
+  renderLogistics();
+}
+
+/* ── 디버그 패널 ── */
+function updateLgDebugPanel(rows, latestDt) {
+  const el = document.getElementById('lgDebugPanel');
+  if (!el) return;
+
+  const byDate = {};
+  rows.forEach(r => { byDate[r.date] = (byDate[r.date] || 0) + 1; });
+  const dates = Object.keys(byDate).sort();
+  const last5 = dates.slice(-5);
+
+  // S10 직배수 화이트 추적
+  const s10 = rows.filter(r => r.model === 'S10 MaxV Ultra_직배수_화이트');
+  const s10snap = s10.filter(r => r.inout === '재고' && r.type === '월말재고');
+  const s10tx = s10.filter(r => r.inout === '입고' || r.inout === '출고');
+
+  const lines = [
+    `🗓 최신 날짜: ${latestDt}`,
+    `📦 전체 행: ${rows.length}`,
+    `📅 날짜 범위: ${dates[0]} ~ ${dates[dates.length-1]}`,
+    `📅 최근 5일: ${last5.map(d => `${d}(${byDate[d]})`).join(', ')}`,
+    ``,
+    `[S10 직배수 화이트]`,
+    `  - 월말재고: ${s10snap.map(r => `${r.date}=${r.qty}`).join(', ')}`,
+    `  - 입출고 행수: ${s10tx.length}`,
+    `  - 최근 입출고: ${s10tx.slice(-5).map(r => `${r.date} ${r.inout} ${r.qty}`).join(', ')}`,
+  ];
+  el.textContent = lines.join('\n');
+}
+
+function toggleLgDebug() {
+  const el = document.getElementById('lgDebugPanel');
+  if (!el) return;
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+function toggleLgVerify() {
+  const body = document.getElementById('lgVerifyBody');
+  const icon = document.getElementById('lgVerifyIcon');
+  if (!body) return;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  if (icon) {
+    icon.textContent = isOpen ? '▶' : '▼';
+    icon.classList.toggle('open', !isOpen);
+  }
+}
+
+/* ══════════════════════
+   9. 탭 전환 시 자동 로드
+══════════════════════ */
+window.loadLogistics  = loadLogistics;
+window.toggleLgDebug  = toggleLgDebug;
+window.toggleLgVerify = toggleLgVerify;
+window.renderLogistics = renderLogistics;
+window.setLgView  = setLgView;
+window.setLgCat   = setLgCat;
+window.focusLgSku = focusLgSku;
+
+})();
+</script>
+</body>
 </html>
