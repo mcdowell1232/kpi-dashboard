@@ -4215,9 +4215,10 @@ window.loadSo=loadSo;
                 <div style="display:flex;align-items:center;gap:6px;">
                   <label style="font-size:0.75em;color:#64748b;font-weight:600;">기간</label>
                   <select id="lgPeriodFilter" onchange="renderLogistics()" style="font-size:0.78em;padding:5px 10px;border-radius:7px;border:1.5px solid #e2e8f0;color:#1e293b;background:#fff;">
+                    <option value="since2026" selected>2026년 1월 1일~</option>
                     <option value="30">최근 30일</option>
                     <option value="60">최근 60일</option>
-                    <option value="90" selected>최근 90일</option>
+                    <option value="90">최근 90일</option>
                     <option value="0">전체</option>
                   </select>
                 </div>
@@ -4241,11 +4242,11 @@ window.loadSo=loadSo;
               </div>
             </div>
 
-            <!-- ⑤ D+X 가동일 분석 테이블 -->
+            <!-- ⑤ 재고 예상 소진 시점 테이블 -->
             <div class="chart-container full-width" style="padding:20px 24px;margin-bottom:18px;">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
-                <div class="chart-title" style="border-bottom-color:#f59e0b;font-size:0.95em;">⏳ SKU별 가동일 분석 (B2C 출고 기반)</div>
-                <div style="font-size:0.72em;color:#64748b;">최근 14일 B2C 일평균 출고량 기준</div>
+                <div class="chart-title" style="border-bottom-color:#f59e0b;font-size:0.95em;">⏳ SKU별 재고 예상 소진 시점 (B2C 출고 기반)</div>
+                <div id="lgDaysTableRef" style="font-size:0.72em;color:#64748b;"></div>
               </div>
               <div id="lgDaysTable" style="overflow-x:auto;"></div>
             </div>
@@ -8386,6 +8387,22 @@ let lgChartInst  = null;
 let lgLoaded     = false;
 let lgModelCatMap = {};   // model → category 매핑
 
+/* ── SKU 정렬: S10 > S9 > S8 > 기타 순, 같은 라인업 내 재고 많은 순 ── */
+const LG_SKU_ORDER = ['S10','S9','S8','Z70','F25','H1','M1'];
+function lgSkuSortKey(model, stock) {
+  const idx = LG_SKU_ORDER.findIndex(k => model.includes(k));
+  const order = idx >= 0 ? idx : LG_SKU_ORDER.length;
+  // 재고 역순(많은 게 앞): 큰 수 → 작은 인덱스 → 음수로 변환
+  return order * 1e9 + (1e8 - (stock || 0));
+}
+function lgSortModels(models, byModel, today) {
+  return [...models].sort((a, b) => {
+    const sa = byModel[a]?.[today]?.stock || 0;
+    const sb = byModel[b]?.[today]?.stock || 0;
+    return lgSkuSortKey(a, sa) - lgSkuSortKey(b, sb);
+  });
+}
+
 /* ══════════════════════
    1. CSV 파싱 유틸
 ══════════════════════ */
@@ -8832,7 +8849,7 @@ function fmtN(n) {
   return Math.round(n).toLocaleString();
 }
 
-/* KPI 카드 렌더 - 품목별 그룹핑 */
+/* KPI 카드 렌더 - 품목별 그룹핑 + 뷰별 콘텐츠 */
 function renderLgKpiCards(byModel, dateRange) {
   const section = document.getElementById('lgKpiSection');
   if (!section) return;
@@ -8843,7 +8860,7 @@ function renderLgKpiCards(byModel, dateRange) {
   if (dateLabel) dateLabel.textContent = today ? `기준: ${today}` : '';
 
   // 현재 선택된 SKU 필터
-  const skuFilter   = document.getElementById('lgModelFilter').value;
+  const skuFilter = document.getElementById('lgModelFilter').value;
   // 활성 모델 목록: 품목 필터 + SKU 필터 교차 적용
   let activeModels = Object.keys(byModel).filter(m => {
     if (lgCatFilter !== 'ALL' && lgModelCatMap[m] !== lgCatFilter) return false;
@@ -8851,9 +8868,31 @@ function renderLgKpiCards(byModel, dateRange) {
     return true;
   });
 
-  // 품목별로 묶기
-  const catGroups = {}; // { 카테고리명: [model, ...] }
-  activeModels.sort().forEach(m => {
+  // 기간 필터 내 집계 (입고/출고 뷰용 총 수량 계산)
+  const periodVal = document.getElementById('lgPeriodFilter').value;
+  let periodDates = dateRange;
+  if (periodVal === 'since2026') {
+    periodDates = dateRange.filter(d => d >= '2026-01-01');
+  } else {
+    const p = parseInt(periodVal);
+    if (p > 0) {
+      const co = new Date(dateRange[dateRange.length-1] + 'T00:00:00');
+      co.setDate(co.getDate() - p + 1);
+      periodDates = dateRange.filter(d => d >= co.toISOString().slice(0,10));
+    }
+  }
+
+  // 뷰 설명 텍스트
+  const viewDesc = {
+    stock: `📌 <b>현재 재고</b> · <b>14일 B2C 일평균 출고</b> · <b>예상 소진 시점</b> 표시 | 카드 클릭 시 해당 SKU 차트 집중`,
+    in:    `📌 <b>기간 내 총 입고 수량</b> 표시 (기간: ${periodDates[0]||''} ~ ${today})`,
+    out:   `📌 <b>기간 내 총 출고 수량</b> 표시 (기간: ${periodDates[0]||''} ~ ${today})`,
+    all:   `📌 <b>기간 내 총 입고 / 총 출고</b> 함께 표시 (기간: ${periodDates[0]||''} ~ ${today})`,
+  };
+
+  // 품목별로 묶기 (정렬 포함)
+  const catGroups = {};
+  activeModels.forEach(m => {
     const cat = lgModelCatMap[m] || '기타';
     if (!catGroups[cat]) catGroups[cat] = [];
     catGroups[cat].push(m);
@@ -8868,50 +8907,103 @@ function renderLgKpiCards(byModel, dateRange) {
   };
 
   let html = '';
+
+  // 뷰 설명 배너
+  html += `<div style="margin-bottom:12px;padding:8px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;font-size:0.75em;color:#475569;line-height:1.6;">
+    ${viewDesc[lgView] || viewDesc.stock}
+  </div>`;
+
   Object.keys(catGroups).sort().forEach(cat => {
-    const models = catGroups[cat];
+    // 품목 내 SKU 정렬: S10>S9>S8>기타, 재고 많은 순
+    const models = lgSortModels(catGroups[cat], byModel, today);
     const color  = catColors[cat] || '#0891b2';
 
-    // 그룹 합계 재고
-    const totalStock = models.reduce((sum, m) => {
-      const e = byModel[m] && byModel[m][today];
-      return sum + (e ? Math.round(e.stock) : 0);
-    }, 0);
+    // 그룹 집계
+    const totalStock = models.reduce((s, m) => s + (byModel[m]?.[today]?.stock || 0), 0);
+    const totalIn    = models.reduce((s, m) => s + periodDates.reduce((ps, d) => ps + (byModel[m]?.[d]?.inQty || 0), 0), 0);
+    const totalOut   = models.reduce((s, m) => s + periodDates.reduce((ps, d) => ps + (byModel[m]?.[d]?.outQty || 0), 0), 0);
+
+    const groupSummary = lgView === 'stock'
+      ? `합계 재고 ${totalStock.toLocaleString()}개`
+      : lgView === 'in'
+      ? `기간 총 입고 ${totalIn.toLocaleString()}개`
+      : lgView === 'out'
+      ? `기간 총 출고 ${totalOut.toLocaleString()}개`
+      : `입고 ${totalIn.toLocaleString()} / 출고 ${totalOut.toLocaleString()}개`;
 
     html += `<div class="lg-kpi-group">
       <div class="lg-kpi-group-header" style="border-left-color:${color};">
         <span class="lg-kpi-group-title" style="color:${color};">${cat}</span>
-        <span class="lg-kpi-group-total">합계 ${totalStock.toLocaleString()}개</span>
+        <span class="lg-kpi-group-total">${groupSummary}</span>
         <span style="font-size:0.68em;color:#94a3b8;margin-left:auto;">${models.length}개 SKU</span>
       </div>
       <div class="lg-kpi-group-grid">`;
 
     models.forEach(model => {
-      const e  = byModel[model] && byModel[model][today];
+      const e  = byModel[model]?.[today];
       if (!e) return;
-      const di = calcDaysLeft(byModel, dateRange, model);
-      let badgeCls = 'lg-days-gray', badgeTxt = '—';
-      if (di && di.daysLeft !== null) {
-        badgeTxt = `D+${di.daysLeft}`;
-        if      (di.daysLeft <= ALERT_RED)    badgeCls = 'lg-days-red';
-        else if (di.daysLeft <= ALERT_ORANGE) badgeCls = 'lg-days-orange';
-        else if (di.daysLeft <= ALERT_YELLOW) badgeCls = 'lg-days-yellow';
-        else                                  badgeCls = 'lg-days-green';
+
+      const isFocused  = lgFocusSku === model;
+      const cardStyle  = isFocused ? `border-color:${color};box-shadow:0 0 0 2px ${color}44;` : '';
+
+      // 뷰별 카드 콘텐츠
+      let cardBody = '';
+
+      if (lgView === 'stock') {
+        // 재고 뷰: 현재 재고 + 14일 B2C 일평균 + 예상 소진 시점
+        const di = calcDaysLeft(byModel, dateRange, model);
+        let badgeCls = 'lg-days-gray', badgeTxt = '—';
+        let soDate = '—';
+        if (di && di.daysLeft !== null) {
+          badgeTxt = `D+${di.daysLeft}`;
+          if      (di.daysLeft <= ALERT_RED)    badgeCls = 'lg-days-red';
+          else if (di.daysLeft <= ALERT_ORANGE) badgeCls = 'lg-days-orange';
+          else if (di.daysLeft <= ALERT_YELLOW) badgeCls = 'lg-days-yellow';
+          else                                  badgeCls = 'lg-days-green';
+          // 예상 소진 날짜 계산
+          const soDateObj = new Date(today + 'T00:00:00');
+          soDateObj.setDate(soDateObj.getDate() + di.daysLeft);
+          soDate = soDateObj.toISOString().slice(0,10);
+        }
+        cardBody = `
+          <div class="lg-kpi-stock">${fmtN(e.stock)}<span class="lg-kpi-unit">개</span></div>
+          <div style="font-size:0.68em;color:#64748b;margin-top:4px;">
+            B2C 일평균 <strong>${di ? di.avgB2C.toFixed(1) : '—'}</strong>개
+          </div>
+          <div class="lg-kpi-row" style="margin-top:6px;">
+            <span class="lg-days-badge ${badgeCls}">${badgeTxt}</span>
+            <span style="font-size:0.68em;color:#94a3b8;">${soDate !== '—' ? '~' + soDate : '—'}</span>
+          </div>`;
+      } else if (lgView === 'in') {
+        // 입고 뷰: 기간 내 총 입고
+        const totalInModel = periodDates.reduce((s, d) => s + (byModel[model]?.[d]?.inQty || 0), 0);
+        cardBody = `
+          <div style="font-size:0.72em;color:#64748b;margin-bottom:4px;">기간 총 입고</div>
+          <div class="lg-kpi-stock" style="color:#059669;">${fmtN(totalInModel)}<span class="lg-kpi-unit">개</span></div>
+          <div style="font-size:0.68em;color:#94a3b8;margin-top:6px;">현재재고 ${fmtN(e.stock)}개</div>`;
+      } else if (lgView === 'out') {
+        // 출고 뷰: 기간 내 총 출고
+        const totalOutModel = periodDates.reduce((s, d) => s + (byModel[model]?.[d]?.outQty || 0), 0);
+        cardBody = `
+          <div style="font-size:0.72em;color:#64748b;margin-bottom:4px;">기간 총 출고</div>
+          <div class="lg-kpi-stock" style="color:#dc2626;">${fmtN(totalOutModel)}<span class="lg-kpi-unit">개</span></div>
+          <div style="font-size:0.68em;color:#94a3b8;margin-top:6px;">현재재고 ${fmtN(e.stock)}개</div>`;
+      } else {
+        // 전체 뷰: 총 입고 / 총 출고
+        const totalInModel  = periodDates.reduce((s, d) => s + (byModel[model]?.[d]?.inQty  || 0), 0);
+        const totalOutModel = periodDates.reduce((s, d) => s + (byModel[model]?.[d]?.outQty || 0), 0);
+        cardBody = `
+          <div class="lg-kpi-row" style="margin-top:4px;flex-direction:column;gap:4px;">
+            <div style="font-size:0.68em;"><span style="color:#059669;font-weight:700;">↑입고</span> <strong>${fmtN(totalInModel)}</strong>개</div>
+            <div style="font-size:0.68em;"><span style="color:#dc2626;font-weight:700;">↓출고</span> <strong>${fmtN(totalOutModel)}</strong>개</div>
+            <div style="font-size:0.67em;color:#94a3b8;">현재재고 ${fmtN(e.stock)}개</div>
+          </div>`;
       }
-      // 집중 SKU이면 테두리 강조
-      const isFocused = lgFocusSku === model;
-      const cardStyle = isFocused
-        ? `border-color:${color};box-shadow:0 0 0 2px ${color}44;`
-        : '';
+
       html += `
         <div class="lg-kpi-card" style="${cardStyle}" onclick="focusLgSku('${model.replace(/'/g,"\\'")}')">
           <div class="lg-kpi-sku" style="color:${color};">${model}</div>
-          <div class="lg-kpi-stock">${fmtN(e.stock)}<span class="lg-kpi-unit">개</span></div>
-          <div class="lg-kpi-row">
-            <span class="lg-kpi-sub lg-kpi-in">↑${fmtN(e.inQty)}</span>
-            <span class="lg-kpi-sub lg-kpi-out">↓${fmtN(e.outQty)}</span>
-            <span class="lg-days-badge ${badgeCls}">${badgeTxt}</span>
-          </div>
+          ${cardBody}
         </div>`;
     });
 
@@ -8927,13 +9019,18 @@ function renderLgChart(byModel, dateRange) {
   if (!ctx) return;
 
   // 기간 필터
-  const period = parseInt(document.getElementById('lgPeriodFilter').value);
+  const periodVal = document.getElementById('lgPeriodFilter').value;
   let filteredDates = dateRange;
-  if (period > 0) {
-    const cutoff = new Date(dateRange[dateRange.length-1] + 'T00:00:00');
-    cutoff.setDate(cutoff.getDate() - period + 1);
-    const cutStr = cutoff.toISOString().slice(0,10);
-    filteredDates = dateRange.filter(d => d >= cutStr);
+  if (periodVal === 'since2026') {
+    filteredDates = dateRange.filter(d => d >= '2026-01-01');
+  } else {
+    const period = parseInt(periodVal);
+    if (period > 0) {
+      const cutoff = new Date(dateRange[dateRange.length-1] + 'T00:00:00');
+      cutoff.setDate(cutoff.getDate() - period + 1);
+      const cutStr = cutoff.toISOString().slice(0,10);
+      filteredDates = dateRange.filter(d => d >= cutStr);
+    }
   }
 
   // 모델 목록: 품목 필터 + SKU 필터 교차 적용
@@ -9040,22 +9137,40 @@ function renderLgChart(byModel, dateRange) {
   }
 }
 
-/* D+X 테이블 렌더 */
+/* 재고 예상 소진 테이블 렌더 */
 function renderLgDaysTable(byModel, dateRange) {
   const el = document.getElementById('lgDaysTable');
   if (!el) return;
+
+  const today = dateRange[dateRange.length - 1] || '';
+
+  // 기준날짜 우상단 표시
+  const refEl = document.getElementById('lgDaysTableRef');
+  if (refEl) refEl.innerHTML = today
+    ? `📅 기준: <strong>${today}</strong> &nbsp;·&nbsp; 최근 14일 B2C 일평균 출고 기준`
+    : '';
 
   const skuFilter = document.getElementById('lgModelFilter').value;
   let models = Object.keys(byModel).filter(m => {
     if (lgCatFilter !== 'ALL' && lgModelCatMap[m] !== lgCatFilter) return false;
     if (skuFilter !== 'ALL' && m !== skuFilter) return false;
     return true;
-  }).sort();
+  });
 
-  const rows = models.sort().map(model => {
+  // S10>S9>S8>기타, 재고 많은 순 정렬
+  models = lgSortModels(models, byModel, today);
+
+  const rows = models.map(model => {
     const di = calcDaysLeft(byModel, dateRange, model);
     if (!di) return null;
-    return { model, ...di };
+    // 예상 소진 날짜
+    let soDateStr = '—';
+    if (di.daysLeft !== null) {
+      const soDateObj = new Date(today + 'T00:00:00');
+      soDateObj.setDate(soDateObj.getDate() + di.daysLeft);
+      soDateStr = soDateObj.toISOString().slice(0,10);
+    }
+    return { model, soDateStr, ...di };
   }).filter(Boolean);
 
   if (!rows.length) { el.innerHTML = '<p style="color:#94a3b8;font-size:0.85em;">데이터 없음</p>'; return; }
@@ -9066,9 +9181,8 @@ function renderLgDaysTable(byModel, dateRange) {
       <th>SKU (모델명2)</th>
       <th class="num">현재 재고</th>
       <th class="num">14일 B2C 일평균</th>
-      <th class="num">가동 가능일</th>
+      <th class="num">예상 소진 시점</th>
       <th>상태</th>
-      <th>기준 날짜</th>
     </tr></thead><tbody>`;
 
   rows.forEach(r => {
@@ -9084,14 +9198,20 @@ function renderLgDaysTable(byModel, dateRange) {
                 r.daysLeft <= ALERT_RED    ? '🚨 즉시 발주 필요' :
                 r.daysLeft <= ALERT_ORANGE ? '⚠️ 발주 검토 필요' :
                 r.daysLeft <= ALERT_YELLOW ? '🟡 관찰 필요' : '✅ 정상';
+
+    // 예상 소진 시점 표시: D+N 배지 + 날짜
+    const soCell = r.daysLeft !== null
+      ? `<span class="lg-days-badge ${badgeCls}">${icon}</span>
+         <span style="font-size:0.85em;color:#64748b;margin-left:4px;">${r.soDateStr}</span>`
+      : `<span class="lg-days-badge lg-days-gray">—</span>`;
+
     html += `<tr>
-      <td style="color:#64748b;font-size:0.9em;">${lgModelCatMap[r.model]||'—'}</td>
+      <td style="color:#64748b;font-size:0.88em;">${lgModelCatMap[r.model]||'—'}</td>
       <td><strong>${r.model}</strong></td>
-      <td class="num">${fmtN(r.latestStock)}</td>
+      <td class="num"><strong>${fmtN(r.latestStock)}</strong></td>
       <td class="num">${r.avgB2C.toFixed(1)}</td>
-      <td class="num"><span class="lg-days-badge ${badgeCls}">${icon}</span></td>
+      <td class="num">${soCell}</td>
       <td>${msg}</td>
-      <td style="font-size:0.85em;color:#94a3b8;">${r.today}</td>
     </tr>`;
   });
 
