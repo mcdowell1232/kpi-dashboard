@@ -2438,7 +2438,7 @@
 /* ══════════════════════════════════════════════
    상수 Sell Out 판매량 시트
 ══════════════════════════════════════════════ */
-const SO_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSwIR0MUtMDj8ZwPgfdLAlymiZuKtCaj5srQAPcKbMTxrvs9jVTY2lNXZ0v-DrL8g/pub?gid=1588807389&single=true&output=csv';
+const SO_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRPP-iivs5POM0PYstiK1Q-Z6mq4tj2JiS6oe7fB7LpG2rHKWERHsVi5INZG2snzA/pub?gid=422193621&single=true&output=csv';
 const SO_PROXIES = ['https://corsproxy.io/?','https://api.allorigins.win/raw?url='];
 const MAX_WEEKS  = 15;
 const DEF_WEEKS  = 10;
@@ -3172,9 +3172,9 @@ function cmpGetCurrentWPos() {
   if (!lastMeta) lastMeta = soData.wkMeta[0];
 
   const lastWkNum = parseInt(lastMeta.wk.replace(/^WK0?/, ''));
-  // S10 기준 W-위치: WK61=W0, WK62=W1, WK63=W2 ...
-  // (두 시리즈 동일 W-위치 공유)
-  const currentW = Math.max(0, Math.min(7, lastWkNum - 61));
+  // S10 기준 W-위치: WK61=W1(출시주), WK62=W2 ...
+  // 최대 51주(올해 말)까지 허용
+  const currentW = Math.max(0, Math.min(51, lastWkNum - 61));
   return { currentW, lastWkNum, lastMeta };
 }
 
@@ -3205,17 +3205,29 @@ function renderCmpChart() {
   const S9_SKU  = s => SO_SKU_GROUPS['S9'](s) &&
     !s.toLowerCase().includes('slim');
 
-  // W1(출시)~W8 : 라벨은 W1~W8, 실제 데이터는 WK61~WK68 / WK08~WK15 그대로
-  const S10_WKS = [61,62,63,64,65,66,67,68];
-  const S9_WKS  = [8, 9,10,11,12,13,14,15];
-  // W1=출시, W2, W3 ... W8
-  const W_LABELS = ['W1\n(출시)','W2','W3','W4','W5','W6','W7','W8'];
-
   /* ── 현재 주차 위치 계산 ── */
   const { currentW, lastWkNum, lastMeta } = cmpGetCurrentWPos();
   // currentW: 0=W1 완료, 1=W2 완료 ... (0-based index)
-  // W_LABELS 기준: index 0 = W1(출시)
   const currentW_s10 = currentW;
+
+  // 올해 말까지 전체 WK 배열 생성 (W1~W52)
+  const TOTAL_WEEKS = 52;
+  const ALL_S10_WKS = Array.from({length: TOTAL_WEEKS}, (_, i) => 61 + i);
+  const ALL_S9_WKS  = Array.from({length: TOTAL_WEEKS}, (_, i) => 8  + i);
+
+  // 차트에는 슬라이딩 윈도우 8주 표시
+  // 완료된 주(currentW_s10)까지 + 진행중 1주 = 최대 currentW_s10+2개
+  const CHART_WINDOW = 8;
+  // 차트 슬라이드 윈도우: 현재 진행중 주 포함해서 최대 8주
+  const chartEndIdx   = Math.min(currentW_s10 + 1, TOTAL_WEEKS - 1); // 진행중 주 포함
+  const chartStartIdx = Math.max(0, chartEndIdx - CHART_WINDOW + 1);
+  const S10_WKS = ALL_S10_WKS.slice(chartStartIdx, chartEndIdx + 1);
+  const S9_WKS  = ALL_S9_WKS.slice(chartStartIdx, chartEndIdx + 1);
+  // 차트용 W-라벨 (슬라이딩 기준 절대 주차)
+  const W_LABELS = S10_WKS.map((wk, i) => {
+    const absW = chartStartIdx + i + 1; // 1-based 절대 주차
+    return absW === 1 ? 'W1\n(출시)' : `W${absW}`;
+  });
 
   /* ── 주차별 합계 사전 계산 (합계 숫자 라벨용) ── */
   const s10Totals = S10_WKS.map(wkNum => {
@@ -3234,8 +3246,8 @@ function renderCmpChart() {
   });
 
   /* ── 누적 배너 계산 ── */
-  // W1~완료 주차까지 합산 (currentW_s10 = 마지막 완료 index, 0-based)
-  const s10AccumEnd = 61 + currentW_s10;
+  // W1(WK61)~완료 주차까지 전체 누적 합산
+  const s10AccumEnd = 61 + currentW_s10;   // 절대 WK
   const s9AccumEnd  = 8  + currentW_s10;
   const s10Accum = cmpAccumSales(61, s10AccumEnd, S10_SKU);
   const s9Accum  = cmpAccumSales(8,  s9AccumEnd,  S9_SKU);
@@ -3256,7 +3268,7 @@ function renderCmpChart() {
   if (s10SubEl) s10SubEl.textContent = subLabel;
   if (s9SubEl)  s9SubEl.textContent  = subLabel;
   if (noteEl)   noteEl.innerHTML =
-    `현재 <strong>WK${lastWkNum + 1}</strong> 진행 중<br>WK${lastWkNum}(${wNumLabel(currentW_s10)})까지 집계`;
+    `현재 <strong>W${currentW_s10 + 2}(WK${lastWkNum + 1})</strong> 진행 중<br>W${currentW_s10 + 1}(WK${lastWkNum})까지 집계`;
 
   /* ── 채널 강조 상태 (클릭 토글용) ── */
   if (typeof window._cmpFocusCh === 'undefined') window._cmpFocusCh = null;
@@ -3437,7 +3449,8 @@ function renderCmpChart() {
           callbacks: {
             title: items => {
               const wi = items[0].dataIndex;
-              const wl = W_LABELS[wi].replace('\n', ' ');
+              const absIdx = chartStartIdx + wi;
+              const wl = absIdx === 0 ? `W1(출시)` : `W${absIdx + 1}`;
               return `${wl}  │  S10: WK${S10_WKS[wi]}  /  S9: WK${S9_WKS[wi]}`;
             },
             beforeBody: items => {
@@ -3568,7 +3581,7 @@ function renderCmpChart() {
   };
 
   /* ── 하단 표 렌더 ── */
-  renderCmpTables(S10_WKS, S9_WKS, S10_SKU, S9_SKU, currentW_s10, lastWkNum);
+  renderCmpTables(ALL_S10_WKS, ALL_S9_WKS, S10_SKU, S9_SKU, currentW_s10);
 }
 
 /* ══════════════════════════════════════════════
@@ -3980,25 +3993,41 @@ function renderYoyTable(meta26, meta25, totals26, totals25, wkCount) {
   wrap.innerHTML = h;
 }
 
-/* 하단 요약표 + 채널 세부표 */
-function renderCmpTables(S10_WKS, S9_WKS, S10_SKU, S9_SKU, currentW_s10, lastWkNum) {
+/* 하단 요약표 + 채널 세부표
+   ALL_S10_WKS / ALL_S9_WKS : W1~W52 전체 WK 배열
+   currentW_s10 : 0-based 완료 인덱스 (0=W1 완료, 1=W2 완료 ...)
+*/
+function renderCmpTables(ALL_S10_WKS, ALL_S9_WKS, S10_SKU, S9_SKU, currentW_s10) {
   const wrap = document.getElementById('cmpTablesWrap');
   if (!wrap || !soData) return;
 
-  // W1(출시)~W8 라벨
-  const W_LABELS_SHORT = ['W1','W2','W3','W4','W5','W6','W7','W8'];
+  const TABLE_WINDOW  = 8;  // 표에서 보여줄 최대 주차 수
+  const totalCompleted = currentW_s10 + 1;  // 완료된 주 수 (1~52)
 
-  function buildSeriesTableHTML(wks, skuFn, seriesName, isS10) {
+  // ── 슬라이딩 윈도우 계산 ──
+  // 진행중 주(currentW_s10+1)까지 포함 → 마지막 인덱스
+  const tableEndIdx   = Math.min(currentW_s10 + 1, ALL_S10_WKS.length - 1);
+  const tableStartIdx = Math.max(0, tableEndIdx - TABLE_WINDOW + 1);
+
+  // 표시할 WK 슬라이스
+  const S10_WKS_DISP = ALL_S10_WKS.slice(tableStartIdx, tableEndIdx + 1);
+  const S9_WKS_DISP  = ALL_S9_WKS.slice(tableStartIdx,  tableEndIdx + 1);
+
+  // 절대 주차 번호(1-based) → 헤더 레이블
+  const absWLabel = idx => `W${idx + 1}`;
+
+  function buildSeriesTableHTML(wks_disp, allWks, skuFn, seriesName, isS10) {
     const colorClass = isS10 ? 'total-row' : 'total-row total-row-s9';
-    const thBg    = isS10 ? 'background:#dbeafe;color:#1d4ed8;' : 'background:#dcfce7;color:#15803d;';
-    const subColor= isS10 ? '#3b82f6' : '#22c55e';
-    const totColor= isS10 ? '#1d4ed8' : '#15803d';
-    // 중간 합계 열 스타일
-    const midBg   = isS10 ? 'background:#eff6ff;color:#1d4ed8;border-left:2px solid #bfdbfe;border-right:2px solid #bfdbfe;'
-                           : 'background:#f0fdf4;color:#15803d;border-left:2px solid #bbf7d0;border-right:2px solid #bbf7d0;';
+    const thBg     = isS10 ? 'background:#dbeafe;color:#1d4ed8;'
+                           : 'background:#dcfce7;color:#15803d;';
+    const subColor = isS10 ? '#3b82f6' : '#22c55e';
+    // 소계 열 스타일 (S10/S9 각각 색상)
+    const midBg = isS10
+      ? 'background:#eff6ff;color:#1d4ed8;border-left:2px solid #bfdbfe;border-right:2px solid #bfdbfe;'
+      : 'background:#f0fdf4;color:#15803d;border-left:2px solid #bbf7d0;border-right:2px solid #bbf7d0;';
 
-    // 각 WK별 채널별 판매 집계
-    const data = wks.map(wkNum => {
+    // ── 표시 구간 데이터 집계 ──
+    const data = wks_disp.map(wkNum => {
       const gi = cmpWkIdx(wkNum);
       const chVals = {};
       if (gi >= 0) {
@@ -4013,101 +4042,85 @@ function renderCmpTables(S10_WKS, S9_WKS, S10_SKU, S9_SKU, currentW_s10, lastWkN
       return chVals;
     });
 
-    // ── 중간합계 범위: S10 기준 현재 완료된 마지막 주(currentW_s10)까지
-    // currentW_s10: 0-based index (0=W1, 1=W2, 2=W3, 3=W4 ...)
-    // 데이터가 있는 마지막 주를 midEnd로 사용 (최소 0, 최대 wks.length-2)
-    // → 진행중 주 직전까지 = currentW_s10 (완료된 마지막)
-    const midEnd = Math.max(0, Math.min(currentW_s10, wks.length - 2));
-    const MID_INDICES = Array.from({ length: midEnd + 1 }, (_, i) => i); // [0..midEnd]
-    const midEndLabel = W_LABELS_SHORT[midEnd]; // ex) 'W3', 'W4'...
-    const midStartLabel = W_LABELS_SHORT[0];    // 'W1' 고정
+    // ── 소계: W1~완료주 전체 누적 (슬라이딩 윈도우 무관) ──
+    const accumData = allWks.slice(0, totalCompleted).map(wkNum => {
+      const gi = cmpWkIdx(wkNum);
+      const cv = {};
+      SO_CHANNELS.forEach(ch => {
+        cv[ch] = gi >= 0
+          ? soData.skuNames.filter(skuFn).reduce((s, sku) =>
+              s + (soData.skuMap[sku]?.[ch]?.[gi] || 0), 0)
+          : 0;
+      });
+      return cv;
+    });
+    const accumByChannel = {};
+    SO_CHANNELS.forEach(ch => {
+      accumByChannel[ch] = accumData.reduce((s, d) => s + (d[ch] || 0), 0);
+    });
+    const accumTotal = SO_CHANNELS.reduce((s, ch) => s + (accumByChannel[ch] || 0), 0);
 
-    // S10: 진행중 주 표시 / S9: 과거 데이터이므로 진행중 없음
-    const currentInProgressIdx = isS10 ? (currentW_s10 + 1) : -1;
+    // 진행중 주의 표 내 인덱스 (S10만 진행중 표시, S9는 완료 데이터)
+    const currentInProgressIdx = isS10
+      ? (currentW_s10 + 1 - tableStartIdx)
+      : -1;
+
+    // 소계 레이블
+    const accumLabel = totalCompleted === 1
+      ? 'W1 소계'
+      : `W1~W${totalCompleted} 소계`;
 
     // ── 헤더 ──
     let h = `<span class="cmp-table-title ${isS10 ? 'cmp-table-title-s10':'cmp-table-title-s9'}">📋 ${seriesName} 주차별 요약</span>`;
     h += `<div class="cmp-table-block"><table class="cmp-tbl"><thead><tr>`;
     h += `<th class="label-col" style="${thBg}">채널</th>`;
 
-    wks.forEach((wkNum, wi) => {
-      const isNow = wi === currentInProgressIdx;
-      const wLabel = W_LABELS_SHORT[wi];
+    wks_disp.forEach((wkNum, wi) => {
+      const absIdx = tableStartIdx + wi;
+      const wLabel = absWLabel(absIdx);
+      const isNow  = wi === currentInProgressIdx;
       h += `<th style="${thBg}${isNow ? 'font-style:italic;opacity:0.75;' : ''}">`;
       h += `${wLabel}<br><span style="font-weight:400;font-size:0.72em;color:${subColor};">WK${wkNum}</span>`;
       if (isNow) h += `<br><span style="font-size:0.62em;color:#f59e0b;font-weight:700;">진행중</span>`;
       h += `</th>`;
-      // midEnd 인덱스 다음에 중간 합계 열 헤더 삽입 (동적 위치)
-      if (wi === midEnd) {
-        const midTitle = midStartLabel === midEndLabel
-          ? `${midStartLabel}<br>소계`
-          : `${midStartLabel}~${midEndLabel}<br>소계`;
-        h += `<th style="${thBg}${midBg}font-weight:800;font-size:0.85em;">${midTitle}<br><span style="font-size:0.7em;font-weight:400;">(비율%)</span></th>`;
-      }
     });
-    h += `<th style="${thBg}font-weight:800;">전체합계</th></tr></thead><tbody>`;
+
+    // 소계 헤더 (S10·S9 공통)
+    h += `<th style="${thBg}${midBg}font-weight:800;font-size:0.82em;white-space:nowrap;">${accumLabel}</th>`;
+    h += `</tr></thead><tbody>`;
 
     // ── 채널별 행 ──
     SO_CHANNELS.forEach(ch => {
       const rowTotals = data.map(d => d[ch] || 0);
-      const grandTotal = rowTotals.reduce((s,v) => s+v, 0);
-      if (!grandTotal) return;
-
-      const midSum = MID_INDICES.reduce((s, mi) => s + (rowTotals[mi] || 0), 0);
-      // 중간합계 % = 채널 midSum ÷ 전체 시리즈 W1~W3 합계 (=midTotal, 아래에서 계산)
-      // midTotal은 buildSeriesTableHTML 스코프 내 후반부에서 계산되므로
-      // 여기서는 임시로 저장 후 나중에 % 계산
-      // → 먼저 전체 wkTotals 미리 계산
-      // % 기준: W1~W3 소계 합계(midTotal) 안에서의 채널 비중
-      // → 먼저 W1~W3 전체 합산
-      const _midTotal = MID_INDICES.reduce((s, mi) =>
-        s + SO_CHANNELS.reduce((cs, c2) => cs + (data[mi]?.[c2] || 0), 0), 0);
-      const midPct = _midTotal > 0 ? (midSum / _midTotal * 100).toFixed(1) : '–';
+      const chAccum   = accumByChannel[ch] || 0;
+      if (!rowTotals.some(v => v) && !chAccum) return;
 
       h += `<tr><td class="label-col">${ch}</td>`;
       rowTotals.forEach((v, wi) => {
         const isNow = wi === currentInProgressIdx;
-        // W1/W2/W3 셀: 판매량만 표시 (% 없음) — 중간합계 열에서만 % 표시
-        const cellContent = v ? v.toLocaleString() : '–';
-        h += `<td style="${isNow ? 'opacity:0.5;font-style:italic;' : ''}white-space:nowrap;">${cellContent}</td>`;
-        // midEnd 다음에 중간합계 셀 삽입 (동적 위치)
-        if (wi === midEnd) {
-          const midPctDisplay = midPct !== '–' ? `<span style="color:#7c3aed;font-size:0.8em;font-weight:600;margin-left:4px;white-space:nowrap;">${midPct}%</span>` : '';
-          h += `<td style="${midBg}font-weight:700;white-space:nowrap;">`;
-          h += `${midSum ? midSum.toLocaleString() : '–'}${midPctDisplay}`;
-          h += `</td>`;
-        }
+        h += `<td style="${isNow ? 'opacity:0.5;font-style:italic;' : ''}white-space:nowrap;">${v ? v.toLocaleString() : '–'}</td>`;
       });
-      h += `<td style="font-weight:700;color:${totColor};">${grandTotal.toLocaleString()}</td></tr>`;
+      // 소계 셀 (공통)
+      h += `<td style="${midBg}font-weight:700;white-space:nowrap;">${chAccum ? chAccum.toLocaleString() : '–'}</td>`;
+      h += `</tr>`;
     });
 
     // ── 합계 행 ──
     const wkTotals = data.map(d => d['__total__'] || 0);
-    const grandGrand = wkTotals.reduce((s,v) => s+v, 0);
-    const midTotal = MID_INDICES.reduce((s, mi) => s + (wkTotals[mi] || 0), 0);
-    // 합계 행: 소계(midTotal)는 곧 100% 기준 → '100%' 고정 표시
-    const midTotalPct = midTotal > 0 ? '100.0' : '–';
-
     h += `<tr class="${colorClass}"><td class="label-col">📦 전체 합계</td>`;
     wkTotals.forEach((v, wi) => {
       const isNow = wi === currentInProgressIdx;
       h += `<td style="${isNow ? 'opacity:0.5;font-style:italic;' : ''}white-space:nowrap;">${v ? v.toLocaleString() : '–'}</td>`;
-      if (wi === midEnd) {
-        const midTotPctDisplay = midTotalPct !== '–' ? `<span style="color:#7c3aed;font-size:0.8em;margin-left:4px;white-space:nowrap;">${midTotalPct}%</span>` : '';
-        h += `<td style="${midBg}font-weight:800;white-space:nowrap;">`;
-        h += `${midTotal ? midTotal.toLocaleString() : '–'}${midTotPctDisplay}`;
-        h += `</td>`;
-      }
     });
-    h += `<td>${grandGrand.toLocaleString()}</td></tr>`;
-    h += `</tbody></table></div>`;
-
+    // 소계 합계 셀 (공통)
+    h += `<td style="${midBg}font-weight:800;white-space:nowrap;">${accumTotal ? accumTotal.toLocaleString() : '–'}</td>`;
+    h += `</tr></tbody></table></div>`;
     return h;
   }
 
   wrap.innerHTML = `
-    <div>${buildSeriesTableHTML(S10_WKS, S10_SKU, '🔵 S10 MaxV Ultra 시리즈', true)}</div>
-    <div>${buildSeriesTableHTML(S9_WKS,  S9_SKU,  '🟢 S9 MaxV Ultra 시리즈',  false)}</div>
+    <div>${buildSeriesTableHTML(S10_WKS_DISP, ALL_S10_WKS, S10_SKU, '🔵 S10 MaxV Ultra 시리즈', true)}</div>
+    <div>${buildSeriesTableHTML(S9_WKS_DISP,  ALL_S9_WKS,  S9_SKU,  '🟢 S9 MaxV Ultra 시리즈',  false)}</div>
   `;
 }
 
