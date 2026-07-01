@@ -76,6 +76,48 @@
             color: #475569;
             border-top: 1px solid rgba(255,255,255,0.07);
         }
+
+        /* ── 언어 스위치 ── */
+        .lang-switch-wrap {
+            padding: 12px 16px 4px;
+        }
+        .lang-switch-label {
+            font-size: 0.68em;
+            color: #64748b;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 7px;
+        }
+        .lang-switch-group {
+            display: flex;
+            gap: 4px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 3px;
+        }
+        .lang-btn {
+            flex: 1;
+            padding: 5px 2px;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            color: #64748b;
+            font-size: 0.72em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.18s;
+            letter-spacing: -0.2px;
+            white-space: nowrap;
+        }
+        .lang-btn:hover { color: #cbd5e1; background: rgba(255,255,255,0.07); }
+        .lang-btn.active {
+            background: #3b82f6;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(59,130,246,0.35);
+        }
+        /* 물류 탭 숨김 */
+        #sbLogistics, #tabBtnLogistics { display: none !important; }
         #mainArea {
             margin-left: 220px;
             flex: 1;
@@ -1896,11 +1938,20 @@
       🤖 로봇청소기<br>KPI Dashboard
       <span>Thinkware Mobile</span>
     </div>
+    <!-- 언어 스위치 -->
+    <div class="lang-switch-wrap">
+      <div class="lang-switch-label">🌐 Language</div>
+      <div class="lang-switch-group">
+        <button class="lang-btn active" id="langBtnKO" onclick="setLang('ko')">국문</button>
+        <button class="lang-btn"        id="langBtnEN" onclick="setLang('en')">ENG</button>
+        <button class="lang-btn"        id="langBtnZH" onclick="setLang('zh')">中文</button>
+      </div>
+    </div>
     <div class="sb-nav">
-      <div class="sb-item active" id="sbCompetitor" onclick="switchTab('competitor');setSbActive('sbCompetitor')">🔍 경쟁사 현황</div>
-      <div class="sb-item" id="sbMkt" onclick="switchTab('mkt');setSbActive('sbMkt')">📊 Marketing</div>
-      <div class="sb-item" id="sbSales" onclick="switchTab('sales');setSbActive('sbSales')">💼 Sales</div>
-      <div class="sb-item" id="sbLogistics" onclick="switchTab('logistics');setSbActive('sbLogistics')">📦 물류</div>
+      <div class="sb-item active" id="sbCompetitor" onclick="switchTab('competitor');setSbActive('sbCompetitor')"><span data-i18n="tab_competitor">🔍 경쟁사 현황</span></div>
+      <div class="sb-item" id="sbMkt" onclick="switchTab('mkt');setSbActive('sbMkt')"><span data-i18n="tab_mkt">📊 Marketing</span></div>
+      <div class="sb-item" id="sbSales" onclick="switchTab('sales');setSbActive('sbSales')"><span data-i18n="tab_sales">💼 Sales</span></div>
+      <div class="sb-item" id="sbLogistics" onclick="switchTab('logistics');setSbActive('sbLogistics')"><span data-i18n="tab_logistics">📦 물류</span></div>
     </div>
     <div class="sb-footer" id="sbFooterInfo">
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
@@ -1909,6 +1960,7 @@
       </div>
       <div id="userInfo" style="display:none;font-size:0.82em;margin-bottom:8px;padding:8px;background:rgba(255,255,255,0.05);border-radius:6px;"><span id="userInfoName" style="color:#e2e8f0;font-weight:600;"></span><br><span id="sessionTimer" style="color:#64748b;font-size:0.9em;"></span></div>
       <button id="logoutBtn" onclick="AUTH.logout()" style="display:none;width:100%;padding:7px 0;background:rgba(239,68,68,0.1);color:#fca5a5;border:1px solid rgba(239,68,68,0.2);border-radius:6px;cursor:pointer;font-size:0.82em;font-weight:700;">로그아웃</button>
+      <button id="sbAccMgrBtn" onclick="AUTH.openAccMgr()" style="display:none;width:100%;margin-top:6px;padding:8px 0;background:rgba(245,158,11,0.15);color:#fcd34d;border:1px solid rgba(245,158,11,0.3);border-radius:6px;cursor:pointer;font-size:0.82em;font-weight:700;">⚙️ 계정 관리</button>
     </div>
   </nav>
 
@@ -1941,10 +1993,10 @@
         
         <!-- ══════ TAB BAR ══════ -->
         <div class="main-tab-bar">
-          <button class="main-tab-btn active" id="tabBtnCompetitor" onclick="switchTab('competitor');setSbActive('sbCompetitor')">🔍 경쟁사 현황</button>
-          <button class="main-tab-btn" id="tabBtnMkt" onclick="switchTab('mkt');setSbActive('sbMkt')">📊 Marketing</button>
-          <button class="main-tab-btn" id="tabBtnSales" onclick="switchTab('sales');setSbActive('sbSales')">💼 Sales</button>
-          <button class="main-tab-btn" id="tabBtnLogistics" onclick="switchTab('logistics');setSbActive('sbLogistics')">📦 물류</button>
+          <button class="main-tab-btn active" id="tabBtnCompetitor" onclick="switchTab('competitor');setSbActive('sbCompetitor')"><span data-i18n="tab_competitor">🔍 경쟁사 현황</span></button>
+          <button class="main-tab-btn" id="tabBtnMkt" onclick="switchTab('mkt');setSbActive('sbMkt')"><span data-i18n="tab_mkt">📊 Marketing</span></button>
+          <button class="main-tab-btn" id="tabBtnSales" onclick="switchTab('sales');setSbActive('sbSales')"><span data-i18n="tab_sales">💼 Sales</span></button>
+          <button class="main-tab-btn" id="tabBtnLogistics" onclick="switchTab('logistics');setSbActive('sbLogistics')"><span data-i18n="tab_logistics">📦 물류</span></button>
         </div>
 
         <!-- ══════ COMPETITOR TAB ══════ -->
@@ -1961,30 +2013,30 @@
                   </div>
                   <!-- 단서조항 -->
                   <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                    <span style="font-size:0.75em;color:#6366f1;font-weight:600;">🤖 AI 자동 분석</span>
+                    <span style="font-size:0.75em;color:#6366f1;font-weight:600;" data-i18n="comp_ai_badge">🤖 AI 자동 분석</span>
                     <span style="font-size:0.72em;color:#94a3b8;">|</span>
-                    <span style="font-size:0.72em;color:#64748b;">매일 오전 12:00 자동 업데이트</span>
+                    <span style="font-size:0.72em;color:#64748b;" data-i18n="comp_auto_desc">매일 오전 12:00 자동 업데이트</span>
                     <span style="font-size:0.72em;color:#94a3b8;">|</span>
-                    <span style="font-size:0.72em;color:#64748b;">최근 7일간 뉴스 기반</span>
+                    <span style="font-size:0.72em;color:#64748b;" data-i18n="comp_days_desc">최근 7일간 뉴스 기반</span>
                     <span style="font-size:0.72em;color:#94a3b8;">|</span>
-                    <span style="font-size:0.72em;color:#64748b;">네이버 뉴스 API + Gemini AI 분석</span>
+                    <span style="font-size:0.72em;color:#64748b;" data-i18n="comp_api_desc">네이버 뉴스 API + Gemini AI 분석</span>
                   </div>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;">
                   <span id="compUpdateTime" style="font-size:0.72em;color:#94a3b8;"></span>
-                  <button onclick="loadBrandNews(true)" style="font-size:0.75em;padding:5px 12px;border:1px solid #6366f1;border-radius:6px;background:#f5f3ff;color:#6366f1;cursor:pointer;font-weight:600;">🔄 새로고침</button>
+                  <button onclick="loadBrandNews(true)" style="font-size:0.75em;padding:5px 12px;border:1px solid #6366f1;border-radius:6px;background:#f5f3ff;color:#6366f1;cursor:pointer;font-weight:600;" data-i18n="comp_refresh">🔄 새로고침</button>
                 </div>
               </div>
 
               <!-- 로딩 / 에러 -->
               <div id="compLoading" style="text-align:center;padding:40px;color:#94a3b8;display:none;">
                 <div style="font-size:1.4em;margin-bottom:8px;">⏳</div>
-                <div style="font-size:0.85em;">뉴스 인사이트 불러오는 중...</div>
+                <div style="font-size:0.85em;" id="compLoadingText">뉴스 인사이트 불러오는 중...</div>
               </div>
               <div id="compError" style="display:none;text-align:center;padding:30px;">
                 <div style="font-size:1.2em;margin-bottom:8px;">⚠️</div>
                 <div style="font-size:0.85em;color:#ef4444;margin-bottom:12px;" id="compErrorMsg">데이터를 불러오지 못했습니다.</div>
-                <button onclick="loadBrandNews(true)" style="font-size:0.8em;padding:6px 16px;border:1px solid #ef4444;border-radius:6px;background:#fff;color:#ef4444;cursor:pointer;">다시 시도</button>
+                <button onclick="loadBrandNews(true)" style="font-size:0.8em;padding:6px 16px;border:1px solid #ef4444;border-radius:6px;background:#fff;color:#ef4444;cursor:pointer;" id="compRetryBtn" data-i18n="comp_retry">다시 시도</button>
               </div>
 
               <!-- 브랜드 카드 그리드 -->
@@ -1992,7 +2044,7 @@
 
                 <!-- ① 전체 브랜드 현황 요약 카드 (상단) -->
                 <div style="margin-bottom:20px;">
-                  <div style="font-size:0.8em;font-weight:700;color:#475569;margin-bottom:10px;letter-spacing:0.05em;">📋 전체 브랜드 현황 요약</div>
+                  <div style="font-size:0.8em;font-weight:700;color:#475569;margin-bottom:10px;letter-spacing:0.05em;" data-i18n="comp_brand_summary">📋 전체 브랜드 현황 요약</div>
                   <div id="compSummaryGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;"></div>
                 </div>
 
@@ -2063,7 +2115,7 @@
                 <div id="chart4Wrap" style="position:relative; height:460px;">
                     <canvas id="chart4"></canvas>
                 </div>
-                <p class="legend-info" style="margin-top:4px;margin-bottom:0;">로보락 S10 Max V Ultra + Slim &nbsp;·&nbsp; 삼성로봇청소기 &nbsp;·&nbsp; 드리미X60 &nbsp;·&nbsp; DJI 로봇청소기 &nbsp;·&nbsp; 다이슨 로봇청소기 &nbsp;·&nbsp; 에코백스T90</p>
+                <p class="legend-info" style="margin-top:4px;margin-bottom:0;" data-i18n="legend_competitor">로보락 S10 Max V Ultra + Slim &nbsp;·&nbsp; 삼성로봇청소기 &nbsp;·&nbsp; 드리미X60 &nbsp;·&nbsp; DJI 로봇청소기 &nbsp;·&nbsp; 다이슨 로봇청소기 &nbsp;·&nbsp; 에코백스T90</p>
                 <!-- S10 예측라인 단서조항: JS가 채움 -->
                 <div id="chart4Disclaimer" style="font-size:0.72em;color:#475569;margin-top:10px;margin-bottom:0;line-height:1.75;padding:10px 14px;background:#f8fafc;border-radius:8px;border-left:3px solid #94a3b8;">
                   <span style="color:#94a3b8;">※ S10 예측 라인: 출시 후 S9 패턴 비율 기반으로 미래 검색량을 추정합니다. 데이터 로드 후 상세 정보가 표시됩니다.</span>
@@ -2088,20 +2140,20 @@
               <div class="chart-title" style="border-bottom-color:#6366f1; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; padding-bottom:14px;">
                 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
                   <span>🤖 경쟁사 검색트렌드 종합 인사이트</span>
-                  <span style="font-size:0.7em;font-weight:500;background:#e0e7ff;color:#4338ca;padding:2px 8px;border-radius:8px;">Gemini AI · 매일 12시 자동</span>
-                  <span style="font-size:0.68em;font-weight:400;color:#94a3b8;">검색량 트렌드 + 경쟁사 뉴스 교차 분석</span>
+                  <span style="font-size:0.7em;font-weight:500;background:#e0e7ff;color:#4338ca;padding:2px 8px;border-radius:8px;" data-ins-badge data-i18n="comp_insight_badge">Gemini AI · 매일 12시 자동</span>
+                  <span style="font-size:0.68em;font-weight:400;color:#94a3b8;" data-ins-desc data-i18n="comp_insight_desc">검색량 트렌드 + 경쟁사 뉴스 교차 분석</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                   <span id="insightCutoffBadge" style="font-size:0.72em;font-weight:600;background:#e0e7ff;color:#4338ca;padding:3px 10px;border-radius:12px;white-space:nowrap;">로딩 중...</span>
-                  <button onclick="loadMktInsight(true)" style="font-size:0.72em;font-weight:600;padding:5px 12px;background:#fff;color:#6366f1;border:1.5px solid #c7d2fe;border-radius:8px;cursor:pointer;">🔄 새로고침</button>
+                  <button onclick="loadMktInsight(true)" style="font-size:0.72em;font-weight:600;padding:5px 12px;background:#fff;color:#6366f1;border:1.5px solid #c7d2fe;border-radius:8px;cursor:pointer;" data-i18n="comp_refresh">🔄 새로고침</button>
                 </div>
               </div>
 
               <!-- 로딩 -->
               <div id="aiInsightLoading" style="display:none;text-align:center;padding:40px 20px;">
                 <div style="font-size:2em;margin-bottom:12px;animation:spin 2s linear infinite;display:inline-block;">🤖</div>
-                <div style="font-size:0.9em;color:#6366f1;font-weight:700;">AI 분석 결과 불러오는 중...</div>
-                <div style="font-size:0.76em;color:#94a3b8;margin-top:6px;">검색량 트렌드 + 경쟁사 뉴스 교차분석 결과를 가져옵니다</div>
+                <div style="font-size:0.9em;color:#6366f1;font-weight:700;" id="aiInsightLoadingText" data-i18n="comp_insight_loading">AI 분석 결과 불러오는 중...</div>
+                <div style="font-size:0.76em;color:#94a3b8;margin-top:6px;" id="aiInsightLoadingText2" data-i18n="comp_insight_loading2">검색량 트렌드 + 경쟁사 뉴스 교차분석 결과를 가져옵니다</div>
                 <div style="margin-top:16px;height:5px;background:#e0e7ff;border-radius:4px;overflow:hidden;max-width:320px;margin-left:auto;margin-right:auto;">
                   <div id="aiInsightProgressBar" style="height:100%;width:60%;background:linear-gradient(90deg,#6366f1,#a5b4fc);border-radius:4px;animation:progressPulse 1.5s ease-in-out infinite;"></div>
                 </div>
@@ -2114,13 +2166,13 @@
               <div id="competitorInsights" style="padding:4px 0;">
                 <div style="text-align:center;padding:40px 20px;color:#94a3b8;font-size:0.85em;">
                   <div style="font-size:2em;margin-bottom:12px;">🤖</div>
-                  AI 분석 결과를 불러오는 중입니다...<br>
-                  <span style="font-size:0.85em;color:#b0b8c8;">잠시만 기다려 주세요.</span>
+                  <span data-i18n="comp_insight_wait">AI 분석 결과를 불러오는 중입니다...</span><br>
+                  <span style="font-size:0.85em;color:#b0b8c8;" data-i18n="status_wait">잠시만 기다려 주세요.</span>
                 </div>
               </div>
 
               <!-- 단서조항 -->
-              <div id="aiInsightFooter" style="display:none;margin-top:10px;padding:10px 14px;background:#f5f3ff;border-radius:8px;font-size:0.71em;color:#6366f1;line-height:1.65;">
+              <div id="aiInsightFooter" style="display:none;margin-top:10px;padding:10px 14px;background:#f5f3ff;border-radius:8px;font-size:0.71em;color:#6366f1;line-height:1.65;" data-i18n="comp_insight_footer">
                 ※ 네이버 데이터랩 검색량 + 경쟁사 뉴스(BrandNews)를 Gemini AI가 교차 분석합니다. 매일 낮 12시 자동 생성.<br>
                 ※ AI가 생성한 인사이트이므로 최종 판단은 담당자가 직접 확인하세요.
               </div>
@@ -2175,26 +2227,26 @@
                         <div class="am-divider"></div>
                         <!-- 지표 버튼 -->
                         <div class="am-metric-group" id="amMetricGroup">
-                            <button class="am-metric-btn active" onclick="amSetMetric('spend',this)">💰 광고비</button>
-                            <button class="am-metric-btn"        onclick="amSetMetric('clicks',this)">👆 클릭수</button>
-                            <button class="am-metric-btn"        onclick="amSetMetric('impressions',this)">👁 노출수</button>
-                            <button class="am-metric-btn"        onclick="amSetMetric('roas',this)">📊 ROAS</button>
-                            <button class="am-metric-btn"        onclick="amSetMetric('purchases',this)">🛒 구매수</button>
-                            <button class="am-metric-btn"        onclick="amSetMetric('ctr',this)">📐 CTR</button>
-                            <button class="am-metric-btn"        onclick="amSetMetric('cpc',this)">💵 CPC</button>
-                            <button class="am-metric-btn"        onclick="amSetMetric('revenue',this)">💎 매출액</button>
-                            <button class="am-metric-btn"        onclick="amSetMetric('cvr',this)">🔄 CVR</button>
-                            <button class="am-metric-btn"        onclick="amSetMetric('cpa',this)">🎯 CPA</button>
+                            <button class="am-metric-btn active" onclick="amSetMetric('spend',this)" data-metric="spend" data-i18n="am_spend">💰 광고비</button>
+                            <button class="am-metric-btn"        onclick="amSetMetric('clicks',this)" data-metric="clicks" data-i18n="am_clicks">👆 클릭수</button>
+                            <button class="am-metric-btn"        onclick="amSetMetric('impressions',this)" data-metric="impressions" data-i18n="am_impressions">👁 노출수</button>
+                            <button class="am-metric-btn"        onclick="amSetMetric('roas',this)" data-metric="roas" data-i18n="am_roas">📊 ROAS</button>
+                            <button class="am-metric-btn"        onclick="amSetMetric('purchases',this)" data-metric="purchases" data-i18n="am_purchases">🛒 구매수</button>
+                            <button class="am-metric-btn"        onclick="amSetMetric('ctr',this)" data-metric="ctr" data-i18n="am_ctr">📐 CTR</button>
+                            <button class="am-metric-btn"        onclick="amSetMetric('cpc',this)" data-metric="cpc" data-i18n="am_cpc">💵 CPC</button>
+                            <button class="am-metric-btn"        onclick="amSetMetric('revenue',this)" data-metric="revenue" data-i18n="am_revenue">💎 매출액</button>
+                            <button class="am-metric-btn"        onclick="amSetMetric('cvr',this)" data-metric="cvr" data-i18n="am_cvr">🔄 CVR</button>
+                            <button class="am-metric-btn"        onclick="amSetMetric('cpa',this)" data-metric="cpa" data-i18n="am_cpa">🎯 CPA</button>
                         </div>
                         <div class="am-divider"></div>
                         <!-- 채널 필터 -->
                         <div class="am-metric-group" id="amChannelGroup">
-                            <button class="am-channel-btn active" onclick="amSetChannel('all',this)">🌐 전체</button>
-                            <button class="am-channel-btn" onclick="amSetChannel('naverGFA',this)">네이버GFA</button>
-                            <button class="am-channel-btn" onclick="amSetChannel('naver',this)">네이버SA</button>
-                            <button class="am-channel-btn" onclick="amSetChannel('kakao',this)">카카오</button>
-                            <button class="am-channel-btn" onclick="amSetChannel('facebook',this)">페이스북</button>
-                            <button class="am-channel-btn" onclick="amSetChannel('google_demandgen',this)">구글DG</button>
+                            <button class="am-channel-btn active" onclick="amSetChannel('all',this)" data-channel="all" data-i18n="adriel_ch_all">🌐 전체</button>
+                            <button class="am-channel-btn" onclick="amSetChannel('naverGFA',this)" data-channel="naverGFA" data-i18n="ch_naverGFA">네이버GFA</button>
+                            <button class="am-channel-btn" onclick="amSetChannel('naver',this)" data-channel="naver" data-i18n="ch_naver">네이버SA</button>
+                            <button class="am-channel-btn" onclick="amSetChannel('kakao',this)" data-channel="kakao" data-i18n="ch_kakao">카카오</button>
+                            <button class="am-channel-btn" onclick="amSetChannel('facebook',this)" data-channel="facebook" data-i18n="ch_facebook">페이스북</button>
+                            <button class="am-channel-btn" onclick="amSetChannel('google_demandgen',this)" data-channel="google_demandgen" data-i18n="ch_google_dg">구글DG</button>
                         </div>
                     </div>
 
@@ -2249,7 +2301,7 @@
 
               <!-- 카드 타이틀 -->
               <div class="cmp-title-row">
-                <span class="cmp-title">📊 주차별 판매량 비교_S10 Max V Ultra vs S9 Max V Ultra <span style="font-size:0.72em;font-weight:500;color:#94a3b8;">(Sell Out 기준)</span></span>
+                <span class="cmp-title" data-i18n="cmp_title">📊 주차별 판매량 비교_S10 Max V Ultra vs S9 Max V Ultra <span style="font-size:0.72em;font-weight:500;color:#94a3b8;">(Sell Out 기준)</span></span>
                 <div class="cmp-badge-row">
                   <span class="cmp-badge cmp-badge-s10">🔵 S10: WK61~WK68</span>
                   <span class="cmp-badge cmp-badge-s9">🟢 S9: WK08~WK15</span>
@@ -2283,7 +2335,7 @@
               <div class="cmp-single-chart-wrap">
                 <canvas id="cmpChart"></canvas>
               </div>
-              <div style="font-size:0.7em;color:#94a3b8;text-align:center;margin-bottom:16px;">
+              <div style="font-size:0.7em;color:#94a3b8;text-align:center;margin-bottom:16px;" data-i18n="cmp_legend_hint">
                 💡 범례 클릭으로 채널 필터 · 툴팁으로 채널별 상세 확인
               </div>
 
@@ -2315,38 +2367,38 @@
 
       <!-- 기간 필터 -->
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
-        <span style="font-size:0.8em;color:#64748b;font-weight:600;">기간 (최대 15주):</span>
+        <span style="font-size:0.8em;color:#64748b;font-weight:600;" data-so-period-label data-i18n="so_period_label">기간 (최대 15주):</span>
         <select id="soWkFrom" onchange="applySoFilter()"
           style="font-size:0.8em;padding:3px 8px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;cursor:pointer;min-width:140px;"></select>
         <span style="font-size:0.8em;color:#94a3b8;">~</span>
         <select id="soWkTo" onchange="applySoFilter()"
           style="font-size:0.8em;padding:3px 8px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;cursor:pointer;min-width:140px;"></select>
         <button onclick="resetSoFilter()"
-          style="font-size:0.78em;padding:3px 12px;border:1px solid #0ea5e9;border-radius:6px;background:#f0f9ff;color:#0ea5e9;cursor:pointer;font-weight:600;">최근10주</button>
+          style="font-size:0.78em;padding:3px 12px;border:1px solid #0ea5e9;border-radius:6px;background:#f0f9ff;color:#0ea5e9;cursor:pointer;font-weight:600;" data-i18n="so_recent10">최근10주</button>
         <span id="soFilterInfo" style="font-size:0.75em;color:#94a3b8;margin-left:4px;"></span>
-        <span id="soWkWarning" style="font-size:0.75em;color:#f59e0b;font-weight:600;display:none;">⚠️ 최대 15주까지만 선택 가능합니다</span>
+        <span id="soWkWarning" style="font-size:0.75em;color:#f59e0b;font-weight:600;display:none;" data-i18n="so_max_warning">⚠️ 최대 15주까지만 선택 가능합니다</span>
       </div>
 
       <!-- ① 뷰 전환 -->
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-        <span style="font-size:0.78em;color:#64748b;font-weight:600;">차트 보기:</span>
-        <button class="view-btn" id="soBtnYoy" onclick="setSoView('yoy')" style="background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;border-color:transparent;font-weight:700;">📅 2025년 비교</button>
-        <button class="view-btn active" id="soBtnSku"     onclick="setSoView('sku')">SKU별</button>
-        <button class="view-btn"        id="soBtnChannel" onclick="setSoView('channel')">채널별</button>
-        <button class="view-btn"        id="soBtnCustom"  onclick="setSoView('custom')">🔍 조합 분석</button>
+        <span style="font-size:0.78em;color:#64748b;font-weight:600;" data-i18n="so_chart_label">차트 보기:</span>
+        <button class="view-btn" id="soBtnYoy" onclick="setSoView('yoy')" style="background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;border-color:transparent;font-weight:700;" data-i18n="so_btn_yoy">📅 2025년 비교</button>
+        <button class="view-btn active" id="soBtnSku"     onclick="setSoView('sku')" data-i18n="so_btn_sku">SKU별</button>
+        <button class="view-btn"        id="soBtnChannel" onclick="setSoView('channel')" data-i18n="so_btn_channel">채널별</button>
+        <button class="view-btn"        id="soBtnCustom"  onclick="setSoView('custom')" data-i18n="so_btn_custom">🔍 조합 분석</button>
       </div>
 
       <!-- ② SKU 선택 패널 (조합 분석 시) -->
       <div id="soSkuPanel" style="display:none;margin-bottom:10px;padding:10px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;">
-        <div style="font-size:0.78em;color:#64748b;font-weight:600;margin-bottom:6px;">SKU 선택 <span style="font-weight:400;color:#94a3b8;">(복수 선택 가능)</span></div>
+        <div style="font-size:0.78em;color:#64748b;font-weight:600;margin-bottom:6px;">SKU 선택 <span style="font-weight:400;color:#94a3b8;" data-i18n="so_sku_panel_hint">(복수 선택 가능)</span></div>
         <!-- 그룹 버튼 -->
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
-          <span style="font-size:0.72em;color:#94a3b8;align-self:center;">그룹:</span>
-          <button class="so-grp-btn" onclick="soSelectGroup('S8')"    style="font-size:0.72em;padding:2px 8px;border:1px solid #94a3b8;border-radius:4px;background:#fff;cursor:pointer;">S8 시리즈</button>
-          <button class="so-grp-btn" onclick="soSelectGroup('S9')"    style="font-size:0.72em;padding:2px 8px;border:1px solid #94a3b8;border-radius:4px;background:#fff;cursor:pointer;">S9 MaxV 시리즈</button>
-          <button class="so-grp-btn" onclick="soSelectGroup('S10')"   style="font-size:0.72em;padding:2px 8px;border:1px solid #94a3b8;border-radius:4px;background:#fff;cursor:pointer;">S10 MaxV 시리즈</button>
-          <button class="so-grp-btn" onclick="soSelectGroup('Saros')" style="font-size:0.72em;padding:2px 8px;border:1px solid #94a3b8;border-radius:4px;background:#fff;cursor:pointer;">Saros Z70 시리즈</button>
-          <button onclick="soClearSku()" style="font-size:0.72em;padding:2px 8px;border:1px solid #e2e8f0;border-radius:4px;background:#fff;cursor:pointer;color:#94a3b8;">전체 해제</button>
+          <span style="font-size:0.72em;color:#94a3b8;align-self:center;" data-i18n="so_sku_group">그룹:</span>
+          <button class="so-grp-btn" onclick="soSelectGroup('S8')"    style="font-size:0.72em;padding:2px 8px;border:1px solid #94a3b8;border-radius:4px;background:#fff;cursor:pointer;" data-i18n="sku_group_s8">S8 시리즈</button>
+          <button class="so-grp-btn" onclick="soSelectGroup('S9')"    style="font-size:0.72em;padding:2px 8px;border:1px solid #94a3b8;border-radius:4px;background:#fff;cursor:pointer;" data-i18n="sku_group_s9">S9 MaxV 시리즈</button>
+          <button class="so-grp-btn" onclick="soSelectGroup('S10')"   style="font-size:0.72em;padding:2px 8px;border:1px solid #94a3b8;border-radius:4px;background:#fff;cursor:pointer;" data-i18n="sku_group_s10">S10 MaxV 시리즈</button>
+          <button class="so-grp-btn" onclick="soSelectGroup('Saros')" style="font-size:0.72em;padding:2px 8px;border:1px solid #94a3b8;border-radius:4px;background:#fff;cursor:pointer;" data-i18n="sku_group_saros">Saros Z70 시리즈</button>
+          <button onclick="soClearSku()" style="font-size:0.72em;padding:2px 8px;border:1px solid #e2e8f0;border-radius:4px;background:#fff;cursor:pointer;color:#94a3b8;" data-i18n="so_sku_clear">전체 해제</button>
         </div>
         <!-- SKU 체크박스 -->
         <div id="soSkuCheckboxes" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
@@ -2354,17 +2406,17 @@
 
       <!-- ③ 채널 선택 패널 (조합 분석 시) -->
       <div id="soChPanel" style="display:none;margin-bottom:10px;padding:10px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;">
-        <div style="font-size:0.78em;color:#64748b;font-weight:600;margin-bottom:6px;">채널 선택 <span style="font-weight:400;color:#94a3b8;">(복수 선택 가능)</span></div>
+        <div style="font-size:0.78em;color:#64748b;font-weight:600;margin-bottom:6px;"><span data-i18n="so_ch_panel_title">채널 선택</span> <span style="font-weight:400;color:#94a3b8;" data-i18n="so_sku_panel_hint">(복수 선택 가능)</span></div>
         <div id="soChCheckboxes" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
       </div>
 
       <!-- ★ 검색량 라인 차트 (판매량 차트 위) -->
       <div id="soSearchChartWrap" style="margin-bottom:8px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;">
-        <div style="font-size:0.78em;color:#64748b;font-weight:600;margin-bottom:6px;">🔍 로보락 주간 검색량</div>
+        <div style="font-size:0.78em;color:#64748b;font-weight:600;margin-bottom:6px;" data-i18n="so_search_chart_title">🔍 로보락 주간 검색량</div>
         <div style="position:relative;height:140px;">
           <canvas id="soSearchChart"></canvas>
         </div>
-        <div id="soSearchNoData" style="text-align:center;color:#94a3b8;font-size:0.75em;padding:4px;display:none;">
+        <div id="soSearchNoData" style="text-align:center;color:#94a3b8;font-size:0.75em;padding:4px;display:none;" data-i18n="so_search_no_data">
           검색량 데이터를 불러오는 중이거나 해당 기간에 데이터가 없습니다.
         </div>
       </div>
@@ -2381,7 +2433,7 @@
       <div id="soError" style="text-align:center;padding:24px;color:#e53e3e;display:none;font-weight:600;"></div>
 
       <!-- 범례 클릭 안내 -->
-      <div id="soLegendHint" style="font-size:0.72em;color:#94a3b8;text-align:center;margin-top:6px;">
+      <div id="soLegendHint" style="font-size:0.72em;color:#94a3b8;text-align:center;margin-top:6px;" data-i18n="so_legend_hint">
         💡 범례 항목 클릭 시 해당 항목만 강조 / 다시 클릭하면 전체 보기
       </div>
 
@@ -2394,33 +2446,33 @@
         <div id="yoySummaryCards" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;"></div>
         <!-- 비교 차트 (2026 vs 2025 스택 바) -->
         <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:16px;">
-          <div style="font-size:0.9em;font-weight:700;color:#1e293b;margin-bottom:4px;">📊 2026년 vs 2025년 주차별 SKU 판매량 비교</div>
-          <div style="font-size:0.75em;color:#94a3b8;margin-bottom:10px;">WK53~ (2026년) vs WK01~ (2025년) · 동일 출시 경과 주차 기준</div>
+          <div style="font-size:0.9em;font-weight:700;color:#1e293b;margin-bottom:4px;" data-i18n="yoy_chart_title">📊 2026년 vs 2025년 주차별 SKU 판매량 비교</div>
+          <div style="font-size:0.75em;color:#94a3b8;margin-bottom:10px;" data-i18n="yoy_chart_sub">WK53~ (2026년) vs WK01~ (2025년) · 동일 출시 경과 주차 기준</div>
           <div style="position:relative;height:420px;"><canvas id="yoyBarChart"></canvas></div>
         </div>
         <!-- 비교 표 -->
         <div id="yoyTableWrap" style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:16px;"></div>
         <!-- 요약 시각화 차트 -->
         <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:16px;">
-          <div style="font-size:0.9em;font-weight:700;color:#1e293b;margin-bottom:4px;">📈 누적 판매량 추이 비교 (2026 vs 2025)</div>
-          <div style="font-size:0.75em;color:#94a3b8;margin-bottom:10px;">동일 출시 경과 주차 기준 누적 합산</div>
+          <div style="font-size:0.9em;font-weight:700;color:#1e293b;margin-bottom:4px;" data-i18n="yoy_cum_title">📈 누적 판매량 추이 비교 (2026 vs 2025)</div>
+          <div style="font-size:0.75em;color:#94a3b8;margin-bottom:10px;" data-i18n="yoy_cum_sub">동일 출시 경과 주차 기준 누적 합산</div>
           <div style="position:relative;height:280px;"><canvas id="yoyCumChart"></canvas></div>
         </div>
         <!-- 채널별 구성비 차트 -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
           <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;">
-            <div style="font-size:0.82em;font-weight:700;color:#1e293b;margin-bottom:10px;">🔵 2026년 채널 구성비</div>
+            <div style="font-size:0.82em;font-weight:700;color:#1e293b;margin-bottom:10px;" data-i18n="yoy_pie26_title">🔵 2026년 채널 구성비</div>
             <div style="position:relative;height:220px;"><canvas id="yoyPie26"></canvas></div>
           </div>
           <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;">
-            <div style="font-size:0.82em;font-weight:700;color:#1e293b;margin-bottom:10px;">🟡 2025년 채널 구성비</div>
+            <div style="font-size:0.82em;font-weight:700;color:#1e293b;margin-bottom:10px;" data-i18n="yoy_pie25_title">🟡 2025년 채널 구성비</div>
             <div style="position:relative;height:220px;"><canvas id="yoyPie25"></canvas></div>
           </div>
         </div>
       </div>
 
       <!-- 단서조항 -->
-      <div style="margin-top:10px;font-size:0.72em;color:#94a3b8;text-align:right;font-style:italic;">
+      <div style="margin-top:10px;font-size:0.72em;color:#94a3b8;text-align:right;font-style:italic;" data-i18n="so_disclaimer">
         * 로보락 Sell Out 자료에 기반하여 업데이트 됩니다.
       </div>
 
@@ -2438,7 +2490,7 @@
 /* ══════════════════════════════════════════════
    상수 Sell Out 판매량 시트
 ══════════════════════════════════════════════ */
-const SO_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTPHsxgl4iINJCQm5KcJejOpfLdxU2lCtXh63pTq_Cqf7tuJPDVmpNnHc7hq7Cwfg/pub?gid=2110773324&single=true&output=csv';
+const SO_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRZeyYiTQWv_sQ8fVg_MnbSLfp9VjsqAoe89lSKcn1IYB_th18am6jJcLLzhVZatg/pub?gid=200243101&single=true&output=csv';
 const SO_PROXIES = ['https://corsproxy.io/?','https://api.allorigins.win/raw?url='];
 const MAX_WEEKS  = 15;
 const DEF_WEEKS  = 10;
@@ -2597,6 +2649,7 @@ function initSoFilter(){
 
 window.applySoFilter=function(){
   if(!soData) return;
+  window.__soDataLoaded = true;
   const sf=document.getElementById('soWkFrom');
   const st=document.getElementById('soWkTo');
   const wn=document.getElementById('soWkWarning');
@@ -2957,7 +3010,7 @@ function renderSo(wm){
         x:{stacked:true,ticks:{font:{size:10},maxRotation:0},grid:{display:false}},
         yLeft:{stacked:true,beginAtZero:true,
           ticks:{font:{size:11}},grid:{color:'rgba(0,0,0,0.06)'},
-          title:{display:true,text:'판매량 (대)',font:{size:11}}}
+          title:{display:true,text:t('yoy_y_axis'),font:{size:11}}}
       }
     },
     plugins:[ChartDataLabels]
@@ -2990,15 +3043,15 @@ function renderSoTable(wm,gIdx){
     const searchVals=wm.map(m=>getSoSearchVal(m.wk));
     const hasSearch=searchVals.some(v=>v!==null&&v>0);
     if(hasSearch){
-      h+=`<div class="ratio-section-title" style="margin-bottom:6px;">📊 주차별 요약 (로보락 검색량 / Sell Out 판매량 / 비율)</div>`;
-      h+=`<table class="ratio-table" style="margin-bottom:18px;min-width:520px;"><thead><tr><th class="ratio-label-col" style="${thS}text-align:left;">항목</th>${wkHeaders()}</tr></thead><tbody>`;
-      h+='<tr class="ratio-row-search"><td class="ratio-label-col" style="font-size:0.75em;white-space:nowrap;">🔍검색량</td>';
+      h+=`<div class="ratio-section-title" style="margin-bottom:6px;">${t('so_table_summary_title')}</div>`;
+      h+=`<table class="ratio-table" style="margin-bottom:18px;min-width:520px;"><thead><tr><th class="ratio-label-col" style="${thS}text-align:left;">${t('so_table_col_item')}</th>${wkHeaders()}</tr></thead><tbody>`;
+      h+='<tr class="ratio-row-search"><td class="ratio-label-col" style="font-size:0.75em;white-space:nowrap;">' + t('so_table_row_search') + '</td>';
       searchVals.forEach(v=>{h+=`<td class="ratio-data-col">${v?Math.round(v).toLocaleString():'–'}</td>`;});
       h+='</tr>';
-      h+='<tr><td class="ratio-label-col" style="font-size:0.75em;white-space:nowrap;">📦판매량</td>';
+      h+='<tr><td class="ratio-label-col" style="font-size:0.75em;white-space:nowrap;">' + t('so_table_row_sales') + '</td>';
       totalsByWk.forEach(v=>{h+=`<td class="ratio-data-col">${v?v.toLocaleString():'–'}</td>`;});
       h+='</tr>';
-      h+='<tr><td class="ratio-label-col" style="font-size:0.75em;white-space:nowrap;">📊비율(%)</td>';
+      h+='<tr><td class="ratio-label-col" style="font-size:0.75em;white-space:nowrap;">' + t('so_table_row_ratio') + '</td>';
       totalsByWk.forEach((tv,i)=>{
         const sv=searchVals[i];
         const ratio=(sv&&tv)?(tv/sv*100).toFixed(1):null;
@@ -3013,8 +3066,8 @@ function renderSoTable(wm,gIdx){
     const viewSkus=(soView==='custom'&&soSelSkus.size>0)?sortedSkuNames([...soSelSkus]):sortedSkuNames(skuNames);
     const viewChs=(soView==='custom'&&soSelChs.size>0)?SO_CHANNELS.filter(c=>soSelChs.has(c)):SO_CHANNELS;
 
-    h+=`<div class="ratio-section-title">📋 SKU별 주차 판매량</div>`;
-    h+=`<table class="ratio-table" style="min-width:520px;"><thead><tr><th class="ratio-label-col" style="${thS}text-align:left;">SKU</th>${wkHeaders()}<th style="${totS}">합계</th></tr></thead><tbody>`;
+    h+=`<div class="ratio-section-title">${t('so_table_sku_title')}</div>`;
+    h+=`<table class="ratio-table" style="min-width:520px;"><thead><tr><th class="ratio-label-col" style="${thS}text-align:left;">${t('so_table_col_sku')}</th>${wkHeaders()}<th style="${totS}">${t('so_table_col_total')}</th></tr></thead><tbody>`;
 
     viewSkus.forEach(sku=>{
       const tots=gIdx.map(gi=>viewChs.reduce((s,ch)=>s+(skuMap[sku]&&skuMap[sku][ch]?(skuMap[sku][ch][gi]||0):0),0));
@@ -3029,13 +3082,13 @@ function renderSoTable(wm,gIdx){
 
     const wkT=gIdx.map(gi=>viewSkus.reduce((s,sku)=>s+viewChs.reduce((cs,ch)=>cs+(skuMap[sku]&&skuMap[sku][ch]?(skuMap[sku][ch][gi]||0):0),0),0));
     const gT=wkT.reduce((s,v)=>s+v,0);
-    h+=`<tr style="background:#f0f9ff;font-weight:700;"><td class="ratio-label-col" style="font-size:0.75em;">📦 전체 합계</td>`;
+    h+=`<tr style="background:#f0f9ff;font-weight:700;"><td class="ratio-label-col" style="font-size:0.75em;">${t('so_table_grand_total')}</td>`;
     wkT.forEach(v=>{h+=`<td class="ratio-data-col">${v||'–'}</td>`;});
     h+=`<td style="${totS}background:#bae6fd;">${gT.toLocaleString()}</td></tr></tbody></table>`;
 
   } else {
-    h+=`<div class="ratio-section-title">📋 채널별 주차 판매량</div>`;
-    h+=`<table class="ratio-table" style="min-width:520px;"><thead><tr><th class="ratio-label-col" style="${thS}text-align:left;">채널</th>${wkHeaders()}<th style="${totS}">합계</th></tr></thead><tbody>`;
+    h+=`<div class="ratio-section-title">${t('so_table_ch_title')}</div>`;
+    h+=`<table class="ratio-table" style="min-width:520px;"><thead><tr><th class="ratio-label-col" style="${thS}text-align:left;">${t('so_table_col_ch')}</th>${wkHeaders()}<th style="${totS}">${t('so_table_col_total')}</th></tr></thead><tbody>`;
 
     SO_CHANNELS.forEach(ch=>{
       const tots=gIdx.map(gi=>skuNames.reduce((s,sku)=>s+(skuMap[sku][ch]?(skuMap[sku][ch][gi]||0):0),0));
@@ -3050,7 +3103,7 @@ function renderSoTable(wm,gIdx){
 
     const wkT=gIdx.map(gi=>skuNames.reduce((s,sku)=>s+SO_CHANNELS.reduce((cs,ch)=>cs+(skuMap[sku][ch]?(skuMap[sku][ch][gi]||0):0),0),0));
     const gT=wkT.reduce((s,v)=>s+v,0);
-    h+=`<tr style="background:#f0f9ff;font-weight:700;"><td class="ratio-label-col" style="font-size:0.75em;">📦 전체 합계</td>`;
+    h+=`<tr style="background:#f0f9ff;font-weight:700;"><td class="ratio-label-col" style="font-size:0.75em;">${t('so_table_grand_total')}</td>`;
     wkT.forEach(v=>{h+=`<td class="ratio-data-col">${v||'–'}</td>`;});
     h+=`<td style="${totS}background:#bae6fd;">${gT.toLocaleString()}</td></tr></tbody></table>`;
   }
@@ -3226,7 +3279,7 @@ function renderCmpChart() {
   // 차트용 W-라벨 (슬라이딩 기준 절대 주차)
   const W_LABELS = S10_WKS.map((wk, i) => {
     const absW = chartStartIdx + i + 1; // 1-based 절대 주차
-    return absW === 1 ? 'W1\n(출시)' : `W${absW}`;
+    return absW === 1 ? t('cmp_w1_launch') : `W${absW}`;
   });
 
   /* ── 주차별 합계 사전 계산 (합계 숫자 라벨용) ── */
@@ -3254,8 +3307,8 @@ function renderCmpChart() {
 
   const wNumLabel = w => 'W' + (w + 1); // 0-based → W1, W2 ...
   const subLabel = currentW_s10 >= 0
-    ? `W1~${wNumLabel(currentW_s10)} 누적 (${currentW_s10 + 1}주)`
-    : '데이터 없음';
+    ? t('cmp_sub_label_fmt').replace('{w}', currentW_s10 + 1).replace('{n}', currentW_s10 + 1)
+    : t('status_no_data');
 
   const s10TotEl = document.getElementById('cmpS10Total');
   const s9TotEl  = document.getElementById('cmpS9Total');
@@ -3263,12 +3316,16 @@ function renderCmpChart() {
   const s9SubEl  = document.getElementById('cmpS9Sub');
   const noteEl   = document.getElementById('cmpAccumNote');
 
-  if (s10TotEl) s10TotEl.textContent = s10Accum.toLocaleString() + '대';
-  if (s9TotEl)  s9TotEl.textContent  = s9Accum.toLocaleString()  + '대';
+  if (s10TotEl) s10TotEl.textContent = s10Accum.toLocaleString() + t('unit_units');
+  if (s9TotEl)  s9TotEl.textContent  = s9Accum.toLocaleString()  + t('unit_units');
   if (s10SubEl) s10SubEl.textContent = subLabel;
   if (s9SubEl)  s9SubEl.textContent  = subLabel;
   if (noteEl)   noteEl.innerHTML =
-    `현재 <strong>W${currentW_s10 + 2}(WK${lastWkNum + 1})</strong> 진행 중<br>W${currentW_s10 + 1}(WK${lastWkNum})까지 집계`;
+    t('cmp_accum_note_fmt')
+      .replace('{w2}', currentW_s10 + 2)
+      .replace('{wk2}', lastWkNum + 1)
+      .replace('{w1}', currentW_s10 + 1)
+      .replace('{wk1}', lastWkNum);
 
   /* ── 채널 강조 상태 (클릭 토글용) ── */
   if (typeof window._cmpFocusCh === 'undefined') window._cmpFocusCh = null;
@@ -3487,7 +3544,7 @@ function renderCmpChart() {
           max: Math.ceil(yMax * 1.18 / 1000) * 1000, // 상단 여유(숫자 레이블 공간)
           ticks: { font: { size: 11 } },
           grid: { color: 'rgba(0,0,0,0.06)' },
-          title: { display: true, text: '판매량 (대)', font: { size: 11 } }
+          title: { display: true, text: t('cmp_y_axis'), font: { size: 11 } }
         }
       }
     },
@@ -3671,12 +3728,12 @@ function renderYoy() {
   /* ── ① 요약 카드 ── */
   const cardHtml = `
     <div style="flex:1;min-width:160px;background:linear-gradient(135deg,#dbeafe,#eff6ff);border:1.5px solid #bfdbfe;border-radius:12px;padding:14px 18px;text-align:center;">
-      <div style="font-size:0.75em;color:#3b82f6;font-weight:700;margin-bottom:4px;">🔵 2026년 누적 (WK53~WK${52+wkCount})</div>
+      <div style="font-size:0.75em;color:#3b82f6;font-weight:700;margin-bottom:4px;">🔵 ${t('yoy_total26')} (WK53~WK${52+wkCount})</div>
       <div style="font-size:1.5em;font-weight:800;color:#1d4ed8;">${total26.toLocaleString()}<span style="font-size:0.5em;font-weight:600;margin-left:4px;">대</span></div>
       <div style="font-size:0.72em;color:#93c5fd;margin-top:2px;">${wkCount}주 합산</div>
     </div>
     <div style="flex:1;min-width:160px;background:linear-gradient(135deg,#fef9c3,#fffbeb);border:1.5px solid #fde68a;border-radius:12px;padding:14px 18px;text-align:center;">
-      <div style="font-size:0.75em;color:#d97706;font-weight:700;margin-bottom:4px;">🟡 2025년 누적 (WK01~WK${wkCount})</div>
+      <div style="font-size:0.75em;color:#d97706;font-weight:700;margin-bottom:4px;">🟡 ${t('yoy_total25')} (WK01~WK${wkCount})</div>
       <div style="font-size:1.5em;font-weight:800;color:#b45309;">${total25.toLocaleString()}<span style="font-size:0.5em;font-weight:600;margin-left:4px;">대</span></div>
       <div style="font-size:0.72em;color:#fbbf24;margin-top:2px;">${meta25slice.length}주 합산</div>
     </div>
@@ -3781,7 +3838,7 @@ function renderYoy() {
           stacked: true, beginAtZero: true,
           max: Math.ceil(Math.max(...wkTotals26, ...wkTotals25) * 1.2 / 1000) * 1000,
           ticks: { font: { size: 10 } },
-          title: { display: true, text: '판매량 (대)', font: { size: 11 } }
+          title: { display: true, text: t('yoy_y_axis'), font: { size: 11 } }
         }
       }
     },
@@ -3832,7 +3889,7 @@ function renderYoy() {
         scales: {
           x: { grid: { display: false }, ticks: { font: { size: 10 } } },
           y: { beginAtZero: true, ticks: { font: { size: 10 } },
-               title: { display: true, text: '누적 판매량 (대)', font: { size: 11 } } }
+               title: { display: true, text: t('yoy_y_axis_cum'), font: { size: 11 } } }
         }
       },
       plugins: [ChartDataLabels]
@@ -4067,13 +4124,13 @@ function renderCmpTables(ALL_S10_WKS, ALL_S9_WKS, S10_SKU, S9_SKU, currentW_s10)
 
     // 소계 레이블
     const accumLabel = totalCompleted === 1
-      ? 'W1 소계'
-      : `W1~W${totalCompleted} 소계`;
+      ? t('cmp_sub_label_w1')
+      : t('cmp_accum_label_fmt').replace('{w}', totalCompleted);
 
     // ── 헤더 ──
-    let h = `<span class="cmp-table-title ${isS10 ? 'cmp-table-title-s10':'cmp-table-title-s9'}">📋 ${seriesName} 주차별 요약</span>`;
+    let h = `<span class="cmp-table-title ${isS10 ? 'cmp-table-title-s10':'cmp-table-title-s9'}">${seriesName}</span>`;
     h += `<div class="cmp-table-block"><table class="cmp-tbl"><thead><tr>`;
-    h += `<th class="label-col" style="${thBg}">채널</th>`;
+    h += `<th class="label-col" style="${thBg}">${t('cmp_tbl_header_ch')}</th>`;
 
     wks_disp.forEach((wkNum, wi) => {
       const absIdx = tableStartIdx + wi;
@@ -4081,7 +4138,7 @@ function renderCmpTables(ALL_S10_WKS, ALL_S9_WKS, S10_SKU, S9_SKU, currentW_s10)
       const isNow  = wi === currentInProgressIdx;
       h += `<th style="${thBg}${isNow ? 'font-style:italic;opacity:0.75;' : ''}">`;
       h += `${wLabel}<br><span style="font-weight:400;font-size:0.72em;color:${subColor};">WK${wkNum}</span>`;
-      if (isNow) h += `<br><span style="font-size:0.62em;color:#f59e0b;font-weight:700;">진행중</span>`;
+      if (isNow) h += `<br><span style="font-size:0.62em;color:#f59e0b;font-weight:700;">${t('cmp_in_progress')}</span>`;
       h += `</th>`;
     });
 
@@ -4107,7 +4164,7 @@ function renderCmpTables(ALL_S10_WKS, ALL_S9_WKS, S10_SKU, S9_SKU, currentW_s10)
 
     // ── 합계 행 ──
     const wkTotals = data.map(d => d['__total__'] || 0);
-    h += `<tr class="${colorClass}"><td class="label-col">📦 전체 합계</td>`;
+    h += `<tr class="${colorClass}"><td class="label-col">${t('cmp_grand_total')}</td>`;
     wkTotals.forEach((v, wi) => {
       const isNow = wi === currentInProgressIdx;
       h += `<td style="${isNow ? 'opacity:0.5;font-style:italic;' : ''}white-space:nowrap;">${v ? v.toLocaleString() : '–'}</td>`;
@@ -4119,8 +4176,8 @@ function renderCmpTables(ALL_S10_WKS, ALL_S9_WKS, S10_SKU, S9_SKU, currentW_s10)
   }
 
   wrap.innerHTML = `
-    <div>${buildSeriesTableHTML(S10_WKS_DISP, ALL_S10_WKS, S10_SKU, '🔵 S10 MaxV Ultra 시리즈', true)}</div>
-    <div>${buildSeriesTableHTML(S9_WKS_DISP,  ALL_S9_WKS,  S9_SKU,  '🟢 S9 MaxV Ultra 시리즈',  false)}</div>
+    <div>${buildSeriesTableHTML(S10_WKS_DISP, ALL_S10_WKS, S10_SKU, t('cmp_series_s10'), true)}</div>
+    <div>${buildSeriesTableHTML(S9_WKS_DISP,  ALL_S9_WKS,  S9_SKU,  t('cmp_series_s9'),  false)}</div>
   `;
 }
 
@@ -4718,13 +4775,13 @@ window.loadSo=loadSo;
                     },
                     yLeft: {
                         type: 'linear', position: 'left', stacked: true,
-                        title: { display: !isMobile, text: '판매량 (대)', font:{size:11}, color:'#374151' },
+                        title: { display: !isMobile, text: t('so_y_axis_sales'), font:{size:11}, color:'#374151' },
                         grid: { color: 'rgba(0,0,0,0.05)' },
                         ticks: { font:{size:isMobile?8:10}, callback: v => v>=1000?(v/1000).toFixed(0)+'k':v }
                     },
                     yRight: {
                         type: 'linear', position: 'right',
-                        title: { display: !isMobile, text: '검색량 합산', font:{size:11}, color:'rgb(220,38,38)' },
+                        title: { display: !isMobile, text: t('so_y_axis_search'), font:{size:11}, color:'rgb(220,38,38)' },
                         grid: { drawOnChartArea: false },
                         ticks: {
                             font: {size:isMobile?8:10},
@@ -5029,12 +5086,12 @@ window.loadSo=loadSo;
     function renderChart4(fd) {
         const isMobile = window.innerWidth <= 768;
         const ch4Keys = [
-            { key: 'S10 Max V Ultra',  label: '로보락 S10 Max V Ultra + slim', color: 'rgb(220,38,38)' },
-            { key: '삼성로봇청소기',    label: '삼성로봇청소기',           color: 'rgb(30,64,175)' },
-            { key: '드리미x60',         label: '드리미X60',               color: 'rgb(96,165,250)' },
-            { key: 'dji로봇청소기',      label: 'DJI 로봇청소기',          color: 'rgb(15,118,110)' },
-            { key: '다이슨로봇청소기',   label: '다이슨 로봇청소기',        color: 'rgb(124,45,212)' },
-            { key: '에코백스T90',        label: '에코백스T90',             color: 'rgb(194,65,12)' }
+            { key: 'S10 Max V Ultra',  label: t('ch4_roborock'), color: 'rgb(220,38,38)' },
+            { key: '삼성로봇청소기',    label: t('ch4_samsung'),  color: 'rgb(30,64,175)' },
+            { key: '드리미x60',         label: t('ch4_dreame'),   color: 'rgb(96,165,250)' },
+            { key: 'dji로봇청소기',      label: t('ch4_dji'),      color: 'rgb(15,118,110)' },
+            { key: '다이슨로봇청소기',   label: t('ch4_dyson'),    color: 'rgb(124,45,212)' },
+            { key: '에코백스T90',        label: t('ch4_ecovacs'),  color: 'rgb(194,65,12)' }
         ];
 
         /* ── 데이터 컷오프 계산 ── */
@@ -5867,8 +5924,8 @@ window.loadSo=loadSo;
 
         // Chart 1 – 연도별 로봇청소기 (로보락 제외 전체 카테고리)
         {
-            let ds25 = ds('25 로봇청소기', fd.map(d => pt(d, '25 로봇청소기')), C.blue);
-            let ds26 = ds('26 로봇청소기', fd.map(d => pt(d, '26 로봇청소기')), C.red);
+            let ds25 = ds(t('chart_legend_robot25'), fd.map(d => pt(d, '25 로봇청소기')), C.blue);
+            let ds26 = ds(t('chart_legend_robot26'), fd.map(d => pt(d, '26 로봇청소기')), C.red);
             if (launchAligned) ds25 = shiftDataset(ds25, LAUNCH_ALIGN_DAYS);
             createChart('chart1', [ds25, ds26], null, { yPadRatio: 0.35 });
         }
@@ -5876,8 +5933,8 @@ window.loadSo=loadSo;
         // Chart 2 – 연도별 로보락 ★ 음영 O / 라벨 없음 + D기준 -7일 평균 마커
         {
             const c2Markers = buildChart2DMarkers(fd);
-            let ds25 = ds('25 로보락', fd.map(d => pt(d, '25 로보락')), C.green25);
-            const ds26 = ds('26 로보락', fd.map(d => pt(d, '26 .로보락')), C.red26);
+            let ds25 = ds(t('chart_legend_roborock25'), fd.map(d => pt(d, '25 로보락')), C.green25);
+            const ds26 = ds(t('chart_legend_roborock26'), fd.map(d => pt(d, '26 .로보락')), C.red26);
             const anno2 = launchAligned ? buildAlignedRoborockAnnotations() : buildRoborockAnnotations();
             // 마커도 정렬 시 시프트
             let markers2 = c2Markers;
@@ -6140,15 +6197,15 @@ window.loadSo=loadSo;
         const kd = amCalcKPIFromRows(daily);
 
         const kpis=[
-            {l:'총 광고비', v:amKRW(kd.sp),               s:kd.sp.toLocaleString()+'원'},
-            {l:'총 클릭수', v:amK(kd.cl)+'회',            s:kd.cl.toLocaleString()},
-            {l:'총 노출수', v:amK(kd.im),                 s:kd.im.toLocaleString()},
-            {l:'평균 CTR',  v:(kd.ctr*100).toFixed(2)+'%', s:'클릭률'},
-            {l:'평균 CPC',  v:amKRW(kd.cpc),              s:'클릭당 비용'},
-            {l:'ROAS',      v:(kd.roas*100).toFixed(1)+'%',s:'광고비 대비 매출'},
-            {l:'총 구매수', v:amK(kd.pu)+'건',            s:kd.pu.toLocaleString()+'건'},
-            {l:'총 매출액', v:amKRW(kd.rev),              s:kd.rev.toLocaleString()+'원'},
-            {l:'CPA',       v:amKRW(kd.cpa),              s:'구매당 비용'},
+            {l:t('kpi_total_spend'),       v:amKRW(kd.sp),               s:kd.sp.toLocaleString()+t('sub_krw')},
+            {l:t('kpi_total_clicks'),       v:amK(kd.cl)+'회',            s:kd.cl.toLocaleString()},
+            {l:t('kpi_total_impressions'),  v:amK(kd.im),                 s:kd.im.toLocaleString()},
+            {l:t('kpi_avg_ctr'),            v:(kd.ctr*100).toFixed(2)+'%', s:t('sub_ctr')},
+            {l:t('kpi_avg_cpc'),            v:amKRW(kd.cpc),              s:t('sub_cpc')},
+            {l:t('kpi_roas_label'),         v:(kd.roas*100).toFixed(1)+'%',s:t('sub_roas')},
+            {l:t('kpi_total_purchases'),    v:amK(kd.pu)+'건',            s:kd.pu.toLocaleString()+t('sub_purchases')},
+            {l:t('kpi_total_revenue'),      v:amKRW(kd.rev),              s:kd.rev.toLocaleString()+t('sub_krw')},
+            {l:t('kpi_cpa_label'),          v:amKRW(kd.cpa),              s:t('sub_cpa')},
         ];
         g.innerHTML = kpis.map(k=>`
             <div class="am-kpi-card">
@@ -6167,13 +6224,13 @@ window.loadSo=loadSo;
         }
 
         // 현재 선택 채널/기간 표시
-        const chLabel = amChannel==='all' ? '전체' : (AM_CH[amChannel]?.label||amChannel);
-        const pLabel  = amPeriod==='week' ? '주단위' : '일단위';
+        const chLabel = amChannel==='all' ? t('unit_all') : (AM_CH[amChannel]?.label||amChannel);
+        const pLabel  = amPeriod==='week' ? t('unit_weekly') : t('unit_daily');
         const infoEl  = document.getElementById('amDateRange');
         if (infoEl) {
             const dates = daily.map(r=>r.day);
             const minD=dates[0]||'—', maxD=dates[dates.length-1]||'—';
-            infoEl.textContent = '📅 '+minD+' ~ '+maxD+' ('+dates.length+(amPeriod==='week'?'주':'일')+') · '+chLabel+' · '+pLabel;
+            infoEl.textContent = '📅 '+minD+' ~ '+maxD+' ('+dates.length+(amPeriod==='week'?t('unit_week'):t('unit_day'))+') · '+chLabel+' · '+pLabel;
         }
     }
 
@@ -6743,7 +6800,7 @@ window.loadSo=loadSo;
             '🚨': { bg:'#fef2f2', border:'#fca5a5', badge:'#dc2626', badgeBg:'#fee2e2', accent:'#dc2626' },
         };
         const cardIcons  = ['📊','⚔️','🎯','🔮'];
-        const cardLabels = ['검색 트렌드 분석','경쟁사 위협 분석','이번 주 전략','중장기 전망'];
+        const cardLabels = [t('comp_card_search'), t('comp_card_threat'), t('comp_card_strategy'), t('comp_card_forecast')];
 
         const highlightNumbers = (str, accent) =>
             (str || '')
@@ -6793,12 +6850,12 @@ window.loadSo=loadSo;
               <!-- 액션 박스 -->
               ${d.a ? `
               <div style="padding:11px 13px;background:rgba(99,102,241,0.06);border-left:3px solid #6366f1;border-radius:0 8px 8px 0;font-size:0.79em;color:#3730a3;line-height:1.75;display:flex;flex-direction:column;gap:5px;">
-                <div style="font-weight:700;margin-bottom:2px;color:#4338ca;font-size:0.9em;">💡 권장 액션</div>
+                <div style="font-weight:700;margin-bottom:2px;color:#4338ca;font-size:0.9em;">${t('comp_card_action')}</div>
                 ${renderAction(d.a, '#4338ca')}
               </div>` : ''}
               <!-- 푸터 -->
               <div style="font-size:0.67em;color:#94a3b8;margin-top:auto;padding-top:6px;border-top:1px solid ${col.border};">
-                📅 데이터 기준: <strong style="color:#64748b;">${dateShort}</strong> ${updateTime ? '&nbsp;' + updateTime : ''} &nbsp;·&nbsp; 검색 트렌드 + 뉴스 AI 통합 분석
+                📅 ${t('comp_data_basis')}: <strong style="color:#64748b;">${dateShort}</strong> ${updateTime ? '&nbsp;' + updateTime : ''} &nbsp;·&nbsp; ${t('comp_ai_cross')}
               </div>
             </div>`;
         }).join('');
@@ -6817,8 +6874,8 @@ window.loadSo=loadSo;
         if (!insight) {
             return `<div style="padding:30px;text-align:center;color:#94a3b8;">
                 <div style="font-size:2em;margin-bottom:10px;">🤖</div>
-                InsightV2 데이터가 없습니다.<br>
-                <span style="font-size:0.85em;">Apps Script → testInsightV2() 를 실행하세요.</span>
+                ${t('comp_no_data')}<br>
+                <span style="font-size:0.85em;">${t('comp_no_data_hint')}</span>
             </div>`;
         }
 
@@ -6855,9 +6912,9 @@ window.loadSo=loadSo;
 
             <!-- 소스 뱃지 -->
             <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;">
-              <span style="font-size:0.7em;font-weight:700;background:#e0e7ff;color:#4338ca;padding:3px 10px;border-radius:10px;">📊 검색량 트렌드</span>
-              <span style="font-size:0.7em;font-weight:700;background:#f0fdf4;color:#16a34a;padding:3px 10px;border-radius:10px;">📰 경쟁사 뉴스</span>
-              <span style="font-size:0.7em;font-weight:700;background:#fef3c7;color:#d97706;padding:3px 10px;border-radius:10px;">🤖 Gemini AI 교차분석</span>
+              <span style="font-size:0.7em;font-weight:700;background:#e0e7ff;color:#4338ca;padding:3px 10px;border-radius:10px;">${t('ins_badge_trend')}</span>
+              <span style="font-size:0.7em;font-weight:700;background:#f0fdf4;color:#16a34a;padding:3px 10px;border-radius:10px;">${t('ins_badge_news')}</span>
+              <span style="font-size:0.7em;font-weight:700;background:#fef3c7;color:#d97706;padding:3px 10px;border-radius:10px;">${t('ins_badge_gemini')}</span>
               <span style="margin-left:auto;font-size:0.7em;color:#94a3b8;">📅 ${dateShort} ${timeStr}</span>
             </div>
 
@@ -6869,7 +6926,7 @@ window.loadSo=loadSo;
             ${trendSummary ? `
             <!-- 트렌드 요약 (접을 수 있는 원본 데이터) -->
             <details style="margin-top:16px;">
-              <summary style="font-size:0.75em;color:#6366f1;cursor:pointer;font-weight:600;user-select:none;">📋 원본 검색량 데이터 보기</summary>
+              <summary style="font-size:0.75em;color:#6366f1;cursor:pointer;font-weight:600;user-select:none;">${t('ins_raw_data')}</summary>
               <div style="margin-top:10px;padding:12px 14px;background:#f8faff;border-radius:8px;font-size:0.74em;color:#475569;white-space:pre-wrap;line-height:1.7;font-family:monospace;">${trendSummary}</div>
             </details>` : ''}
 
@@ -7098,7 +7155,7 @@ window.loadSo=loadSo;
         function buildCard(data, isNewer, otherData) {
             const fmtDate = d => d ? d.slice(5) : '';
             const periodStr = fmtDate(data.weekStart) + ' ~ ' + fmtDate(data.endStr);
-            const tag = isNewer ? '🔴 최신' : '🔵 이전';
+            const tag = isNewer ? t('wk_tag_newer') : t('wk_tag_older');
             const cls = isNewer ? 'wk-newer' : 'wk-older';
 
             // KPI 행
@@ -7149,7 +7206,7 @@ window.loadSo=loadSo;
 
             // 미니 바 차트 (상위 3개 지표)
             const miniKpis = ['sp','cl','im'];
-            const miniLabels = {sp:'광고비',cl:'클릭수',im:'노출수'};
+            const miniLabels = {sp: t('mini_spend'), cl: t('mini_clicks'), im: t('mini_impressions')};
             let miniBarHtml = miniKpis.map(k => {
                 const val = data.total[k] || 0;
                 const oval = otherData ? (otherData.total[k] || 0) : val;
@@ -7167,16 +7224,16 @@ window.loadSo=loadSo;
             }).join('');
 
             return `<div class="am-wk-card ${cls}">
-                <div class="am-wk-card-label">
+                    <div class="am-wk-card-label">
                     ${tag}
-                    <span style="font-weight:400;color:#718096;">(${data.rowCount}일 데이터)</span>
+                    <span style="font-weight:400;color:#718096;">(${data.rowCount}${t('wk_rows_data')})</span>
                 </div>
                 <div class="am-wk-period">📅 ${periodStr}</div>
                 <div class="am-wk-kpi-row">${kpiHtml}</div>
                 <div class="am-wk-mini-bar-wrap">${miniBarHtml}</div>
                 ${chEntries.length > 0 ? `
                 <div class="am-wk-channel-bars">
-                    <div class="am-wk-channel-title">채널별 광고비 비중</div>
+                    <div class="am-wk-channel-title">${t('wk_ch_spend_share')}</div>
                     <div class="am-wk-stacked-bar">${stackedSegs}</div>
                     <div class="am-wk-channel-legend">${legendHtml}</div>
                 </div>` : ''}
@@ -7205,7 +7262,7 @@ window.loadSo=loadSo;
                 </div>`;
             }).join('');
 
-            return `<div class="am-wk-diff-title">📊 이전 주차 → 최신 주차 증감</div>
+            return `<div class="am-wk-diff-title">${t('wk_diff_title')}</div>
                 <div class="am-wk-diff-grid">${diffs}</div>`;
         }
 
@@ -7497,13 +7554,59 @@ var AUTH=(function(){
     return H.map(function(x){return('0000000'+x.toString(16)).slice(-8);}).join('');
   }
 
-  /* ── 계정 ── */
-  var AC=[
-    {id:'admin',h:'ae6333d7f9b198ad3210497489455c8f40f29c0e054cd27bc3f2d7edd82c49d1'},
-    {id:'Sales',h:'b2640e8b34169afa37c2e26916f7a526f6f5d96db43d78d0aeb16e48ff18d9c8'},
-    {id:'MKT',  h:'7c5d2b85fa95279311d2858f2902c2d0c14f6aad377b0d9117598a28ea9908d9'},
-    {id:'guest',h:'6a59cebc3957ca49578984dec0a85e3522993cd14b9d5a861003a5512c3e4a31'}
+  /* ── 탭 목록 (권한 제어 대상) ── */
+  var ALL_TABS = ['competitor','mkt','sales','logistics'];
+
+  /* ── 계정 관리 localStorage 키 ── */
+  var AC_MGR_KEY    = 'twm_acmgr_v1';  // 기존 계정 오버라이드
+  var AC_CUSTOM_KEY = 'twm_accustom_v1'; // 신규 생성 계정
+
+  /* ── 초기(기본) 비밀번호 ── */
+  var DEFAULT_PW = 'asdf1234@@!!';
+
+  /* ── 계정 기본 정의 (해시는 불변, 비밀번호/권한은 localStorage 오버라이드) ── */
+  var AC_DEFAULTS=[
+    {id:'admin', h:'ae6333d7f9b198ad3210497489455c8f40f29c0e054cd27bc3f2d7edd82c49d1', tabs:['competitor','mkt','sales','logistics'], label:'관리자'},
+    {id:'Sales', h:'b2640e8b34169afa37c2e26916f7a526f6f5d96db43d78d0aeb16e48ff18d9c8', tabs:['competitor','mkt','sales'],             label:'영업팀'},
+    {id:'MKT',   h:'7c5d2b85fa95279311d2858f2902c2d0c14f6aad377b0d9117598a28ea9908d9', tabs:['competitor','mkt'],                   label:'마케팅팀'},
+    {id:'guest', h:'6a59cebc3957ca49578984dec0a85e3522993cd14b9d5a861003a5512c3e4a31', tabs:['competitor'],                        label:'게스트'},
   ];
+  /* master 계정 (별도 관리, AC_DEFAULTS에 포함 안 함) */
+  var MASTER_ID   = 'master';
+  var MASTER_HASH = '4ea62da1e1f3dfd23723799d6ecbb930c1aaf9016ab68a46268254bc7b8ca01b';
+
+  /* ── 런타임 AC 빌드 (오버라이드 + 신규 계정 포함) ── */
+  function buildAC(){
+    var overrides={};
+    try{ overrides=JSON.parse(localStorage.getItem(AC_MGR_KEY)||'{}'); }catch(e){}
+    var customs=[];
+    try{ customs=JSON.parse(localStorage.getItem(AC_CUSTOM_KEY)||'[]'); }catch(e){}
+
+    /* 기본 계정 */
+    var list = AC_DEFAULTS.map(function(def){
+      var ov=overrides[def.id]||{};
+      return {
+        id:    def.id,
+        h:     ov.h    || def.h,
+        tabs:  ov.tabs || def.tabs,
+        label: def.label,
+        custom: false
+      };
+    });
+    /* 신규 계정 */
+    customs.forEach(function(c){
+      list.push({
+        id:    c.id,
+        h:     c.h,
+        tabs:  c.tabs || ['competitor'],
+        label: c.label || '신규',
+        custom: true
+      });
+    });
+    return list;
+  }
+  var AC = buildAC();
+
   var EM_HASH='21d120dc147245d699329f118d811063ff92246b2b47a1f02ba6bbd9d4626562';
 
   /* ── 상수 ── */
@@ -7666,19 +7769,38 @@ var AUTH=(function(){
   });
 
   /* ── 헤더 계정 바 ── */
-  function updateUserBar(userId){
+  function updateUserBar(userId, isMaster){
     var bar=$('userInfo'), nm=$('userInfoName'), logoutBtn=$('logoutBtn');
+    var acMgrBtn = $('sbAccMgrBtn');
     if(!bar)return;
     if(userId){
-      if(nm)nm.innerHTML='👤 <b>'+userId+'</b>';
+      var badge = isMaster
+        ? ' <span style="background:#f59e0b;color:#fff;font-size:0.72em;padding:1px 6px;border-radius:4px;font-weight:700;">MASTER</span>'
+        : '';
+      if(nm)nm.innerHTML='👤 <b>'+userId+'</b>'+badge;
       bar.style.display='block';
       if(logoutBtn)logoutBtn.style.display='block';
+      /* 계정관리 버튼: master만 표시 */
+      if(acMgrBtn) acMgrBtn.style.display = isMaster ? 'block' : 'none';
     }else{
       bar.style.display='none';
       if(nm)nm.innerHTML='';
       if(logoutBtn)logoutBtn.style.display='none';
+      if(acMgrBtn) acMgrBtn.style.display='none';
       stopSessionCd();
     }
+  }
+
+  /* ── 탭 권한 적용 (master는 전체 열람) ── */
+  function applyTabPerms(allowedTabs){
+    var tabs = allowedTabs || ALL_TABS;
+    ALL_TABS.forEach(function(t){
+      var sbEl  = $('sb'+t.charAt(0).toUpperCase()+t.slice(1));
+      var btnEl = $('tabBtn'+t.charAt(0).toUpperCase()+t.slice(1));
+      var allowed = (t === 'logistics') ? false : tabs.indexOf(t) > -1; // 물류탭은 항상 숨김
+      if(sbEl)  sbEl.style.display  = allowed ? '' : 'none';
+      if(btnEl) btnEl.style.display = allowed ? '' : 'none';
+    });
   }
 
   /* ══════ 로그인 ══════ */
@@ -7692,6 +7814,27 @@ var AUTH=(function(){
     btn.disabled=true; btn.textContent='확인 중…';
 
     var inputHash=sha256(uid+':'+pw);
+
+    /* master 계정 체크 */
+    if(uid===MASTER_ID && inputHash===MASTER_HASH){
+      btn.disabled=false; btn.textContent='로그인';
+      resetLock();
+      saveSession(MASTER_ID);
+      startSessionTimer();
+      updateUserBar(MASTER_ID, true);
+      hideOverlay();
+      setTimeout(function(){
+        try{
+          if(typeof loadGoogleSheetData==='function')loadGoogleSheetData();
+          else if(typeof updateCharts==='function')updateCharts();
+        }catch(e){console.warn('[AUTH]',e);}
+        if(typeof POPUP!=='undefined')POPUP.showIfNeeded();
+      },120);
+      return;
+    }
+
+    /* 일반 계정 체크 */
+    AC = buildAC(); // 최신 오버라이드 반영
     var matched=null;
     for(var i=0;i<AC.length;i++){if(AC[i].id===uid&&AC[i].h===inputHash){matched=AC[i];break;}}
     btn.disabled=false; btn.textContent='로그인';
@@ -7700,14 +7843,14 @@ var AUTH=(function(){
       resetLock();
       saveSession(matched.id);
       startSessionTimer();
-      updateUserBar(matched.id);
+      updateUserBar(matched.id, false);
+      applyTabPerms(matched.tabs);
       hideOverlay();
       setTimeout(function(){
         try{
           if(typeof loadGoogleSheetData==='function')loadGoogleSheetData();
           else if(typeof updateCharts==='function')updateCharts();
         }catch(e){console.warn('[AUTH]',e);}
-        /* 팝업 표시 */
         if(typeof POPUP!=='undefined')POPUP.showIfNeeded();
       },120);
     }else{
@@ -7724,7 +7867,8 @@ var AUTH=(function(){
     if(_sesTimer){clearTimeout(_sesTimer);_sesTimer=null;}
     stopSessionCd();
     clearSession();
-    updateUserBar(null);
+    updateUserBar(null, false);
+    applyTabPerms(ALL_TABS); // 로그아웃 시 권한 초기화
     /* 입력 필드 초기화 */
     var idEl=$('fId'), pwEl=$('fPw');
     if(idEl)idEl.value=''; if(pwEl)pwEl.value='';
@@ -7775,17 +7919,23 @@ var AUTH=(function(){
   function init(){
     var s=getSession();
     if(s&&s.id){
-      /* 유효한 세션 복원 */
+      var isMaster = (s.id === MASTER_ID);
       saveSession(s.id);
       startSessionTimer();
-      updateUserBar(s.id);
+      updateUserBar(s.id, isMaster);
+      if(!isMaster){
+        AC = buildAC();
+        var acc = AC.filter(function(a){return a.id===s.id;})[0];
+        applyTabPerms(acc ? acc.tabs : ['competitor']);
+      } else {
+        applyTabPerms(ALL_TABS);
+      }
       hideOverlay();
       setTimeout(function(){
         try{
           if(typeof loadGoogleSheetData==='function')loadGoogleSheetData();
           else if(typeof updateCharts==='function')updateCharts();
         }catch(e){}
-        /* 팝업 표시 */
         if(typeof POPUP!=='undefined')POPUP.showIfNeeded();
       },120);
     } else {
@@ -7795,7 +7945,302 @@ var AUTH=(function(){
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}
   else{setTimeout(init,0);}
 
-  return{login:login,logout:logout,openEm:openEm,closeEm:closeEm,confirmEm:confirmEm};
+  /* ══════════════════════════════════════════
+     계정 관리 패널 (master 전용)
+  ══════════════════════════════════════════ */
+  function openAccMgr(){
+    var ov = $('accMgrOverlay');
+    if(!ov) return;
+    renderAccMgr();
+    ov.style.display='flex';
+  }
+  function closeAccMgr(){
+    var ov = $('accMgrOverlay');
+    if(ov) ov.style.display='none';
+  }
+
+  /* 저장된 오버라이드 읽기 */
+  function getOverrides(){
+    try{ return JSON.parse(localStorage.getItem(AC_MGR_KEY)||'{}'); }
+    catch(e){ return {}; }
+  }
+  function saveOverrides(obj){
+    try{ localStorage.setItem(AC_MGR_KEY, JSON.stringify(obj)); }catch(e){}
+  }
+
+  /* ── 탭 한글명 ── */
+  var TAB_LABELS = {competitor:'경쟁사 현황', mkt:'Marketing', sales:'Sales', logistics:'물류'};
+
+  /* ── 모달 렌더링 ── */
+  function renderAccMgr(){
+    var container = $('accMgrBody');
+    if(!container) return;
+    var overrides = getOverrides();
+    var allAC = buildAC();
+    var html = '';
+
+    /* ════ 섹션 1: 계정 목록 ════ */
+    html += '<div class="amgr-section-group-title">👥 계정 목록</div>';
+
+    allAC.forEach(function(ac){
+      var isCustom = ac.custom;
+      var defTabs  = (AC_DEFAULTS.filter(function(d){return d.id===ac.id;})[0]||{}).tabs || ['competitor'];
+      var currentTabs = ac.tabs;
+
+      html += '<div class="amgr-card" id="amgr-card-'+ac.id+'">';
+
+      /* 카드 헤더 */
+      html += '<div class="amgr-card-header">';
+      html += '<div class="amgr-id-wrap">';
+      if(isCustom){
+        html += '<span class="amgr-badge amgr-badge-custom">신규</span>';
+      } else {
+        html += '<span class="amgr-badge">'+ac.label+'</span>';
+      }
+      html += '<span class="amgr-id">'+ac.id+'</span>';
+      html += '</div>';
+      html += '<div style="display:flex;gap:6px;align-items:center;">';
+      if(isCustom){
+        html += '<button class="amgr-del-btn" onclick="AUTH._amgrDeleteAcc(\''+ac.id+'\')">🗑 삭제</button>';
+      }
+      html += '<button class="amgr-toggle-btn" onclick="AUTH._amgrToggle(\''+ac.id+'\')" id="amgr-toggle-'+ac.id+'">▼ 편집</button>';
+      html += '</div>';
+      html += '</div>'; /* card-header */
+
+      /* 카드 바디 */
+      html += '<div class="amgr-card-body" id="amgr-body-'+ac.id+'" style="display:none;">';
+
+      /* 비밀번호 변경 */
+      html += '<div class="amgr-section-title">🔑 비밀번호 변경</div>';
+      html += '<div class="amgr-pw-row">';
+      html += '<input type="password" id="amgr-pw1-'+ac.id+'" placeholder="새 비밀번호" class="amgr-input" />';
+      html += '<input type="password" id="amgr-pw2-'+ac.id+'" placeholder="새 비밀번호 확인" class="amgr-input" />';
+      html += '<button class="amgr-save-btn" onclick="AUTH._amgrSavePw(\''+ac.id+'\')">저장</button>';
+      html += '</div>';
+      html += '<div class="amgr-pw-msg" id="amgr-pw-msg-'+ac.id+'"></div>';
+
+      /* 탭 열람 권한 */
+      html += '<div class="amgr-section-title" style="margin-top:14px;">📑 탭 열람 권한</div>';
+      html += '<div class="amgr-tabs-row">';
+      ALL_TABS.forEach(function(t){
+        if(t==='logistics') return;
+        var checked = currentTabs.indexOf(t) > -1 ? 'checked' : '';
+        html += '<label class="amgr-tab-chk">';
+        html += '<input type="checkbox" '+checked+' id="amgr-chk-'+ac.id+'-'+t+'" />';
+        html += '<span>'+TAB_LABELS[t]+'</span>';
+        html += '</label>';
+      });
+      html += '</div>';
+      html += '<div style="display:flex;justify-content:flex-end;margin-top:10px;">';
+      html += '<button class="amgr-save-btn" onclick="AUTH._amgrSavePerms(\''+ac.id+'\')">권한 저장</button>';
+      html += '</div>';
+      html += '<div class="amgr-pw-msg" id="amgr-perm-msg-'+ac.id+'"></div>';
+
+      /* 초기화 버튼 (기본 계정만) */
+      if(!isCustom){
+        html += '<div style="margin-top:12px;padding-top:10px;border-top:1px solid #f1f5f9;display:flex;align-items:center;gap:10px;">';
+        html += '<button class="amgr-reset-btn" onclick="AUTH._amgrReset(\''+ac.id+'\')">↺ 기본값으로 초기화</button>';
+        html += '<span style="font-size:0.72em;color:#94a3b8;">초기화 시 비밀번호: <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:1em;">'+DEFAULT_PW+'</code></span>';
+        html += '</div>';
+        html += '<div class="amgr-pw-msg" id="amgr-reset-msg-'+ac.id+'"></div>';
+      }
+
+      html += '</div>'; /* card-body */
+      html += '</div>'; /* card */
+    });
+
+    /* ════ 섹션 2: 신규 계정 생성 ════ */
+    html += '<div class="amgr-section-group-title" style="margin-top:20px;">➕ 신규 계정 생성</div>';
+    html += '<div class="amgr-create-card">';
+
+    /* ID */
+    html += '<div class="amgr-create-row">';
+    html += '<div class="amgr-create-field">';
+    html += '<label class="amgr-section-title">계정 ID</label>';
+    html += '<input type="text" id="amgr-new-id" placeholder="영문/숫자 조합 (예: user01)" class="amgr-input" style="width:100%;" maxlength="20" />';
+    html += '</div>';
+    html += '<div class="amgr-create-field">';
+    html += '<label class="amgr-section-title">역할 / 표시명</label>';
+    html += '<input type="text" id="amgr-new-label" placeholder="예: 영업2팀" class="amgr-input" style="width:100%;" maxlength="12" />';
+    html += '</div>';
+    html += '</div>';
+
+    /* 비밀번호 */
+    html += '<div class="amgr-create-row" style="margin-top:8px;">';
+    html += '<div class="amgr-create-field">';
+    html += '<label class="amgr-section-title">비밀번호</label>';
+    html += '<input type="password" id="amgr-new-pw1" placeholder="비밀번호 (4자 이상)" class="amgr-input" style="width:100%;" />';
+    html += '</div>';
+    html += '<div class="amgr-create-field">';
+    html += '<label class="amgr-section-title">비밀번호 확인</label>';
+    html += '<input type="password" id="amgr-new-pw2" placeholder="비밀번호 재입력" class="amgr-input" style="width:100%;" />';
+    html += '</div>';
+    html += '</div>';
+
+    /* 탭 권한 */
+    html += '<div class="amgr-section-title" style="margin-top:12px;">📑 허용 탭</div>';
+    html += '<div class="amgr-tabs-row">';
+    ALL_TABS.forEach(function(t){
+      if(t==='logistics') return;
+      html += '<label class="amgr-tab-chk">';
+      html += '<input type="checkbox" id="amgr-new-chk-'+t+'" />';
+      html += '<span>'+TAB_LABELS[t]+'</span>';
+      html += '</label>';
+    });
+    html += '</div>';
+
+    /* 생성 버튼 + 메시지 */
+    html += '<div style="display:flex;justify-content:flex-end;margin-top:14px;">';
+    html += '<button class="amgr-create-btn" onclick="AUTH._amgrCreateAcc()">➕ 계정 생성</button>';
+    html += '</div>';
+    html += '<div class="amgr-pw-msg" id="amgr-create-msg"></div>';
+
+    html += '</div>'; /* create-card */
+
+    container.innerHTML = html;
+  }
+
+  /* ── 카드 토글 ── */
+  function _amgrToggle(id){
+    var body = $('amgr-body-'+id);
+    var btn  = $('amgr-toggle-'+id);
+    if(!body) return;
+    var open = body.style.display === 'block';
+    body.style.display = open ? 'none' : 'block';
+    if(btn) btn.textContent = open ? '▼ 편집' : '▲ 닫기';
+  }
+
+  /* ── 비밀번호 저장 ── */
+  function _amgrSavePw(id){
+    var pw1 = $('amgr-pw1-'+id), pw2 = $('amgr-pw2-'+id);
+    var msg = $('amgr-pw-msg-'+id);
+    if(!pw1||!pw2) return;
+    var v1=pw1.value.trim(), v2=pw2.value.trim();
+    if(!v1){_amgrMsg(msg,'비밀번호를 입력해주세요.','err');return;}
+    if(v1.length < 4){_amgrMsg(msg,'4자 이상 입력해주세요.','err');return;}
+    if(v1!==v2){_amgrMsg(msg,'비밀번호가 일치하지 않습니다.','err');return;}
+    var newHash = sha256(id+':'+v1);
+    var overrides = getOverrides();
+    if(!overrides[id]) overrides[id]={};
+    overrides[id].h = newHash;
+    saveOverrides(overrides);
+    AC = buildAC(); // 즉시 반영
+    pw1.value=''; pw2.value='';
+    _amgrMsg(msg,'✅ 비밀번호가 변경되었습니다.','ok');
+  }
+
+  /* ── 탭 권한 저장 ── */
+  function _amgrSavePerms(id){
+    var msg = $('amgr-perm-msg-'+id);
+    var selected = [];
+    ALL_TABS.forEach(function(t){
+      if(t==='logistics') return;
+      var chk = $('amgr-chk-'+id+'-'+t);
+      if(chk && chk.checked) selected.push(t);
+    });
+    if(selected.length===0){_amgrMsg(msg,'최소 1개 탭은 허용해야 합니다.','err');return;}
+    var overrides = getOverrides();
+    if(!overrides[id]) overrides[id]={};
+    overrides[id].tabs = selected;
+    saveOverrides(overrides);
+    AC = buildAC();
+    _amgrMsg(msg,'✅ 권한이 저장되었습니다.','ok');
+  }
+
+  /* ── 초기화 (기본 계정: 비밀번호 → DEFAULT_PW, 권한 → 기본값) ── */
+  function _amgrReset(id){
+    if(!confirm('['+id+'] 계정을 초기값으로 초기화할까요?\n비밀번호가 기본값으로 재설정됩니다.')) return;
+    var def = AC_DEFAULTS.filter(function(d){return d.id===id;})[0];
+    if(!def) return;
+    /* 초기 비밀번호 해시 적용 */
+    var defaultHash = sha256(id + ':' + DEFAULT_PW);
+    var overrides = getOverrides();
+    overrides[id] = { h: defaultHash, tabs: def.tabs };
+    saveOverrides(overrides);
+    AC = buildAC();
+    renderAccMgr();
+    var body = $('amgr-body-'+id);
+    var btn  = $('amgr-toggle-'+id);
+    if(body){body.style.display='block';}
+    if(btn){btn.textContent='▲ 닫기';}
+    // 초기화 완료 알림
+    setTimeout(function(){
+      var msgEl = $('amgr-reset-msg-'+id);
+      if(msgEl)_amgrMsg(msgEl,'✅ 초기화 완료 — 비밀번호: '+DEFAULT_PW,'ok');
+    },50);
+  }
+
+  /* ── 메시지 헬퍼 ── */
+  function _amgrMsg(el, txt, type){
+    if(!el) return;
+    el.textContent = txt;
+    el.style.color = type==='ok' ? '#16a34a' : '#ef4444';
+    setTimeout(function(){ if(el) el.textContent=''; }, 3000);
+  }
+
+  /* ── 신규 계정 생성 ── */
+  function _amgrCreateAcc(){
+    var newId    = ($('amgr-new-id')    ||{}).value||'';
+    var newLabel = ($('amgr-new-label') ||{}).value||'';
+    var newPw1   = ($('amgr-new-pw1')   ||{}).value||'';
+    var newPw2   = ($('amgr-new-pw2')   ||{}).value||'';
+    var msg      = $('amgr-create-msg');
+
+    newId = newId.trim(); newLabel = newLabel.trim();
+    newPw1 = newPw1.trim(); newPw2 = newPw2.trim();
+
+    /* 유효성 검사 */
+    if(!newId){_amgrMsg(msg,'계정 ID를 입력해주세요.','err');return;}
+    if(!/^[a-zA-Z0-9_\-]+$/.test(newId)){_amgrMsg(msg,'ID는 영문/숫자/밑줄/하이픈만 사용 가능합니다.','err');return;}
+    if(newId === MASTER_ID){_amgrMsg(msg,'master ID는 사용할 수 없습니다.','err');return;}
+
+    /* 중복 체크 */
+    var existing = buildAC().filter(function(a){return a.id===newId;});
+    if(existing.length>0){_amgrMsg(msg,'이미 존재하는 ID입니다.','err');return;}
+
+    if(!newPw1){_amgrMsg(msg,'비밀번호를 입력해주세요.','err');return;}
+    if(newPw1.length<4){_amgrMsg(msg,'비밀번호는 4자 이상 입력해주세요.','err');return;}
+    if(newPw1!==newPw2){_amgrMsg(msg,'비밀번호가 일치하지 않습니다.','err');return;}
+
+    /* 탭 권한 수집 */
+    var selTabs=[];
+    ALL_TABS.forEach(function(t){
+      if(t==='logistics') return;
+      var chk=$('amgr-new-chk-'+t);
+      if(chk&&chk.checked) selTabs.push(t);
+    });
+    if(selTabs.length===0){_amgrMsg(msg,'최소 1개 탭을 선택해주세요.','err');return;}
+
+    /* 저장 */
+    var newHash = sha256(newId+':'+newPw1);
+    var customs=[];
+    try{customs=JSON.parse(localStorage.getItem(AC_CUSTOM_KEY)||'[]');}catch(e){}
+    customs.push({id:newId, h:newHash, tabs:selTabs, label:newLabel||newId});
+    try{localStorage.setItem(AC_CUSTOM_KEY, JSON.stringify(customs));}catch(e){}
+
+    AC = buildAC();
+    _amgrMsg(msg,'✅ ['+newId+'] 계정이 생성되었습니다.','ok');
+    setTimeout(function(){ renderAccMgr(); },600);
+  }
+
+  /* ── 신규 계정 삭제 ── */
+  function _amgrDeleteAcc(id){
+    if(!confirm('['+id+'] 계정을 삭제할까요?\n이 작업은 되돌릴 수 없습니다.')) return;
+    var customs=[];
+    try{customs=JSON.parse(localStorage.getItem(AC_CUSTOM_KEY)||'[]');}catch(e){}
+    customs = customs.filter(function(c){return c.id!==id;});
+    try{localStorage.setItem(AC_CUSTOM_KEY, JSON.stringify(customs));}catch(e){}
+    /* 오버라이드도 정리 */
+    var ov=getOverrides(); delete ov[id]; saveOverrides(ov);
+    AC = buildAC();
+    renderAccMgr();
+  }
+
+  return{login:login,logout:logout,openEm:openEm,closeEm:closeEm,confirmEm:confirmEm,
+         openAccMgr:openAccMgr,closeAccMgr:closeAccMgr,
+         _amgrToggle:_amgrToggle,_amgrSavePw:_amgrSavePw,
+         _amgrSavePerms:_amgrSavePerms,_amgrReset:_amgrReset,
+         _amgrCreateAcc:_amgrCreateAcc,_amgrDeleteAcc:_amgrDeleteAcc};
 })();
 </script>
 
@@ -8001,9 +8446,21 @@ var AUTH=(function(){
           url    : (urlArr[i] || '').replace(/["|\r\n]/g,'').trim()
         };
       }).filter(item => item.title);
+      // API 오류 텍스트 감지 헬퍼 (Gemini 429 등)
+      function cleanApiText(txt) {
+        if (!txt) return '';
+        // Gemini 429 / API 오류 패턴 감지
+        if (/API\s*오류|429|TooManyRequests|quota|rate.?limit|\[\d+일\]확대|\[30일\]|\[\d+일확대\]/i.test(txt)) {
+          return '__API_ERROR__';
+        }
+        return txt;
+      }
+      const rawSummary = r['뉴스요약']   || r['summary']  || '';
+      const rawInsight = r['AI인사이트'] || r['insight']  || '';
       brandData[brand] = {
-        summary  : r['뉴스요약']   || r['summary']  || '',
-        insight  : r['AI인사이트'] || r['insight']  || '',
+        summary  : cleanApiText(rawSummary),
+        insight  : cleanApiText(rawInsight),
+        apiError : cleanApiText(rawSummary) === '__API_ERROR__' || cleanApiText(rawInsight) === '__API_ERROR__',
         threat   : r['위험도'] || r['위협도'] || r['threat'] || '보통',
         date     : rowDate,
         time     : r['수집시각']   || r['time']     || '',
@@ -8015,6 +8472,7 @@ var AUTH=(function(){
     });
 
     loaded = true;
+    window.__compDataLoaded = true;
     renderCompetitor();
 
     // 마케팅 탭 AI 인사이트 뉴스 소스 상태 갱신
@@ -8066,20 +8524,27 @@ var AUTH=(function(){
       card.onclick     = () => selectBrand(brand);
 
       // 요약 첫 문장 미리보기 (최대 60자)
-    const firstSent = d.summary.split('.')[0] + (d.summary.includes('.') ? '.' : '');
-    const previewText = firstSent.length > 60 ? firstSent.substring(0,60)+'...' : firstSent;
+      const isApiErr = d.apiError || d.summary === '__API_ERROR__' || d.insight === '__API_ERROR__';
+      const summaryDisp = (d.summary === '__API_ERROR__' || !d.summary) ? '' : d.summary;
+    const firstSent = summaryDisp ? (summaryDisp.split('.')[0] + (summaryDisp.includes('.') ? '.' : '')) : '';
+    const previewText = isApiErr
+        ? t('comp_api_error_card')
+        : (firstSent.length > 60 ? firstSent.substring(0,60)+'...' : firstSent);
       const threatBadge = isRoborock ? '' :
         '<span style="background:' + ts.bg + ';color:' + ts.color + ';font-size:0.7em;padding:2px 7px;border-radius:10px;font-weight:700;">' + ts.icon + ' ' + d.threat + '</span>';
+      const apiErrBadge = isApiErr
+        ? '<span style="background:#fef3c7;color:#b45309;font-size:0.68em;padding:2px 7px;border-radius:10px;font-weight:700;margin-left:4px;">' + t('comp_api_error_badge') + '</span>'
+        : '';
 
       card.innerHTML =
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
           '<span style="font-size:0.85em;font-weight:700;color:#1e293b;">' + bc.icon + ' ' + brand + '</span>' +
-          threatBadge +
+          '<div style="display:flex;gap:4px;align-items:center;">' + threatBadge + apiErrBadge + '</div>' +
         '</div>' +
-        '<div style="font-size:0.75em;color:#475569;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' +
+        '<div style="font-size:0.75em;color:' + (isApiErr ? '#b45309' : '#475569') + ';line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' +
           previewText +
         '</div>' +
-        '<div style="font-size:0.68em;color:#94a3b8;margin-top:6px;">' + _fmtDate(d.date) + ' · 기사 ' + (d.count || '-') + '건</div>';
+        '<div style="font-size:0.68em;color:#94a3b8;margin-top:6px;">' + _fmtDate(d.date) + ' · ' + (d.count || '-') + t('unit_articles') + '</div>';
       summaryEl.appendChild(card);
     });
 
@@ -8155,10 +8620,10 @@ var AUTH=(function(){
       html +=
         '<div style="display:flex;justify-content:center;align-items:center;gap:10px;margin-top:12px;">' +
           '<button ' + prevDis + ' onclick="window.__compPrevPage(\'' + brand + '\')" ' +
-            'style="padding:4px 14px;border:1px solid #e2e8f0;border-radius:6px;background:#f8fafc;color:#475569;font-size:0.78em;' + prevOp + '">◀ 이전</button>' +
-          '<span style="font-size:0.78em;color:#64748b;">' + (page + 1) + ' / ' + totalPages + '페이지</span>' +
+            'style="padding:4px 14px;border:1px solid #e2e8f0;border-radius:6px;background:#f8fafc;color:#475569;font-size:0.78em;' + prevOp + '">' + t('unit_prev') + '</button>' +
+          '<span style="font-size:0.78em;color:#64748b;">' + (page + 1) + ' / ' + totalPages + '</span>' +
           '<button ' + nextDis + ' onclick="window.__compNextPage(\'' + brand + '\')" ' +
-            'style="padding:4px 14px;border:1px solid #e2e8f0;border-radius:6px;background:#f8fafc;color:#475569;font-size:0.78em;' + nextOp + '">다음 ▶</button>' +
+            'style="padding:4px 14px;border:1px solid #e2e8f0;border-radius:6px;background:#f8fafc;color:#475569;font-size:0.78em;' + nextOp + '">' + t('unit_next') + '</button>' +
         '</div>';
     }
 
@@ -8205,7 +8670,7 @@ var AUTH=(function(){
 
     const threatSection = isRoborock ? '' :
       '<div style="display:inline-flex;align-items:center;gap:6px;background:' + ts.bg + ';border:1px solid ' + ts.color + '44;border-radius:10px;padding:3px 10px;font-size:0.78em;font-weight:700;color:' + ts.color + ';">' +
-        ts.icon + ' 위협도: ' + d.threat +
+        ts.icon + ' ' + t('comp_threat_label') + ': ' + d.threat +
       '</div>';
 
     const detailEl = document.getElementById('compDetail');
@@ -8221,11 +8686,19 @@ var AUTH=(function(){
       '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">' +
         '<div style="background:#fff;border:1px solid #e2e8f0;border-left:4px solid ' + bc.border + ';border-radius:8px;padding:14px 16px;">' +
           '<div style="font-size:0.78em;font-weight:700;color:#6366f1;margin-bottom:8px;">📰 뉴스 요약</div>' +
-          '<div style="font-size:0.82em;color:#334155;line-height:1.7;">' + (d.summary || '-') + '</div>' +
+          '<div style="font-size:0.82em;color:#334155;line-height:1.7;">' +
+            (d.summary === '__API_ERROR__'
+              ? '<span style="color:#f59e0b;font-weight:600;">⚠️ AI 분석 일시 대기 중</span><br><span style="font-size:0.9em;color:#94a3b8;">Gemini API 요청 한도(429)로 인해 분석이 지연되고 있습니다.<br>보통 수 분~1시간 내에 자동 복구됩니다. 이후 새로고침 해주세요.</span>'
+              : (d.summary || '-')) +
+          '</div>' +
         '</div>' +
         '<div style="background:#fff;border:1px solid #e2e8f0;border-left:4px solid #6366f1;border-radius:8px;padding:14px 16px;">' +
           '<div style="font-size:0.78em;font-weight:700;color:#6366f1;margin-bottom:8px;">💡 팅크웨어 인사이트</div>' +
-          '<div style="font-size:0.82em;color:#334155;line-height:1.7;">' + (d.insight || '-') + '</div>' +
+          '<div style="font-size:0.82em;color:#334155;line-height:1.7;">' +
+            (d.insight === '__API_ERROR__'
+              ? '<span style="color:#f59e0b;font-weight:600;">⚠️ AI 분석 일시 대기 중</span><br><span style="font-size:0.9em;color:#94a3b8;">잠시 후 새로고침 버튼을 눌러주세요.</span>'
+              : (d.insight || '-')) +
+          '</div>' +
         '</div>' +
       '</div>' +
 
@@ -8234,8 +8707,8 @@ var AUTH=(function(){
 
       // 단서조항
       '<div style="margin-top:14px;padding:10px 14px;background:#f8fafc;border-radius:8px;font-size:0.73em;color:#94a3b8;line-height:1.6;font-style:italic;">' +
-        (isRoborock ? '' : '※ 위협도 기준: 경쟁 브랜드 뉴스가 로보락 경쟁우위에 미치는 영향도 (높음: 직접 경쟁·점유율 위협 / 보통: 간접 영향 / 낮음: 시장 영향 미미)<br>') +
-        '※ 매일 낮 12시 기준 최근 7일간 뉴스를 네이버 API로 자동 수집하고 Gemini AI로 분석합니다. 중복 기사는 대표 기사 1건으로 통합하여 표시합니다.' +
+        (isRoborock ? '' : t('comp_disclaimer') + '<br>') +
+        t('comp_disclaimer2') +
       '</div>';
   }
 
@@ -9554,5 +10027,1306 @@ window.focusLgSku = focusLgSku;
 
 })();
 </script>
+
+<!-- ══════════════════════════════════════════════════════
+     i18n 다국어 모듈 v2  (전면 확장판)
+     지원 언어: ko(기본) / en / zh
+     ① data-i18n 속성 → 자동 일괄 번역
+     ② window.t(key)   → JS 동적 생성 텍스트용 헬퍼
+     ③ setLang(lang)   → 언어 전환 + 화면 전체 재렌더
+══════════════════════════════════════════════════════ -->
+<script>
+(function(){
+'use strict';
+
+/* ════════════════════════════════════════════════════
+   다국어 사전  (KO 기준 개발 → EN/ZH 자동 반영)
+   새 키 추가 시: ko에 추가하면 en/zh도 동시에 추가
+════════════════════════════════════════════════════ */
+var I18N = {
+
+/* ══ 한국어 (기본) ══════════════════════════════════ */
+ko: {
+  /* ── 사이드바 / 탭 ── */
+  tab_competitor        : '🔍 경쟁사 현황',
+  tab_mkt               : '📊 Marketing',
+  tab_sales             : '💼 Sales',
+  tab_logistics         : '📦 물류',
+  sb_logo_title         : '🤖 로봇청소기\nKPI Dashboard',
+  sb_logo_sub           : 'Thinkware Mobile',
+  btn_refresh           : '↻ 데이터 새로고침',
+  btn_pdf               : '📄 PDF 출력',
+  btn_logout            : '로그아웃',
+  btn_acc_mgr           : '⚙️ 계정 관리',
+  page_title            : '🤖 로봇청소기 KPI Dashboard',
+
+  /* ── 로딩 오버레이 ── */
+  loading_title         : '데이터 로딩 중...',
+  loading_desc          : '구글 시트에서 최신 데이터를 가져오고 있습니다.',
+
+  /* ── 공통 상태 메시지 ── */
+  status_loading        : '데이터를 불러오는 중입니다...',
+  status_error          : '데이터를 불러오지 못했습니다.',
+  status_retry          : '다시 시도',
+  status_refresh        : '🔄 새로고침',
+  status_no_data        : '데이터가 없습니다.',
+  status_wait           : '잠시만 기다려 주세요.',
+  status_latest_update  : '최종 업데이트',
+  unit_articles         : '건',
+  unit_page             : '페이지',
+  unit_prev             : '◀ 이전',
+  unit_next             : '다음 ▶',
+
+  /* ── 날짜 필터 ── */
+  date_start            : '📅 시작일',
+  date_end              : '📅 종료일',
+  date_apply            : '🔄 기간 적용',
+
+  /* ══ 경쟁사 탭 ══════════════════════════════════ */
+  comp_title            : '🔍 경쟁사 뉴스 인사이트',
+  comp_ai_badge         : '🤖 AI 자동 분석',
+  comp_auto_desc        : '매일 오전 12:00 자동 업데이트',
+  comp_days_desc        : '최근 7일간 뉴스 기반',
+  comp_api_desc         : '네이버 뉴스 API + Gemini AI 분석',
+  comp_refresh          : '🔄 새로고침',
+  comp_loading          : '뉴스 인사이트 불러오는 중...',
+  comp_error_msg        : '데이터를 불러오지 못했습니다.',
+  comp_error_hint       : '구글 시트 공개 설정 또는 네트워크를 확인해주세요.',
+  comp_retry            : '다시 시도',
+  /* 카드 레이블 */
+  comp_card_search      : '검색 트렌드 분석',
+  comp_card_threat      : '경쟁사 위협 분석',
+  comp_card_strategy    : '이번 주 전략',
+  comp_card_forecast    : '중장기 전망',
+  comp_card_action      : '💡 권장 액션',
+  comp_news_summary     : '📰 뉴스 요약',
+  comp_tw_insight       : '💡 팅크웨어 인사이트',
+  comp_threat_label     : '위협도',
+  comp_data_basis       : '데이터 기준',
+  comp_ai_cross         : '검색 트렌드 + 뉴스 AI 통합 분석',
+  comp_disclaimer       : '※ 위협도 기준: 경쟁 브랜드 뉴스가 로보락 경쟁우위에 미치는 영향도 (높음: 직접 경쟁·점유율 위협 / 보통: 간접 영향 / 낮음: 시장 영향 미미)',
+  comp_disclaimer2      : '※ 매일 낮 12시 기준 최근 7일간 뉴스를 네이버 API로 자동 수집하고 Gemini AI로 분석합니다. 중복 기사는 대표 기사 1건으로 통합하여 표시합니다.',
+  comp_api_error_title  : '⚠️ AI 분석 일시 대기 중',
+  comp_api_error_desc   : 'Gemini API 요청 한도(429)로 인해 분석이 지연되고 있습니다.\n보통 수 분~1시간 내에 자동 복구됩니다. 이후 새로고침 해주세요.',
+  comp_api_error_short  : '잠시 후 새로고침 버튼을 눌러주세요.',
+  comp_api_error_badge  : '⚠️ 분석 대기',
+  comp_api_error_card   : '⚠️ AI 분석 일시 대기 중 (Gemini API 요청 한도 초과)',
+  comp_article_basis    : '기준 · 기사',
+  comp_article_analysis : '건 분석',
+  /* 인사이트 V2 */
+  comp_insight_title    : '🤖 경쟁사 검색트렌드 종합 인사이트',
+  comp_insight_badge    : 'Gemini AI · 매일 12시 자동',
+  comp_insight_desc     : '검색량 트렌드 + 경쟁사 뉴스 교차 분석',
+  comp_insight_loading  : 'AI 분석 결과 불러오는 중...',
+  comp_insight_loading2 : '검색량 트렌드 + 경쟁사 뉴스 교차분석 결과를 가져옵니다',
+  comp_insight_wait     : 'AI 분석 결과를 불러오는 중입니다...',
+  comp_insight_footer   : '※ 네이버 데이터랩 검색량 + 경쟁사 뉴스(BrandNews)를 Gemini AI가 교차 분석합니다. 매일 낮 12시 자동 생성.\n※ AI가 생성한 인사이트이므로 최종 판단은 담당자가 직접 확인하세요.',
+  comp_no_data          : 'InsightV2 데이터가 없습니다.',
+  comp_no_data_hint     : 'Apps Script → testInsightV2() 를 실행하세요.',
+  /* 경쟁사 기타 */
+  comp_brand_summary    : '📋 전체 브랜드 현황 요약',
+  cmp_legend_hint       : '💡 범례 클릭으로 채널 필터 · 툴팁으로 채널별 상세 확인',
+
+  /* ══ Marketing 탭 ══════════════════════════════ */
+  mkt_title             : '📊 마케팅 성과 분석',
+  mkt_search_vol        : '🔍 브랜드 검색량 트렌드',
+  mkt_ad_perf           : '📈 광고 성과 지표',
+  mkt_ai_insight        : '🤖 AI 마케팅 인사이트',
+  /* 차트 제목 */
+  chart1_title          : '📈 25년 vs 26년 로봇청소기 검색량 비교',
+  chart2_title          : '📈 25년 vs 26년 로보락 검색량 비교',
+  chart3_title          : '📈 25년 vs 26년 로보락 제품명 검색량 비교',
+  chart4_title          : '📈 26년 로봇청소기 경쟁사분석',
+  chart_launch_align    : '출시일 기준 정렬',
+  chart_launch_btn      : '📅 출시일 맞추기',
+  chart_launch_reset    : '📅 날짜순 보기',
+  /* 마케팅 범례 */
+  legend_pre25          : '25년 사전마케팅',
+  legend_launch25       : '25년 S10 런칭',
+  legend_pre26          : '26년 사전마케팅',
+  legend_launch26       : '26년 S10 런칭',
+  legend_competitor     : '로보락 S10 Max V Ultra + Slim · 삼성로봇청소기 · 드리미X60 · DJI 로봇청소기 · 다이슨 로봇청소기 · 에코백스T90',
+  /* 검색량 진단 패널 */
+  diag_title            : '🔬 검색량 데이터 진단 패널',
+  diag_sub              : '(수치 확인 후 삭제 예정)',
+  diag_run              : '🔄 진단 실행',
+  diag_hint             : '▶ 위 [진단 실행] 버튼을 누르면 Chart 4의 실제 데이터를 여기에 표시합니다.',
+  /* 아드리엘 */
+  adriel_title          : '📊 마케팅 채널 성과 분석',
+  adriel_source         : '(아드리엘 연동)',
+  adriel_desc           : '광고비 · 클릭수 · 노출수 · ROAS · 구매수 · CTR · CPC · 매출액 · CVR · CPA',
+  adriel_refresh        : '🔄 새로고침',
+  adriel_loading        : '아드리엘 데이터 불러오는 중...',
+  adriel_source_label   : '📡 Adriel Widget Export API',
+  adriel_period_day     : '일단위',
+  adriel_period_week    : '주단위',
+  adriel_ch_all         : '🌐 전체',
+  /* 아드리엘 지표 버튼 */
+  am_spend              : '💰 광고비',
+  am_clicks             : '👆 클릭수',
+  am_impressions        : '👁 노출수',
+  am_roas               : '📊 ROAS',
+  am_purchases          : '🛒 구매수',
+  am_ctr                : '📐 CTR',
+  am_cpc                : '💵 CPC',
+  am_revenue            : '💎 매출액',
+  am_cvr                : '🔄 CVR',
+  am_cpa                : '🎯 CPA',
+  /* 아드리엘 채널 */
+  ch_naverGFA           : '네이버GFA',
+  ch_naver              : '네이버SA',
+  ch_kakao              : '카카오',
+  ch_facebook           : '페이스북',
+  ch_google_dg          : '구글DG',
+  /* 아드리엘 KPI 레이블 */
+  kpi_spend             : '광고비',
+  kpi_clicks            : '클릭수',
+  kpi_impressions       : '노출수',
+  kpi_roas              : 'ROAS',
+  kpi_purchases         : '구매수',
+  kpi_ctr               : 'CTR',
+  kpi_cpc               : 'CPC',
+  kpi_revenue           : '매출액',
+  kpi_cvr               : 'CVR',
+  kpi_cpa               : 'CPA',
+  /* 주차 비교 */
+  wk_compare_title      : '📅 주차별 비교 분석',
+  wk_compare_a          : '비교 주차 A',
+  wk_compare_b          : '비교 주차 B',
+  wk_compare_vs         : 'vs',
+  wk_compare_btn        : '🔍 비교',
+  wk_compare_placeholder: '☝️ 비교할 두 주차를 선택하세요',
+  wk_diff_title         : '📊 이전 주차 → 최신 주차 증감',
+  wk_tag_newer          : '🔴 최신',
+  wk_tag_older          : '🔵 이전',
+  wk_rows_data          : '일 데이터',
+  wk_ch_spend_share     : '채널별 광고비 비중',
+  /* 아드리엘 미니바 레이블 */
+  mini_spend            : '광고비',
+  mini_clicks           : '클릭수',
+  mini_impressions      : '노출수',
+  /* 차트 범례 */
+  chart_legend_daily    : '채널별 일별 광고비 추이',
+  /* AI 소스 */
+  ai_src_search         : '검색량 데이터',
+  ai_src_news           : '경쟁사 뉴스',
+
+  /* ══ Sales 탭 ══════════════════════════════════ */
+  sales_title           : '💼 판매 성과 분석',
+  sales_trend           : '📈 판매량 트렌드',
+  sales_share           : '🥧 채널별 판매 비중',
+  /* S10 vs S9 비교 */
+  cmp_title             : 'S10 MaxV Ultra vs S9 MaxV Ultra 출시 주차 비교',
+  cmp_subtitle          : '출시 대비 주차별 판매량 추이 비교 (주차 기준: 출시일 기준 경과 주수)',
+  cmp_loading           : '비교 차트 로딩 중...',
+  /* Sell Out */
+  so_title              : '🛒 로보락 Sell Out',
+  so_period_label       : '기간 (최대 15주):',
+  so_recent10           : '최근10주',
+  so_max_warning        : '⚠️ 최대 15주까지만 선택 가능합니다',
+  so_chart_label        : '차트 보기:',
+  so_btn_yoy            : '📅 2025년 비교',
+  so_btn_sku            : 'SKU별',
+  so_btn_channel        : '채널별',
+  so_btn_custom         : '🔍 조합 분석',
+  so_sku_panel_title    : 'SKU 선택',
+  so_sku_panel_hint     : '(복수 선택 가능)',
+  so_sku_group          : '그룹:',
+  so_sku_clear          : '전체 해제',
+  so_ch_panel_title     : '채널 선택',
+  so_search_chart_title : '🔍 로보락 주간 검색량',
+  so_search_no_data     : '검색량 데이터를 불러오는 중이거나 해당 기간에 데이터가 없습니다.',
+  so_loading            : '데이터 불러오는 중...',
+  so_legend_hint        : '💡 범례 항목 클릭 시 해당 항목만 강조 / 다시 클릭하면 전체 보기',
+  so_disclaimer         : '* 로보락 Sell Out 자료에 기반하여 업데이트 됩니다.',
+  /* Sell Out 표 */
+  so_table_summary_title: '📊 주차별 요약 (로보락 검색량 / Sell Out 판매량 / 비율)',
+  so_table_row_search   : '🔍검색량',
+  so_table_row_sales    : '📦판매량',
+  so_table_row_ratio    : '📊비율(%)',
+  so_table_col_item     : '항목',
+  so_table_sku_title    : '📋 SKU별 주차 판매량',
+  so_table_ch_title     : '📋 채널별 주차 판매량',
+  so_table_col_sku      : 'SKU',
+  so_table_col_ch       : '채널',
+  so_table_col_total    : '합계',
+  so_table_grand_total  : '📦 전체 합계',
+  /* YoY 비교 */
+  yoy_chart_title       : '📊 2026년 vs 2025년 주차별 SKU 판매량 비교',
+  yoy_chart_sub         : 'WK53~ (2026년) vs WK01~ (2025년) · 동일 출시 경과 주차 기준',
+  yoy_cum_title         : '📈 누적 판매량 추이 비교 (2026 vs 2025)',
+  yoy_cum_sub           : '동일 출시 경과 주차 기준 누적 합산',
+  yoy_pie26_title       : '🔵 2026년 채널 구성비',
+  yoy_pie25_title       : '🟡 2025년 채널 구성비',
+  yoy_no_data           : '2026년 데이터가 없습니다.',
+  yoy_total26           : '2026 누적',
+  yoy_total25           : '2025 누적',
+  /* SKU 그룹 */
+  sku_group_s8          : 'S8 시리즈',
+  sku_group_s9          : 'S9 MaxV 시리즈',
+  sku_group_s10         : 'S10 MaxV 시리즈',
+  sku_group_saros       : 'Saros Z70 시리즈',
+  sku_group_other       : '기타',
+
+  /* ── Chart 레전드 (updateCharts / renderChart4) ── */
+  chart_legend_robot25  : '25 로봇청소기',
+  chart_legend_robot26  : '26 로봇청소기',
+  chart_legend_roborock25: '25 로보락',
+  chart_legend_roborock26: '26 로보락',
+  ch4_roborock          : '로보락 S10 Max V Ultra + slim',
+  ch4_samsung           : '삼성로봇청소기',
+  ch4_dreame            : '드리미X60',
+  ch4_dji               : 'DJI 로봇청소기',
+  ch4_dyson             : '다이슨 로봇청소기',
+  ch4_ecovacs           : '에코백스T90',
+
+  /* ── KPI 요약 카드 (amRenderKPI) ── */
+  kpi_total_spend       : '총 광고비',
+  kpi_total_clicks      : '총 클릭수',
+  kpi_total_impressions : '총 노출수',
+  kpi_avg_ctr           : '평균 CTR',
+  kpi_avg_cpc           : '평균 CPC',
+  kpi_roas_label        : 'ROAS',
+  kpi_total_purchases   : '총 구매수',
+  kpi_total_revenue     : '총 매출액',
+  kpi_cpa_label         : 'CPA',
+  sub_krw               : '원',
+  sub_ctr               : '클릭률',
+  sub_cpc               : '클릭당 비용',
+  sub_roas              : '광고비 대비 매출',
+  sub_cpa               : '구매당 비용',
+  sub_purchases         : '건',
+  unit_week             : '주',
+  unit_day              : '일',
+  unit_all              : '전체',
+  unit_weekly           : '주단위',
+  unit_daily            : '일단위',
+  unit_units            : '대',
+
+  /* ── InsightV2 배지 텍스트 ── */
+  ins_badge_trend       : '📊 검색량 트렌드',
+  ins_badge_news        : '📰 경쟁사 뉴스',
+  ins_badge_gemini      : '🤖 Gemini AI 교차분석',
+  ins_raw_data          : '📋 원본 검색량 데이터 보기',
+
+  /* ── CMP 차트/테이블 ── */
+  cmp_series_s10        : '🔵 S10 MaxV Ultra 시리즈',
+  cmp_series_s9         : '🟢 S9 MaxV Ultra 시리즈',
+  cmp_tbl_header_ch     : '채널',
+  cmp_grand_total       : '📦 전체 합계',
+  cmp_in_progress       : '진행중',
+  cmp_y_axis            : '판매량 (대)',
+  cmp_accum_note_fmt    : '현재 <strong>W{w2}(WK{wk2})</strong> 진행 중<br>W{w1}(WK{wk1})까지 집계',
+  cmp_sub_label_fmt     : 'W1~W{w} 누적 ({n}주)',
+  cmp_sub_label_w1      : 'W1 소계',
+  cmp_accum_label_fmt   : 'W1~W{w} 소계',
+  cmp_w1_launch         : 'W1\n(출시)',
+  cmp_tooltip_s10       : '🔵 S10 합계:',
+  cmp_tooltip_s9        : '🟢 S9  합계:',
+  cmp_tooltip_diff      : '차이:',
+  yoy_y_axis            : '판매량 (대)',
+  yoy_y_axis_cum        : '누적 판매량 (대)',
+  so_y_axis_sales       : '판매량 (대)',
+  so_y_axis_search      : '검색량 합산',
+
+  /* ── SO 채널명 번역 키 ── */
+  so_ch_naver           : '네이버',
+  so_ch_openmarket      : '오픈마켓',
+  so_ch_combined        : '종합몰 및 기타',
+  so_ch_dept            : '백화점',
+  so_ch_himart          : '하이마트/이마트',
+  so_ch_homeshopping    : '홈쇼핑',
+  so_ch_coupang         : '쿠팡',
+  so_ch_closed          : '폐쇄몰',
+},
+
+/* ══ English ════════════════════════════════════════ */
+en: {
+  /* ── 사이드바 / 탭 ── */
+  tab_competitor        : '🔍 Competitor',
+  tab_mkt               : '📊 Marketing',
+  tab_sales             : '💼 Sales',
+  tab_logistics         : '📦 Logistics',
+  sb_logo_title         : '🤖 Robot Vacuum\nKPI Dashboard',
+  sb_logo_sub           : 'Thinkware Mobile',
+  btn_refresh           : '↻ Refresh Data',
+  btn_pdf               : '📄 Export PDF',
+  btn_logout            : 'Logout',
+  btn_acc_mgr           : '⚙️ Account Mgmt',
+  page_title            : '🤖 Robot Vacuum KPI Dashboard',
+
+  loading_title         : 'Loading Data...',
+  loading_desc          : 'Fetching the latest data from Google Sheets.',
+
+  status_loading        : 'Loading data...',
+  status_error          : 'Failed to load data.',
+  status_retry          : 'Retry',
+  status_refresh        : '🔄 Refresh',
+  status_no_data        : 'No data available.',
+  status_wait           : 'Please wait.',
+  status_latest_update  : 'Last updated',
+  unit_articles         : ' articles',
+  unit_page             : ' / ',
+  unit_prev             : '◀ Prev',
+  unit_next             : 'Next ▶',
+
+  date_start            : '📅 Start Date',
+  date_end              : '📅 End Date',
+  date_apply            : '🔄 Apply Range',
+
+  /* ── Competitor tab ── */
+  comp_title            : '🔍 Competitor News Insights',
+  comp_ai_badge         : '🤖 AI Auto-Analysis',
+  comp_auto_desc        : 'Auto-updated daily at 12:00 AM',
+  comp_days_desc        : 'Based on last 7 days of news',
+  comp_api_desc         : 'Naver News API + Gemini AI',
+  comp_refresh          : '🔄 Refresh',
+  comp_loading          : 'Loading news insights...',
+  comp_error_msg        : 'Failed to load data.',
+  comp_error_hint       : 'Please check Google Sheets public settings or network.',
+  comp_retry            : 'Retry',
+  comp_card_search      : 'Search Trend Analysis',
+  comp_card_threat      : 'Competitor Threat Analysis',
+  comp_card_strategy    : 'This Week\'s Strategy',
+  comp_card_forecast    : 'Mid-Long Term Outlook',
+  comp_card_action      : '💡 Recommended Actions',
+  comp_news_summary     : '📰 News Summary',
+  comp_tw_insight       : '💡 Thinkware Insight',
+  comp_threat_label     : 'Threat Level',
+  comp_data_basis       : 'Data as of',
+  comp_ai_cross         : 'Search Trend + News AI Cross Analysis',
+  comp_disclaimer       : '※ Threat level: Impact of competitor news on Roborock\'s competitive advantage (High: Direct competition / Medium: Indirect / Low: Minimal)',
+  comp_disclaimer2      : '※ News is auto-collected via Naver API daily at 12:00 PM and analyzed by Gemini AI. Duplicate articles are merged into one.',
+  comp_api_error_title  : '⚠️ AI Analysis Temporarily Paused',
+  comp_api_error_desc   : 'Analysis is delayed due to Gemini API rate limit (429).\nUsually recovers within minutes to 1 hour. Please refresh afterward.',
+  comp_api_error_short  : 'Please refresh in a moment.',
+  comp_api_error_badge  : '⚠️ Pending',
+  comp_api_error_card   : '⚠️ AI Analysis Temporarily Paused (Rate limit exceeded)',
+  comp_article_basis    : 'as of ·',
+  comp_article_analysis : 'articles analyzed',
+  comp_insight_title    : '🤖 Competitor Search Trend Insights',
+  comp_insight_badge    : 'Gemini AI · Daily 12:00',
+  comp_insight_desc     : 'Search Volume Trend + Competitor News Cross Analysis',
+  comp_insight_loading  : 'Loading AI analysis...',
+  comp_insight_loading2 : 'Fetching cross-analysis of search trends and competitor news',
+  comp_insight_wait     : 'Loading AI analysis results...',
+  comp_insight_footer   : '※ Gemini AI cross-analyzes Naver DataLab search volume + competitor news. Auto-generated daily at 12:00 PM.\n※ AI-generated insights — please verify with your team.',
+  comp_no_data          : 'No InsightV2 data available.',
+  comp_no_data_hint     : 'Run Apps Script → testInsightV2()',
+  /* Competitor misc */
+  comp_brand_summary    : '📋 All Brand Overview',
+  cmp_legend_hint       : '💡 Click legend to filter channels · Hover tooltip for channel details',
+
+  /* ── Marketing tab ── */
+  mkt_title             : '📊 Marketing Performance',
+  mkt_search_vol        : '🔍 Brand Search Volume Trend',
+  mkt_ad_perf           : '📈 Ad Performance Metrics',
+  mkt_ai_insight        : '🤖 AI Marketing Insights',
+  chart1_title          : '📈 Robot Vacuum Search Volume: 2025 vs 2026',
+  chart2_title          : '📈 Roborock Search Volume: 2025 vs 2026',
+  chart3_title          : '📈 Roborock Model Search Volume: 2025 vs 2026',
+  chart4_title          : '📈 2026 Robot Vacuum Competitor Analysis',
+  chart_launch_align    : 'Sort by launch date',
+  chart_launch_btn      : '📅 Align Launch Date',
+  chart_launch_reset    : '📅 Sort by Date',
+  legend_pre25          : '2025 Pre-launch Marketing',
+  legend_launch25       : '2025 S10 Launch',
+  legend_pre26          : '2026 Pre-launch Marketing',
+  legend_launch26       : '2026 S10 Launch',
+  legend_competitor     : 'Roborock S10 Max V Ultra + Slim · Samsung Robot Vacuum · Dreame X60 · DJI Robot Vacuum · Dyson Robot · Ecovacs T90',
+  diag_title            : '🔬 Search Volume Data Diagnostics',
+  diag_sub              : '(to be removed after verification)',
+  diag_run              : '🔄 Run Diagnostics',
+  diag_hint             : '▶ Click [Run Diagnostics] to display actual Chart 4 data.',
+  adriel_title          : '📊 Marketing Channel Performance',
+  adriel_source         : '(via Adriel)',
+  adriel_desc           : 'Ad Spend · Clicks · Impressions · ROAS · Purchases · CTR · CPC · Revenue · CVR · CPA',
+  adriel_refresh        : '🔄 Refresh',
+  adriel_loading        : 'Loading Adriel data...',
+  adriel_source_label   : '📡 Adriel Widget Export API',
+  adriel_period_day     : 'Daily',
+  adriel_period_week    : 'Weekly',
+  adriel_ch_all         : '🌐 All',
+  am_spend              : '💰 Ad Spend',
+  am_clicks             : '👆 Clicks',
+  am_impressions        : '👁 Impressions',
+  am_roas               : '📊 ROAS',
+  am_purchases          : '🛒 Purchases',
+  am_ctr                : '📐 CTR',
+  am_cpc                : '💵 CPC',
+  am_revenue            : '💎 Revenue',
+  am_cvr                : '🔄 CVR',
+  am_cpa                : '🎯 CPA',
+  ch_naverGFA           : 'Naver GFA',
+  ch_naver              : 'Naver SA',
+  ch_kakao              : 'Kakao',
+  ch_facebook           : 'Facebook',
+  ch_google_dg          : 'Google DG',
+  kpi_spend             : 'Ad Spend',
+  kpi_clicks            : 'Clicks',
+  kpi_impressions       : 'Impressions',
+  kpi_roas              : 'ROAS',
+  kpi_purchases         : 'Purchases',
+  kpi_ctr               : 'CTR',
+  kpi_cpc               : 'CPC',
+  kpi_revenue           : 'Revenue',
+  kpi_cvr               : 'CVR',
+  kpi_cpa               : 'CPA',
+  wk_compare_title      : '📅 Weekly Comparison Analysis',
+  wk_compare_a          : 'Week A',
+  wk_compare_b          : 'Week B',
+  wk_compare_vs         : 'vs',
+  wk_compare_btn        : '🔍 Compare',
+  wk_compare_placeholder: '☝️ Select two weeks to compare',
+  wk_diff_title         : '📊 Previous → Latest Week Change',
+  wk_tag_newer          : '🔴 Latest',
+  wk_tag_older          : '🔵 Previous',
+  wk_rows_data          : 'days of data',
+  wk_ch_spend_share     : 'Ad Spend by Channel',
+  mini_spend            : 'Ad Spend',
+  mini_clicks           : 'Clicks',
+  mini_impressions      : 'Impressions',
+  chart_legend_daily    : 'Daily Ad Spend by Channel',
+  ai_src_search         : 'Search Volume Data',
+  ai_src_news           : 'Competitor News',
+
+  /* ── Sales tab ── */
+  sales_title           : '💼 Sales Performance',
+  sales_trend           : '📈 Sales Volume Trend',
+  sales_share           : '🥧 Channel Sales Mix',
+  cmp_title             : 'S10 MaxV Ultra vs S9 MaxV Ultra — Launch Week Comparison',
+  cmp_subtitle          : 'Weekly sales trend since launch (weeks elapsed since launch date)',
+  cmp_loading           : 'Loading comparison chart...',
+  so_title              : '🛒 Roborock Sell Out',
+  so_period_label       : 'Period (max 15 weeks):',
+  so_recent10           : 'Recent 10wks',
+  so_max_warning        : '⚠️ Maximum 15 weeks allowed',
+  so_chart_label        : 'Chart View:',
+  so_btn_yoy            : '📅 2025 Comparison',
+  so_btn_sku            : 'By SKU',
+  so_btn_channel        : 'By Channel',
+  so_btn_custom         : '🔍 Custom Analysis',
+  so_sku_panel_title    : 'Select SKU',
+  so_sku_panel_hint     : '(multiple selection)',
+  so_sku_group          : 'Group:',
+  so_sku_clear          : 'Clear All',
+  so_ch_panel_title     : 'Select Channel',
+  so_search_chart_title : '🔍 Roborock Weekly Search Volume',
+  so_search_no_data     : 'Loading search data or no data for this period.',
+  so_loading            : 'Loading data...',
+  so_legend_hint        : '💡 Click legend to highlight / click again for all',
+  so_disclaimer         : '* Updated based on Roborock Sell Out data.',
+  so_table_summary_title: '📊 Weekly Summary (Roborock Search / Sell Out Sales / Ratio)',
+  so_table_row_search   : '🔍 Search',
+  so_table_row_sales    : '📦 Sales',
+  so_table_row_ratio    : '📊 Ratio(%)',
+  so_table_col_item     : 'Item',
+  so_table_sku_title    : '📋 Sales by SKU per Week',
+  so_table_ch_title     : '📋 Sales by Channel per Week',
+  so_table_col_sku      : 'SKU',
+  so_table_col_ch       : 'Channel',
+  so_table_col_total    : 'Total',
+  so_table_grand_total  : '📦 Grand Total',
+  yoy_chart_title       : '📊 2026 vs 2025 Weekly SKU Sales Comparison',
+  yoy_chart_sub         : 'WK53+ (2026) vs WK01+ (2025) · Weeks elapsed since launch',
+  yoy_cum_title         : '📈 Cumulative Sales Trend (2026 vs 2025)',
+  yoy_cum_sub           : 'Cumulative sum by weeks elapsed since launch',
+  yoy_pie26_title       : '🔵 2026 Channel Mix',
+  yoy_pie25_title       : '🟡 2025 Channel Mix',
+  yoy_no_data           : 'No 2026 data available.',
+  yoy_total26           : '2026 Cumulative',
+  yoy_total25           : '2025 Cumulative',
+  sku_group_s8          : 'S8 Series',
+  sku_group_s9          : 'S9 MaxV Series',
+  sku_group_s10         : 'S10 MaxV Series',
+  sku_group_saros       : 'Saros Z70 Series',
+  sku_group_other       : 'Others',
+
+  /* ── Chart legends (updateCharts / renderChart4) ── */
+  chart_legend_robot25  : "25' Robot Vacuum",
+  chart_legend_robot26  : "26' Robot Vacuum",
+  chart_legend_roborock25: "25' Roborock",
+  chart_legend_roborock26: "26' Roborock",
+  ch4_roborock          : 'Roborock S10 Max V Ultra + Slim',
+  ch4_samsung           : 'Samsung Robot Vacuum',
+  ch4_dreame            : 'Dreame X60',
+  ch4_dji               : 'DJI Robot Vacuum',
+  ch4_dyson             : 'Dyson Robot',
+  ch4_ecovacs           : 'Ecovacs T90',
+
+  /* ── KPI summary cards (amRenderKPI) ── */
+  kpi_total_spend       : 'Total Ad Spend',
+  kpi_total_clicks      : 'Total Clicks',
+  kpi_total_impressions : 'Total Impressions',
+  kpi_avg_ctr           : 'Avg CTR',
+  kpi_avg_cpc           : 'Avg CPC',
+  kpi_roas_label        : 'ROAS',
+  kpi_total_purchases   : 'Total Purchases',
+  kpi_total_revenue     : 'Total Revenue',
+  kpi_cpa_label         : 'CPA',
+  sub_krw               : 'KRW',
+  sub_ctr               : 'Click Rate',
+  sub_cpc               : 'Cost per Click',
+  sub_roas              : 'Return on Ad Spend',
+  sub_cpa               : 'Cost per Acquisition',
+  sub_purchases         : 'purchases',
+  unit_week             : 'wks',
+  unit_day              : 'days',
+  unit_all              : 'All',
+  unit_weekly           : 'Weekly',
+  unit_daily            : 'Daily',
+  unit_units            : 'units',
+
+  /* ── InsightV2 badge texts ── */
+  ins_badge_trend       : '📊 Search Trend',
+  ins_badge_news        : '📰 Competitor News',
+  ins_badge_gemini      : '🤖 Gemini AI Cross-Analysis',
+  ins_raw_data          : '📋 View Raw Search Data',
+
+  /* ── CMP chart/table ── */
+  cmp_series_s10        : '🔵 S10 MaxV Ultra Series',
+  cmp_series_s9         : '🟢 S9 MaxV Ultra Series',
+  cmp_tbl_header_ch     : 'Channel',
+  cmp_grand_total       : '📦 Grand Total',
+  cmp_in_progress       : 'In Progress',
+  cmp_y_axis            : 'Sales (units)',
+  cmp_accum_note_fmt    : 'Currently <strong>W{w2}(WK{wk2})</strong> in progress<br>Tallied through W{w1}(WK{wk1})',
+  cmp_sub_label_fmt     : 'W1–W{w} Total ({n}wks)',
+  cmp_sub_label_w1      : 'W1 Subtotal',
+  cmp_accum_label_fmt   : 'W1–W{w} Subtotal',
+  cmp_w1_launch         : 'W1\n(Launch)',
+  cmp_tooltip_s10       : '🔵 S10 Total:',
+  cmp_tooltip_s9        : '🟢 S9  Total:',
+  cmp_tooltip_diff      : 'Diff:',
+  yoy_y_axis            : 'Sales (units)',
+  yoy_y_axis_cum        : 'Cumulative Sales (units)',
+  so_y_axis_sales       : 'Sales (units)',
+  so_y_axis_search      : 'Search Volume',
+
+  /* ── SO channel names ── */
+  so_ch_naver           : 'Naver',
+  so_ch_openmarket      : 'Open Market',
+  so_ch_combined        : 'General Mall & Others',
+  so_ch_dept            : 'Dept. Store',
+  so_ch_himart          : 'Himart/E-Mart',
+  so_ch_homeshopping    : 'Home Shopping',
+  so_ch_coupang         : 'Coupang',
+  so_ch_closed          : 'Closed Mall',
+},
+
+/* ══ 中文 ════════════════════════════════════════════ */
+zh: {
+  /* ── 사이드바 / 탭 ── */
+  tab_competitor        : '🔍 竞品动态',
+  tab_mkt               : '📊 营销分析',
+  tab_sales             : '💼 销售分析',
+  tab_logistics         : '📦 物流',
+  sb_logo_title         : '🤖 扫地机器人\nKPI 数据看板',
+  sb_logo_sub           : 'Thinkware Mobile',
+  btn_refresh           : '↻ 刷新数据',
+  btn_pdf               : '📄 导出PDF',
+  btn_logout            : '退出登录',
+  btn_acc_mgr           : '⚙️ 账号管理',
+  page_title            : '🤖 扫地机器人 KPI 数据看板',
+
+  loading_title         : '数据加载中...',
+  loading_desc          : '正在从Google表格获取最新数据。',
+
+  status_loading        : '数据加载中...',
+  status_error          : '数据加载失败。',
+  status_retry          : '重试',
+  status_refresh        : '🔄 刷新',
+  status_no_data        : '暂无数据。',
+  status_wait           : '请稍候。',
+  status_latest_update  : '最后更新',
+  unit_articles         : '篇',
+  unit_page             : ' / ',
+  unit_prev             : '◀ 上一页',
+  unit_next             : '下一页 ▶',
+
+  date_start            : '📅 开始日期',
+  date_end              : '📅 结束日期',
+  date_apply            : '🔄 应用范围',
+
+  /* ── 竞品动态 tab ── */
+  comp_title            : '🔍 竞品新闻洞察',
+  comp_ai_badge         : '🤖 AI 自动分析',
+  comp_auto_desc        : '每日凌晨12:00自动更新',
+  comp_days_desc        : '基于最近7天新闻',
+  comp_api_desc         : 'Naver新闻API + Gemini AI分析',
+  comp_refresh          : '🔄 刷新',
+  comp_loading          : '正在加载新闻洞察...',
+  comp_error_msg        : '数据加载失败。',
+  comp_error_hint       : '请检查Google表格公开设置或网络。',
+  comp_retry            : '重试',
+  comp_card_search      : '搜索趋势分析',
+  comp_card_threat      : '竞品威胁分析',
+  comp_card_strategy    : '本周策略',
+  comp_card_forecast    : '中长期展望',
+  comp_card_action      : '💡 建议行动',
+  comp_news_summary     : '📰 新闻摘要',
+  comp_tw_insight       : '💡 Thinkware洞察',
+  comp_threat_label     : '威胁等级',
+  comp_data_basis       : '数据截止',
+  comp_ai_cross         : '搜索趋势 + 新闻 AI 交叉分析',
+  comp_disclaimer       : '※ 威胁等级标准：竞品新闻对石头科技竞争优势的影响程度（高：直接竞争/市占率威胁 / 中：间接影响 / 低：市场影响微弱）',
+  comp_disclaimer2      : '※ 每日12时自动通过Naver API采集最近7天新闻，并由Gemini AI分析。重复文章合并为一篇显示。',
+  comp_api_error_title  : '⚠️ AI分析暂时暂停',
+  comp_api_error_desc   : '由于Gemini API限流(429)，分析暂时延迟。\n通常数分钟至1小时内自动恢复，请刷新后查看。',
+  comp_api_error_short  : '请稍后刷新页面。',
+  comp_api_error_badge  : '⚠️ 分析等待中',
+  comp_api_error_card   : '⚠️ AI分析暂时暂停（API请求超限）',
+  comp_article_basis    : '截止 ·',
+  comp_article_analysis : '篇文章已分析',
+  comp_insight_title    : '🤖 竞品搜索趋势综合洞察',
+  comp_insight_badge    : 'Gemini AI · 每日12时自动',
+  comp_insight_desc     : '搜索量趋势 + 竞品新闻交叉分析',
+  comp_insight_loading  : 'AI分析结果加载中...',
+  comp_insight_loading2 : '正在获取搜索趋势与竞品新闻交叉分析结果',
+  comp_insight_wait     : 'AI分析结果加载中...',
+  comp_insight_footer   : '※ Gemini AI交叉分析Naver DataLab搜索量与竞品新闻。每日12时自动生成。\n※ AI生成的洞察，最终判断请由负责人核实。',
+  comp_no_data          : '暂无InsightV2数据。',
+  comp_no_data_hint     : '请运行 Apps Script → testInsightV2()',
+  /* 竞品动态 其他 */
+  comp_brand_summary    : '📋 全部品牌动态概览',
+  cmp_legend_hint       : '💡 点击图例可筛选渠道 · 悬停查看渠道详情',
+
+  /* ── 营销分析 tab ── */
+  mkt_title             : '📊 营销表现分析',
+  mkt_search_vol        : '🔍 品牌搜索量趋势',
+  mkt_ad_perf           : '📈 广告效果指标',
+  mkt_ai_insight        : '🤖 AI 营销洞察',
+  chart1_title          : '📈 扫地机器人搜索量对比：2025 vs 2026',
+  chart2_title          : '📈 石头科技搜索量对比：2025 vs 2026',
+  chart3_title          : '📈 石头科技机型搜索量对比：2025 vs 2026',
+  chart4_title          : '📈 2026年扫地机器人竞品分析',
+  chart_launch_align    : '按上市日期排序',
+  chart_launch_btn      : '📅 对齐上市日期',
+  chart_launch_reset    : '📅 按日期排序',
+  legend_pre25          : '2025年预热营销',
+  legend_launch25       : '2025年S10上市',
+  legend_pre26          : '2026年预热营销',
+  legend_launch26       : '2026年S10上市',
+  legend_competitor     : 'Roborock S10 Max V Ultra+Slim · 三星扫地机 · 追觅X60 · DJI扫地机 · 戴森扫地机 · 科沃斯T90',
+  diag_title            : '🔬 搜索量数据诊断面板',
+  diag_sub              : '（验证后删除）',
+  diag_run              : '🔄 运行诊断',
+  diag_hint             : '▶ 点击【运行诊断】显示Chart 4的实际数据。',
+  adriel_title          : '📊 营销渠道效果分析',
+  adriel_source         : '（Adriel对接）',
+  adriel_desc           : '广告费 · 点击数 · 曝光数 · ROAS · 购买数 · CTR · CPC · 销售额 · CVR · CPA',
+  adriel_refresh        : '🔄 刷新',
+  adriel_loading        : '正在加载Adriel数据...',
+  adriel_source_label   : '📡 Adriel Widget Export API',
+  adriel_period_day     : '日维度',
+  adriel_period_week    : '周维度',
+  adriel_ch_all         : '🌐 全部',
+  am_spend              : '💰 广告费',
+  am_clicks             : '👆 点击数',
+  am_impressions        : '👁 曝光数',
+  am_roas               : '📊 ROAS',
+  am_purchases          : '🛒 购买数',
+  am_ctr                : '📐 CTR',
+  am_cpc                : '💵 CPC',
+  am_revenue            : '💎 销售额',
+  am_cvr                : '🔄 CVR',
+  am_cpa                : '🎯 CPA',
+  ch_naverGFA           : 'Naver GFA',
+  ch_naver              : 'Naver SA',
+  ch_kakao              : 'Kakao',
+  ch_facebook           : 'Facebook',
+  ch_google_dg          : 'Google DG',
+  kpi_spend             : '广告费',
+  kpi_clicks            : '点击数',
+  kpi_impressions       : '曝光数',
+  kpi_roas              : 'ROAS',
+  kpi_purchases         : '购买数',
+  kpi_ctr               : 'CTR',
+  kpi_cpc               : 'CPC',
+  kpi_revenue           : '销售额',
+  kpi_cvr               : 'CVR',
+  kpi_cpa               : 'CPA',
+  wk_compare_title      : '📅 周次对比分析',
+  wk_compare_a          : '对比周次 A',
+  wk_compare_b          : '对比周次 B',
+  wk_compare_vs         : 'vs',
+  wk_compare_btn        : '🔍 对比',
+  wk_compare_placeholder: '☝️ 请选择两个周次进行对比',
+  wk_diff_title         : '📊 上周次 → 最新周次 变化',
+  wk_tag_newer          : '🔴 最新',
+  wk_tag_older          : '🔵 上期',
+  wk_rows_data          : '天数据',
+  wk_ch_spend_share     : '各渠道广告费占比',
+  mini_spend            : '广告费',
+  mini_clicks           : '点击数',
+  mini_impressions      : '曝光数',
+  chart_legend_daily    : '各渠道每日广告费趋势',
+  ai_src_search         : '搜索量数据',
+  ai_src_news           : '竞品新闻',
+
+  /* ── 销售分析 tab ── */
+  sales_title           : '💼 销售表现分析',
+  sales_trend           : '📈 销量趋势',
+  sales_share           : '🥧 渠道销售占比',
+  cmp_title             : 'S10 MaxV Ultra vs S9 MaxV Ultra — 上市周次对比',
+  cmp_subtitle          : '自上市日起各周销量趋势对比（以上市日为基准的经过周数）',
+  cmp_loading           : '对比图表加载中...',
+  so_title              : '🛒 Roborock 销售额',
+  so_period_label       : '时间段（最多15周）：',
+  so_recent10           : '近10周',
+  so_max_warning        : '⚠️ 最多可选15周',
+  so_chart_label        : '图表视图：',
+  so_btn_yoy            : '📅 2025年对比',
+  so_btn_sku            : '按SKU',
+  so_btn_channel        : '按渠道',
+  so_btn_custom         : '🔍 自定义分析',
+  so_sku_panel_title    : 'SKU 选择',
+  so_sku_panel_hint     : '（可多选）',
+  so_sku_group          : '分组：',
+  so_sku_clear          : '全部取消',
+  so_ch_panel_title     : '渠道选择',
+  so_search_chart_title : '🔍 Roborock周搜索量',
+  so_search_no_data     : '搜索量数据加载中或该时段无数据。',
+  so_loading            : '数据加载中...',
+  so_legend_hint        : '💡 点击图例可高亮该项 / 再次点击查看全部',
+  so_disclaimer         : '* 基于Roborock Sell Out数据更新。',
+  so_table_summary_title: '📊 周次摘要（Roborock搜索量 / 销售量 / 比率）',
+  so_table_row_search   : '🔍 搜索量',
+  so_table_row_sales    : '📦 销售量',
+  so_table_row_ratio    : '📊 比率(%)',
+  so_table_col_item     : '项目',
+  so_table_sku_title    : '📋 各SKU周销售量',
+  so_table_ch_title     : '📋 各渠道周销售量',
+  so_table_col_sku      : 'SKU',
+  so_table_col_ch       : '渠道',
+  so_table_col_total    : '合计',
+  so_table_grand_total  : '📦 总计',
+  yoy_chart_title       : '📊 2026年 vs 2025年 周次SKU销售量对比',
+  yoy_chart_sub         : 'WK53+（2026年）vs WK01+（2025年）· 以上市日为基准的经过周数',
+  yoy_cum_title         : '📈 累计销售量趋势对比（2026 vs 2025）',
+  yoy_cum_sub           : '以上市日为基准累计合计',
+  yoy_pie26_title       : '🔵 2026年渠道构成比',
+  yoy_pie25_title       : '🟡 2025年渠道构成比',
+  yoy_no_data           : '暂无2026年数据。',
+  yoy_total26           : '2026 累计',
+  yoy_total25           : '2025 累计',
+  sku_group_s8          : 'S8系列',
+  sku_group_s9          : 'S9 MaxV系列',
+  sku_group_s10         : 'S10 MaxV系列',
+  sku_group_saros       : 'Saros Z70系列',
+  sku_group_other       : '其他',
+
+  /* ── 图表图例 (updateCharts / renderChart4) ── */
+  chart_legend_robot25  : '25年扫地机器人',
+  chart_legend_robot26  : '26年扫地机器人',
+  chart_legend_roborock25: '25年石头科技',
+  chart_legend_roborock26: '26年石头科技',
+  ch4_roborock          : '石头 S10 Max V Ultra + Slim',
+  ch4_samsung           : '三星扫地机',
+  ch4_dreame            : '追觅X60',
+  ch4_dji               : 'DJI扫地机',
+  ch4_dyson             : '戴森扫地机',
+  ch4_ecovacs           : '科沃斯T90',
+
+  /* ── KPI 摘要卡片 (amRenderKPI) ── */
+  kpi_total_spend       : '总广告费',
+  kpi_total_clicks      : '总点击数',
+  kpi_total_impressions : '总曝光数',
+  kpi_avg_ctr           : '平均CTR',
+  kpi_avg_cpc           : '平均CPC',
+  kpi_roas_label        : 'ROAS',
+  kpi_total_purchases   : '总购买数',
+  kpi_total_revenue     : '总销售额',
+  kpi_cpa_label         : 'CPA',
+  sub_krw               : '韩元',
+  sub_ctr               : '点击率',
+  sub_cpc               : '每次点击费用',
+  sub_roas              : '广告投资回报',
+  sub_cpa               : '每次购买费用',
+  sub_purchases         : '件',
+  unit_week             : '周',
+  unit_day              : '天',
+  unit_all              : '全部',
+  unit_weekly           : '按周',
+  unit_daily            : '按天',
+  unit_units            : '台',
+
+  /* ── InsightV2 徽章文字 ── */
+  ins_badge_trend       : '📊 搜索趋势',
+  ins_badge_news        : '📰 竞品新闻',
+  ins_badge_gemini      : '🤖 Gemini AI交叉分析',
+  ins_raw_data          : '📋 查看原始搜索数据',
+
+  /* ── CMP 图表/表格 ── */
+  cmp_series_s10        : '🔵 S10 MaxV Ultra系列',
+  cmp_series_s9         : '🟢 S9 MaxV Ultra系列',
+  cmp_tbl_header_ch     : '渠道',
+  cmp_grand_total       : '📦 总计',
+  cmp_in_progress       : '进行中',
+  cmp_y_axis            : '销量（台）',
+  cmp_accum_note_fmt    : '当前 <strong>W{w2}(WK{wk2})</strong> 进行中<br>已统计至W{w1}(WK{wk1})',
+  cmp_sub_label_fmt     : 'W1~W{w} 累计（{n}周）',
+  cmp_sub_label_w1      : 'W1 小计',
+  cmp_accum_label_fmt   : 'W1~W{w} 小计',
+  cmp_w1_launch         : 'W1\n(上市)',
+  cmp_tooltip_s10       : '🔵 S10合计:',
+  cmp_tooltip_s9        : '🟢 S9  合计:',
+  cmp_tooltip_diff      : '差值:',
+  yoy_y_axis            : '销量（台）',
+  yoy_y_axis_cum        : '累计销量（台）',
+  so_y_axis_sales       : '销量（台）',
+  so_y_axis_search      : '搜索量合计',
+
+  /* ── SO 渠道名称 ── */
+  so_ch_naver           : 'Naver',
+  so_ch_openmarket      : '开放平台',
+  so_ch_combined        : '综合商城及其他',
+  so_ch_dept            : '百货商场',
+  so_ch_himart          : 'Himart/易买得',
+  so_ch_homeshopping    : '家庭购物',
+  so_ch_coupang         : 'Coupang',
+  so_ch_closed          : '封闭商城',
+}
+
+}; /* END I18N */
+
+/* ════════════════════════════════════════════════════
+   현재 언어 상태 (localStorage 유지)
+════════════════════════════════════════════════════ */
+var currentLang = 'ko';
+try {
+  var _saved = localStorage.getItem('rrDashLang');
+  if (_saved && I18N[_saved]) currentLang = _saved;
+} catch(e) {}
+
+/* ════════════════════════════════════════════════════
+   t(key) — JS 동적 텍스트용 전역 번역 헬퍼
+   사용법: t('comp_news_summary')  →  현재 언어 문자열 반환
+   국문 기준 개발: ko에 키 추가 → t() 호출로 자동 EN/ZH
+════════════════════════════════════════════════════ */
+window.t = function(key) {
+  var dict = I18N[currentLang] || I18N['ko'];
+  return dict[key] !== undefined ? dict[key] : (I18N['ko'][key] || key);
+};
+
+/* ════════════════════════════════════════════════════
+   applyLang(lang) — 화면 전체 번역 적용
+════════════════════════════════════════════════════ */
+function applyLang(lang) {
+  var dict = I18N[lang];
+  if (!dict) return;
+
+  /* ① data-i18n 속성 요소 일괄 번역 */
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (dict[key] !== undefined) el.textContent = dict[key];
+  });
+
+  /* ② 사이드바 로고 (줄바꿈 포함) */
+  var logoEl = document.querySelector('#sideBar .sb-logo');
+  if (logoEl && dict.sb_logo_title) {
+    var lines = dict.sb_logo_title.split('\n');
+    logoEl.innerHTML = lines[0] + '<br>' + lines[1] + '<span>' + dict.sb_logo_sub + '</span>';
+  }
+
+  /* ③ 모바일 헤더 타이틀 */
+  var h1 = document.querySelector('header h1');
+  if (h1 && dict.page_title) h1.textContent = dict.page_title;
+
+  /* ④ 사이드바 버튼 텍스트 */
+  var sbBtns = document.querySelectorAll('#sideBar button');
+  sbBtns.forEach(function(btn) {
+    var oc = btn.getAttribute('onclick') || '';
+    if (oc.indexOf('loadGoogleSheetData') > -1 && dict.btn_refresh) btn.textContent = dict.btn_refresh;
+    if (oc.indexOf('exportPDF')           > -1 && dict.btn_pdf)     btn.textContent = dict.btn_pdf;
+    if (btn.id === 'logoutBtn'   && dict.btn_logout)  btn.textContent = dict.btn_logout;
+    if (btn.id === 'sbAccMgrBtn' && dict.btn_acc_mgr) btn.textContent = dict.btn_acc_mgr;
+  });
+
+  /* ⑤ 경쟁사 탭 고정 텍스트 */
+  var compTitle = document.querySelector('#tabCompetitor .chart-title');
+  if (compTitle && dict.comp_title) {
+    var badge = compTitle.querySelector('#compNewBadge');
+    compTitle.innerHTML = dict.comp_title;
+    if (badge) compTitle.appendChild(badge);
+  }
+  setText('compLoadingText', dict.comp_loading);
+  /* compErrorMsg — innerHTML로 렌더된 경우가 많아 data-i18n으로 처리 */
+  var errMsgEl = document.getElementById('compErrorMsg');
+  if (errMsgEl && dict.comp_error_msg && !errMsgEl._customSet) {
+    errMsgEl.textContent = dict.comp_error_msg;
+  }
+
+  /* ⑥ 경쟁사 탭 고정 설명 텍스트 (data-i18n 외 하드코딩 요소) */
+  var compAiBadgeEl = document.querySelector('#tabCompetitor [data-comp-ai-badge]');
+  if (compAiBadgeEl) compAiBadgeEl.textContent = dict.comp_ai_badge;
+  var compAutoEl = document.querySelector('#tabCompetitor [data-comp-auto]');
+  if (compAutoEl) compAutoEl.textContent = dict.comp_auto_desc;
+  var compDaysEl = document.querySelector('#tabCompetitor [data-comp-days]');
+  if (compDaysEl) compDaysEl.textContent = dict.comp_days_desc;
+  var compApiEl  = document.querySelector('#tabCompetitor [data-comp-api]');
+  if (compApiEl)  compApiEl.textContent  = dict.comp_api_desc;
+
+  /* ⑦ 경쟁사 인사이트 V2 패널 고정 텍스트 */
+  var insTitle = document.querySelector('#competitorInsightWrapper .chart-title span:first-child');
+  if (insTitle && dict.comp_insight_title) insTitle.textContent = dict.comp_insight_title;
+  var insBadge = document.querySelector('#competitorInsightWrapper .chart-title span[data-ins-badge]');
+  if (insBadge) insBadge.textContent = dict.comp_insight_badge;
+  var insDesc  = document.querySelector('#competitorInsightWrapper .chart-title span[data-ins-desc]');
+  if (insDesc)  insDesc.textContent  = dict.comp_insight_desc;
+  setText('aiInsightLoadingText',  dict.comp_insight_loading);
+  setText('aiInsightLoadingText2', dict.comp_insight_loading2);
+
+  /* ⑧ Marketing 탭 차트 제목 (data-i18n) — data-i18n 속성으로 처리됨 */
+
+  /* ⑨ Marketing 탭 아드리엘 고정 텍스트 */
+  var amTitle = document.querySelector('#adrielWrapper .am-header h2');
+  if (amTitle && dict.adriel_title) {
+    amTitle.innerHTML = dict.adriel_title + ' <span style="font-size:.7em;color:#718096;font-weight:400;">' + dict.adriel_source + '</span>';
+  }
+  var amDesc = document.querySelector('#adrielWrapper .am-header p');
+  if (amDesc && dict.adriel_desc) amDesc.textContent = dict.adriel_desc;
+  var amRefreshBtn = document.querySelector('#adrielWrapper .am-refresh-btn');
+  if (amRefreshBtn && dict.adriel_refresh) amRefreshBtn.textContent = dict.adriel_refresh;
+  var amLoadingP = document.querySelector('#amLoading p');
+  if (amLoadingP && dict.adriel_loading) amLoadingP.textContent = dict.adriel_loading;
+  /* 기간 토글 버튼 */
+  setText('amBtnDay',  dict.adriel_period_day);
+  setText('amBtnWeek', dict.adriel_period_week);
+  /* 지표 버튼 (data-am-metric 속성으로 처리) */
+  var metricMap = {
+    spend:'am_spend', clicks:'am_clicks', impressions:'am_impressions',
+    roas:'am_roas', purchases:'am_purchases', ctr:'am_ctr',
+    cpc:'am_cpc', revenue:'am_revenue', cvr:'am_cvr', cpa:'am_cpa'
+  };
+  document.querySelectorAll('#amMetricGroup .am-metric-btn').forEach(function(btn) {
+    var mk = btn.getAttribute('data-metric');
+    if (mk && metricMap[mk] && dict[metricMap[mk]]) btn.textContent = dict[metricMap[mk]];
+  });
+  /* 채널 버튼 */
+  var chMap = {
+    all:'adriel_ch_all', naverGFA:'ch_naverGFA', naver:'ch_naver',
+    kakao:'ch_kakao', facebook:'ch_facebook', google_demandgen:'ch_google_dg'
+  };
+  document.querySelectorAll('#amChannelGroup .am-channel-btn').forEach(function(btn) {
+    var ck = btn.getAttribute('data-channel');
+    if (ck && chMap[ck] && dict[chMap[ck]]) btn.textContent = dict[chMap[ck]];
+  });
+  /* 주차 비교 고정 텍스트 */
+  var wkTitle = document.querySelector('#amWkCompareSection .am-wk-compare-title');
+  if (wkTitle && dict.wk_compare_title) wkTitle.textContent = dict.wk_compare_title;
+  var wkLabels = document.querySelectorAll('#amWkCompareSection .am-wk-selector label');
+  if (wkLabels[0] && dict.wk_compare_a) wkLabels[0].textContent = dict.wk_compare_a;
+  if (wkLabels[1] && dict.wk_compare_b) wkLabels[1].textContent = dict.wk_compare_b;
+  var wkBtn = document.querySelector('#amWkCompareSection .am-wk-compare-btn');
+  if (wkBtn && dict.wk_compare_btn) wkBtn.textContent = dict.wk_compare_btn;
+  setText('amWkComparePlaceholder', dict.wk_compare_placeholder);
+
+  /* ⑩ Sales 탭 고정 텍스트 */
+  /* so_title */
+  var soTitleEl = document.querySelector('#selloutContainer .chart-title');
+  if (soTitleEl && dict.so_title) {
+    var soBadge  = soTitleEl.querySelector('#soNewBadge');
+    var soLabel  = soTitleEl.querySelector('#soDateRangeLabel');
+    var badgeHTML  = soBadge  ? soBadge.outerHTML  : '';
+    var labelHTML  = soLabel  ? soLabel.outerHTML  : '';
+    soTitleEl.innerHTML = dict.so_title + badgeHTML + labelHTML;
+  }
+  /* 기간 필터 */
+  var soPeriodLabel = document.querySelector('#selloutSection [data-so-period-label]');
+  if (soPeriodLabel) soPeriodLabel.textContent = dict.so_period_label;
+  var soResetBtn = document.querySelector('#selloutSection button[onclick="resetSoFilter()"]');
+  if (soResetBtn && dict.so_recent10) soResetBtn.textContent = dict.so_recent10;
+  /* 뷰 버튼 */
+  setText('soBtnYoy',     dict.so_btn_yoy);
+  setText('soBtnSku',     dict.so_btn_sku);
+  setText('soBtnChannel', dict.so_btn_channel);
+  setText('soBtnCustom',  dict.so_btn_custom);
+  /* SKU/채널 패널 */
+  var skuPanelTitle = document.querySelector('#soSkuPanel > div:first-child');
+  if (skuPanelTitle && dict.so_sku_panel_title) {
+    skuPanelTitle.innerHTML = dict.so_sku_panel_title + ' <span style="font-weight:400;color:#94a3b8;">' + dict.so_sku_panel_hint + '</span>';
+  }
+  var chPanelTitle  = document.querySelector('#soChPanel > div:first-child');
+  if (chPanelTitle && dict.so_ch_panel_title) {
+    chPanelTitle.innerHTML = dict.so_ch_panel_title + ' <span style="font-weight:400;color:#94a3b8;">' + dict.so_sku_panel_hint + '</span>';
+  }
+  /* 검색량 서브 차트 */
+  var soSearchTitle = document.querySelector('#soSearchChartWrap > div:first-child');
+  if (soSearchTitle && dict.so_search_chart_title) soSearchTitle.textContent = dict.so_search_chart_title;
+  setText('soSearchNoData', dict.so_search_no_data);
+  /* 범례 힌트 */
+  setText('soLegendHint', dict.so_legend_hint);
+  /* 단서조항 */
+  var soDisclaimer = document.querySelector('#selloutContainer > div:last-of-type[style*="italic"]');
+  if (soDisclaimer && dict.so_disclaimer) soDisclaimer.textContent = dict.so_disclaimer;
+  /* YoY 차트 제목 */
+  var yoyBarTitle = document.querySelector('#yoySection .chart-like-title-yoy-bar, #yoySection div[style*="font-size:0.9em"][style*="font-weight:700"]:first-of-type');
+  /* YoY 타이틀은 data-i18n으로 처리 */
+
+  /* ⑪ 로딩 오버레이 */
+  var loadH2 = document.querySelector('#loadingOverlay h2');
+  if (loadH2 && dict.loading_title) loadH2.textContent = dict.loading_title;
+  var loadP  = document.querySelector('#loadingOverlay p');
+  if (loadP  && dict.loading_desc)  loadP.textContent  = dict.loading_desc;
+
+  /* ⑫ html lang 속성 */
+  var langMap = { ko:'ko', en:'en', zh:'zh-CN' };
+  document.documentElement.lang = langMap[lang] || lang;
+
+  /* ⑬ 언어 전환 후 동적 렌더 함수 재호출 */
+  _rerenderDynamic();
+}
+
+/* ── 동적 렌더 재호출 ── */
+function _rerenderDynamic() {
+  /* 마케팅 탭: 검색량 차트 (Chart1~4) 재렌더 */
+  try {
+    if (typeof updateCharts === 'function' && typeof allData !== 'undefined' && allData && allData.length) {
+      updateCharts();
+    }
+  } catch(e) { console.warn('[i18n] updateCharts rerender error:', e); }
+  /* 경쟁사 탭: 카드 + 상세 패널 재렌더 */
+  try {
+    if (typeof renderCompetitor === 'function' && window.__compDataLoaded) {
+      renderCompetitor();
+    }
+  } catch(e) {}
+  /* 아드리엘 주차 비교 결과가 이미 렌더된 경우 재렌더 */
+  try {
+    if (typeof amUpdateWkCompare === 'function') {
+      var wkA = document.getElementById('amWkSelectA');
+      var wkB = document.getElementById('amWkSelectB');
+      if (wkA && wkB && wkA.value && wkB.value) amUpdateWkCompare();
+    }
+  } catch(e) {}
+  /* 아드리엘 KPI 재렌더 */
+  try {
+    if (typeof amRenderKPI === 'function' && typeof amRaw !== 'undefined' && amRaw && amRaw.length) {
+      amRenderKPI();
+    }
+  } catch(e) { console.warn('[i18n] amRenderKPI rerender error:', e); }
+  /* Sell Out 표 재렌더 */
+  try {
+    if (typeof applySoFilter === 'function' && window.__soDataLoaded) {
+      applySoFilter();
+    }
+  } catch(e) {}
+  /* Sales CMP 차트/테이블 재렌더 */
+  try {
+    if (typeof renderCmpChart === 'function' && window.__soDataLoaded) {
+      renderCmpChart();
+    }
+  } catch(e) { console.warn('[i18n] renderCmpChart rerender error:', e); }
+}
+
+function setText(id, val) {
+  if (!val) return;
+  var el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+/* ════════════════════════════════════════════════════
+   setLang(lang) — 언어 전환 진입점
+════════════════════════════════════════════════════ */
+function setLang(lang) {
+  if (!I18N[lang]) return;
+  currentLang = lang;
+  try { localStorage.setItem('rrDashLang', lang); } catch(e) {}
+
+  /* 버튼 active 상태 */
+  ['ko','en','zh'].forEach(function(l) {
+    var btn = document.getElementById('langBtn' + l.toUpperCase());
+    if (btn) btn.classList.toggle('active', l === lang);
+  });
+
+  applyLang(lang);
+}
+window.setLang = setLang;
+
+/* ── t() 접근용 언어 반환 ── */
+window.getCurrentLang = function() { return currentLang; };
+
+/* ════════════════════════════════════════════════════
+   페이지 로드 시 저장된 언어 적용
+════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', function() { setLang(currentLang); });
+if (document.readyState === 'interactive' || document.readyState === 'complete') {
+  setLang(currentLang);
+}
+
+})();
+</script>
+
+<!-- ══════════════════════════════════════════════════════
+     ⚙️ 계정 관리 모달 (master 전용)
+══════════════════════════════════════════════════════ -->
+<style>
+/* ── 계정관리 오버레이 ── */
+#accMgrOverlay {
+  display:none; position:fixed; inset:0; z-index:999990;
+  background:rgba(15,23,42,0.65); align-items:center; justify-content:center;
+}
+.amgr-modal {
+  background:#fff; border-radius:18px; width:min(560px,94vw);
+  max-height:90vh; display:flex; flex-direction:column;
+  box-shadow:0 24px 64px rgba(0,0,0,0.28); overflow:hidden;
+  animation:amgrIn .22s ease;
+}
+@keyframes amgrIn {
+  from{opacity:0;transform:translateY(20px) scale(.97);}
+  to  {opacity:1;transform:translateY(0)    scale(1);}
+}
+.amgr-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:20px 24px 16px; border-bottom:1.5px solid #f1f5f9; flex-shrink:0;
+}
+.amgr-header-left { display:flex; align-items:center; gap:10px; }
+.amgr-header-icon { font-size:1.5em; }
+.amgr-header-title { font-size:1.05em; font-weight:800; color:#1e293b; }
+.amgr-header-sub   { font-size:0.72em; color:#94a3b8; margin-top:1px; }
+.amgr-close-btn {
+  width:32px; height:32px; border-radius:8px; border:none;
+  background:#f1f5f9; color:#64748b; font-size:1.1em;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:background .15s;
+}
+.amgr-close-btn:hover { background:#e2e8f0; color:#1e293b; }
+.amgr-scroll { overflow-y:auto; flex:1; padding:18px 20px 24px; }
+
+/* ── 카드 ── */
+.amgr-card {
+  border:1.5px solid #e2e8f0; border-radius:12px;
+  margin-bottom:12px; overflow:hidden; transition:border-color .15s;
+}
+.amgr-card:hover { border-color:#cbd5e1; }
+.amgr-card-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:13px 16px; background:#f8fafc; cursor:default;
+}
+.amgr-id-wrap { display:flex; align-items:center; gap:8px; }
+.amgr-badge {
+  font-size:0.68em; font-weight:700; padding:2px 8px; border-radius:20px;
+  background:#e0f2fe; color:#0369a1; white-space:nowrap;
+}
+.amgr-id { font-size:0.92em; font-weight:800; color:#1e293b; }
+.amgr-toggle-btn {
+  font-size:0.75em; font-weight:700; padding:5px 12px; border-radius:6px;
+  border:1.5px solid #cbd5e1; background:#fff; color:#475569; cursor:pointer;
+  transition:all .15s;
+}
+.amgr-toggle-btn:hover { background:#f1f5f9; border-color:#94a3b8; color:#1e293b; }
+.amgr-card-body { padding:16px 16px 14px; border-top:1.5px solid #f1f5f9; }
+.amgr-section-title {
+  font-size:0.72em; font-weight:700; color:#64748b;
+  letter-spacing:.04em; text-transform:uppercase; margin-bottom:8px;
+}
+
+/* ── 입력/버튼 ── */
+.amgr-pw-row { display:flex; gap:8px; flex-wrap:wrap; }
+.amgr-input {
+  flex:1; min-width:130px; padding:9px 12px; border:1.5px solid #e2e8f0;
+  border-radius:8px; font-size:0.85em; color:#1e293b; outline:none;
+  transition:border-color .15s; background:#f8fafc;
+}
+.amgr-input:focus { border-color:#3b82f6; background:#fff; }
+.amgr-save-btn {
+  padding:9px 16px; border-radius:8px; border:none;
+  background:#1e40af; color:#fff; font-size:0.82em; font-weight:700;
+  cursor:pointer; white-space:nowrap; transition:background .15s;
+}
+.amgr-save-btn:hover { background:#1d4ed8; }
+.amgr-reset-btn {
+  font-size:0.75em; font-weight:600; padding:5px 12px; border-radius:6px;
+  border:1px solid #fca5a5; background:#fff5f5; color:#dc2626; cursor:pointer;
+  transition:background .15s;
+}
+.amgr-reset-btn:hover { background:#fee2e2; }
+.amgr-pw-msg { font-size:0.78em; font-weight:600; min-height:16px; margin-top:5px; }
+
+/* ── 탭 권한 체크박스 ── */
+.amgr-tabs-row { display:flex; gap:8px; flex-wrap:wrap; }
+.amgr-tab-chk {
+  display:flex; align-items:center; gap:5px;
+  padding:6px 12px; border-radius:8px; border:1.5px solid #e2e8f0;
+  background:#f8fafc; cursor:pointer; font-size:0.82em; font-weight:600;
+  color:#374151; transition:all .15s; user-select:none;
+}
+.amgr-tab-chk:hover { border-color:#93c5fd; background:#eff6ff; }
+.amgr-tab-chk input[type=checkbox] { accent-color:#3b82f6; width:14px; height:14px; }
+
+/* ── 안내 배너 ── */
+.amgr-notice {
+  background:#fefce8; border:1px solid #fde68a; border-radius:8px;
+  padding:10px 14px; font-size:0.78em; color:#92400e; margin-bottom:16px; line-height:1.6;
+}
+
+/* ── 섹션 그룹 타이틀 ── */
+.amgr-section-group-title {
+  font-size:0.78em; font-weight:800; color:#374151;
+  letter-spacing:.04em; text-transform:uppercase;
+  margin-bottom:10px; padding-bottom:6px;
+  border-bottom:2px solid #e2e8f0;
+}
+
+/* ── 신규 계정 생성 카드 ── */
+.amgr-create-card {
+  border:1.5px dashed #93c5fd; border-radius:12px;
+  background:#f0f9ff; padding:16px 18px 14px;
+}
+.amgr-create-row {
+  display:flex; gap:10px; flex-wrap:wrap;
+}
+.amgr-create-field {
+  flex:1; min-width:160px; display:flex; flex-direction:column; gap:4px;
+}
+.amgr-create-btn {
+  padding:10px 20px; border-radius:8px; border:none;
+  background:linear-gradient(135deg,#16a34a,#15803d);
+  color:#fff; font-size:0.85em; font-weight:800;
+  cursor:pointer; white-space:nowrap;
+  box-shadow:0 2px 8px rgba(22,163,74,.25);
+  transition:all .15s;
+}
+.amgr-create-btn:hover { transform:translateY(-1px); box-shadow:0 4px 14px rgba(22,163,74,.3); }
+
+/* ── 신규 계정 배지 ── */
+.amgr-badge-custom {
+  background:#d1fae5 !important; color:#065f46 !important;
+}
+
+/* ── 삭제 버튼 ── */
+.amgr-del-btn {
+  font-size:0.72em; font-weight:700; padding:4px 10px; border-radius:6px;
+  border:1.5px solid #fca5a5; background:#fff5f5; color:#dc2626;
+  cursor:pointer; transition:background .15s; white-space:nowrap;
+}
+.amgr-del-btn:hover { background:#fee2e2; }
+</style>
+
+<div id="accMgrOverlay">
+  <div class="amgr-modal">
+    <!-- 헤더 -->
+    <div class="amgr-header">
+      <div class="amgr-header-left">
+        <span class="amgr-header-icon">⚙️</span>
+        <div>
+          <div class="amgr-header-title">계정 관리</div>
+          <div class="amgr-header-sub">비밀번호 변경 · 탭 열람 권한 설정 (master 전용)</div>
+        </div>
+      </div>
+      <button class="amgr-close-btn" onclick="AUTH.closeAccMgr()">✕</button>
+    </div>
+    <!-- 본문 -->
+    <div class="amgr-scroll">
+      <div class="amgr-notice">
+        💡 변경 사항은 즉시 적용됩니다. 비밀번호 변경 후 해당 계정은 다시 로그인해야 합니다.<br>
+        🔑 기본값 초기화 시 비밀번호는 <code style="background:#fef3c7;padding:1px 6px;border-radius:4px;font-weight:700;">asdf1234@@!!</code> 로 재설정됩니다.<br>
+        🔒 master 계정 비밀번호는 이 화면에서 변경할 수 없습니다.
+      </div>
+      <div id="accMgrBody"><!-- JS renderAccMgr()로 채워짐 --></div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
