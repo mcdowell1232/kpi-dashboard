@@ -7566,10 +7566,11 @@ var AUTH=(function(){
 
   /* ── 계정 기본 정의 (해시는 불변, 비밀번호/권한은 localStorage 오버라이드) ── */
   var AC_DEFAULTS=[
-    {id:'admin', h:'ae6333d7f9b198ad3210497489455c8f40f29c0e054cd27bc3f2d7edd82c49d1', tabs:['competitor','mkt','sales','logistics'], label:'관리자'},
-    {id:'Sales', h:'b2640e8b34169afa37c2e26916f7a526f6f5d96db43d78d0aeb16e48ff18d9c8', tabs:['competitor','mkt','sales'],             label:'영업팀'},
-    {id:'MKT',   h:'7c5d2b85fa95279311d2858f2902c2d0c14f6aad377b0d9117598a28ea9908d9', tabs:['competitor','mkt'],                   label:'마케팅팀'},
-    {id:'guest', h:'6a59cebc3957ca49578984dec0a85e3522993cd14b9d5a861003a5512c3e4a31', tabs:['competitor'],                        label:'게스트'},
+    {id:'admin',    h:'ae6333d7f9b198ad3210497489455c8f40f29c0e054cd27bc3f2d7edd82c49d1', tabs:['competitor','mkt','sales','logistics'], label:'관리자'},
+    {id:'Sales',    h:'b2640e8b34169afa37c2e26916f7a526f6f5d96db43d78d0aeb16e48ff18d9c8', tabs:['competitor','mkt','sales'],             label:'영업팀'},
+    {id:'MKT',      h:'7c5d2b85fa95279311d2858f2902c2d0c14f6aad377b0d9117598a28ea9908d9', tabs:['competitor','mkt'],                   label:'마케팅팀'},
+    {id:'guest',    h:'6a59cebc3957ca49578984dec0a85e3522993cd14b9d5a861003a5512c3e4a31', tabs:['competitor'],                        label:'게스트'},
+    {id:'roborock', h:'7ae4d49bfd7b19e6d33a5126225d082df0114d2d2a4d6dbaaaa664563574d220', tabs:['competitor','mkt','sales'],             label:'로보락'},
   ];
   /* master 계정 (별도 관리, AC_DEFAULTS에 포함 안 함) */
   var MASTER_ID   = 'master';
